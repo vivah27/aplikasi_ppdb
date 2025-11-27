@@ -1,0 +1,73 @@
+/* Custom theme additions for aplikasi_ppdb
+   - Styles for .themed-wrapper, .themed-card and related helpers
+   - Keep selectors specific and non-invasive
+*/
+:root {
+  --ap-primary: #4f46e5;
+  --ap-primary-light: #6366f1;
+  --ap-success: #10b981;
+  --ap-danger: #ef4444;
+  --ap-warning: #f59e0b;
+  --ap-dark: #1f2937;
+  --ap-light: #f9fafb;
+  --ap-gray: #6b7280;
+}
+
+.themed-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+.themed-card {
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.themed-card .card-top {
+  background: linear-gradient(135deg, var(--ap-primary) 0%, var(--ap-primary-light) 100%);
+  color: #fff;
+  padding: 22px 24px;
+}
+
+.themed-card .card-top h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.themed-card .card-top p {
+  margin: 6px 0 0 0;
+  opacity: 0.95;
+  font-size: 13px;
+}
+
+.themed-card .card-body {
+  padding: 20px;
+  background: #fff;
+}
+
+.actions-row { display:flex; gap:12px; align-items:center; justify-content:flex-end; }
+
+@media (max-width: 768px) {
+  .themed-wrapper { padding: 0 12px; }
+  .actions-row { justify-content: center; margin-top: 12px; }
+}
+
+/* Re-use stat-card variables from master; provide small fallbacks */
+.stat-card { border-radius: 12px; padding: 16px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+.stat-card .stat-value { font-size: 22px; font-weight:700; color:var(--ap-dark); }
+.stat-card .stat-label { font-size:13px; color:var(--ap-gray); margin-top:6px; }
+.stat-icon { font-size:36px; opacity:0.12; }
+.stat-icon.primary { color: var(--ap-primary); }
+.stat-icon.success { color: var(--ap-success); }
+.stat-icon.warning { color: var(--ap-warning); }
+.stat-icon.danger { color: var(--ap-danger); }
+
+/* Small helpers */
+.badge { padding: 6px 10px; border-radius: 6px; font-weight:600; }
+
+/* Optional full-bleed hero background (use .page-hero on a wrapper if desired) */
+.page-hero {
+  background: linear-gradient(90deg, rgba(79,70,229,0.08) 0%, rgba(99,102,241,0.06) 50%, rgba(79,70,229,0.08) 100%);
+  padding: 40px 0;
+}
