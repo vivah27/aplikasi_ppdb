@@ -1,89 +1,108 @@
-# Aplikasi PPDB
+# Aplikasi PPDB (Penerimaan Peserta Didik Baru)
 
-Repository ini berisi aplikasi pendaftaran peserta didik baru (PPDB) berbasis Laravel.
+Repository ini berisi aplikasi PPDB berbasis Laravel yang digunakan untuk mengelola pendaftaran, upload dokumen, verifikasi berkas, dan proses pembayaran.
 
-## Ringkasan singkat
+Fitur utama
+- Manajemen pendaftar dan biodata
+- Upload, preview, dan verifikasi dokumen (admin)
+- Status pendaftaran & verifikasi dokumen
+- Form pembayaran, unggah bukti, dan manajemen status pembayaran
+- Export laporan dan cetak dokumen (kuitansi, kartu peserta)
+
+Teknologi
 - Framework: Laravel
-- Database: MySQL (direkomendasikan untuk development dan production)
-- Storage: Local disk untuk environment development; gunakan S3 atau storage terprotect di production
+- Database: MySQL
 - Testing: Pest / PHPUnit
 
-## Docker (MySQL) — Panduan singkat
-Jika Anda ingin menjalankan database MySQL menggunakan Docker, ikuti langkah ini.
+Persiapan dan requirement
+- PHP 8.1+ (direkomendasikan sesuai composer.json)
+- Composer
+- MySQL (atau gunakan Docker Compose yang disediakan)
+- Node.js & npm (untuk build assets / Vite)
 
-1. Pastikan Anda menginstal Docker Desktop (Windows) dan sudah menjalankan Docker.
+Instalasi (singkat)
 
-2. File `docker-compose.yml` sudah tersedia di root proyek. Konfigurasi default:
-
-- DB_HOST: `127.0.0.1`
-- DB_PORT: `3306`
-- DB_DATABASE: `aplikasi_ppdb`
-- DB_USERNAME: `appuser`
-- DB_PASSWORD: `app_password_here`
-
-3. Contoh perintah (PowerShell):
+1. Clone repo dan masuk ke folder proyek:
 
 ```powershell
-# Di direktori proyek
-docker compose up -d
-# Tunggu beberapa detik agar MySQL siap
+git clone <repo-url>
+cd aplikasi_ppdb
 ```
 
-4. File `.env.docker` telah dibuat. Untuk beralih sementara ke konfigurasi Docker, salin:
+2. Install dependency PHP dan Javascript:
 
 ```powershell
+composer install
+npm install
+npm run build   # atau `npm run dev` untuk development
+```
+
+3. Salin file environment dan atur konfigurasi database:
+
+```powershell
+Copy-Item .env.example .env
+# edit .env sesuai environment lokal Anda (DB_HOST, DB_DATABASE, DB_USERNAME, DB_PASSWORD)
+```
+
+Database: migrasi & seeder
+
+1. Jalankan migrasi:
+
+```powershell
+php artisan migrate
+```
+
+2. Seed data awal (roles, status, metode pembayaran, dsb):
+
+```powershell
+php artisan db:seed --class=FeatureSeeder
+php artisan db:seed --class=StatusPembayaranSeeder
+```
+
+Catatan: repository sudah berisi beberapa migration pembaruan dan seeder. Jika struktur tabel lama masih ada, ada migration bantuan (`database/migrations/2025_11_28_010000_cleanup_old_pembayaran_columns.php`) yang memindahkan data legacy sebelum menghapus kolom lama.
+
+Menjalankan aplikasi lokal
+
+```powershell
+php artisan serve
+# buka http://127.0.0.1:8000
+```
+
+Docker (opsional)
+
+Jika ingin menggunakan MySQL via Docker, ada `docker-compose.yml` dan `.env.docker` (contoh). Ringkasan:
+
+```powershell
+# jalankan docker compose
+docker compose up -d
+
+# lalu swap .env jika perlu (opsional)
 Copy-Item .env .env.backup
 Copy-Item .env.docker .env
-```
 
-Untuk mengembalikan `.env` asli:
-
-```powershell
-Move-Item -Force .env.backup .env
-```
-
-5. Jalankan migrasi & seeder:
-
-```powershell
+# migrasi dan seed
 php artisan migrate --force
 php artisan db:seed --force
 ```
 
-6. Jika Anda menggunakan CI atau environment test, perbarui `.env.testing` agar menunjuk ke database test.
+Perhatian: jangan commit file `.env` yang mengandung credential.
 
-## Skrip helper PowerShell (Windows)
+Debug & logs
+- Logs Laravel: `storage/logs/laravel.log`
+- Jika ada error database (kolom tidak ditemukan), cek migrasi terbaru dan jalankan `php artisan migrate`.
 
-Di `scripts/` ada dua skrip PowerShell yang dibuat untuk mempermudah pengaturan lokal pada Windows:
+Commands berguna
+- Jalankan test: `php artisan test`
+- Jalankan seeder tertentu: `php artisan db:seed --class=StatusPembayaranSeeder`
+- Clear cache config: `php artisan config:clear`
 
-- `scripts/use-docker-env.ps1` — swap `.env` dengan `.env.docker` (dan backup `.env` ke `.env.backup`).
-	- Contoh: `.\\scripts\\use-docker-env.ps1 -action use` akan menyalin `.env.docker` menjadi `.env`.
-	- `-action restore` akan mengembalikan `.env` dari `.env.backup`.
+Panduan singkat kontribusi
+- Fork repo, buat branch fitur/bugfix, push, dan buka PR. Sertakan deskripsi perubahan.
 
-- `scripts/setup-docker-windows.ps1` — jika Docker Desktop sudah terpasang, skrip ini akan menjalankan `docker compose up -d`, menunggu MySQL siap, lalu menjalankan `php artisan migrate --force` dan `php artisan db:seed --force`.
-	- Jalankan dari root proyek: `.\\scripts\\setup-docker-windows.ps1`
+Kontak / Catatan tambahan
+- Proyek ini berisi beberapa migration dan seeder yang mengubah struktur tabel seiring perkembangan. Jika Anda menemukan error saat insert/seed terkait kolom legacy (mis. `nama` pada tabel `pembayaran`), jalankan migrasi cleanup yang sudah disediakan atau hubungi developer untuk langkah backup data.
 
-Catatan: skrip ini hanya helper — pastikan Anda memahami apa yang dijalankan sebelum mengeksekusi pada mesin development.
+---
 
-## Instalasi Docker Desktop (Windows) singkat
-1. Kunjungi: https://www.docker.com/get-started
-2. Pilih Docker Desktop untuk Windows, unduh dan jalankan installer.
-3. Aktifkan WSL2 jika diminta (direkomendasikan) dan restart komputer jika perlu.
-4. Buka PowerShell dan jalankan `docker version` untuk verifikasi.
-
-## Menjalankan test
-- Jalankan seluruh test suite:
-
-```powershell
-php artisan test
-```
-
-- Untuk menjalankan test tertentu (contoh BiodataTest):
-
-```powershell
-php artisan test --filter=BiodataTest
-```
-
-## Catatan
-- Docker tidak terpasang di beberapa mesin developer; file `.env.docker` dan `docker-compose.yml` disediakan agar mudah konsisten antara developer.
-- Jangan commit file `.env` ke repo. `.env.docker` hanya contoh kredensial development.
+Terima kasih sudah menggunakan aplikasi ini. Jika mau saya sesuaikan README dengan informasi deploy (contoh server, langkah backup, cron job), beri tahu saya detail yang ingin ditambahkan.
 
