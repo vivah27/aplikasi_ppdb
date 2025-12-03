@@ -27,6 +27,9 @@ class Pendaftaran extends Model
         'dibuat_oleh',
         'diperbarui_oleh',
         'keterangan',
+        'harga_gelombang',
+        'jenis_pembayaran',
+        'tujuan_rekening',
     ];
 
     protected $casts = [
@@ -58,6 +61,14 @@ class Pendaftaran extends Model
         return $this->belongsTo(Jurusan::class, 'jurusan_pilihan_2');
     }
 
+    /**
+     * Relasi ke jurusan yang diterima/dipilih
+     */
+    public function jurusan()
+    {
+        return $this->belongsTo(Jurusan::class, 'jurusan_pilihan_1');
+    }
+
     public function verifikasi()
     {
         return $this->hasMany(Verifikasi::class);
@@ -71,5 +82,21 @@ class Pendaftaran extends Model
     public function pembayaran()
     {
         return $this->hasOne(Pembayaran::class);
+    }
+
+    public function gelombangData()
+    {
+        return $this->belongsTo(Gelombang::class, 'gelombang', 'nomor_gelombang');
+    }
+
+    public function biodata()
+    {
+        return $this->hasOneThrough(Biodata::class, User::class, 'id', 'user_id', 'pengguna_id', 'id');
+    }
+
+    public function biodata_siswa()
+    {
+        // Relasi ke biodata melalui siswa jika ada
+        return $this->hasOneThrough(Biodata::class, Siswa::class, 'pengguna_id', 'user_id', 'siswa_id', 'id');
     }
 }

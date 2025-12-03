@@ -5,25 +5,8 @@
     <!-- Hero Section with School Background -->
     <header class="hero-section-bg">
         <div class="container">
-            <h1 class="display-4 fw-bold mb-3 text-white">Selamat Datang di<br><span class="text-gradient">PPDB SMK ANTARTIKA 1</span></h1>
-            <p class="lead mb-4 text-white">Pendaftaran Peserta Didik Baru Tahun Ajaran 2025/2026<br>Mudah, Cepat, dan Transparan untuk Calon Siswa Terbaik</p>
-            <div class="d-flex justify-content-center gap-3 mb-4 flex-wrap">
-                <a href="{{ route('login') }}" class="btn btn-light fw-bold px-4 py-2"><i class="fas fa-sign-in-alt me-2"></i>Masuk Sistem</a>
-                <a href="#fitur" class="btn btn-outline-light fw-bold px-4 py-2"><i class="fas fa-star me-2"></i>Lihat Fitur</a>
-            </div>
-            <div class="row justify-content-center mb-4">
-                <div class="col-auto text-center">
-                    <div class="fw-bold fs-2 text-white">100%</div>
-                    <div class="text-white-50">Online</div>
-                </div>
-                <div class="col-auto text-center">
-                    <div class="fw-bold fs-2 text-white">24/7</div>
-                    <div class="text-white-50">Tersedia</div>
-                </div>
-                <div class="col-auto text-center">
-                    <div class="fw-bold fs-2 text-white">Aman</div>
-                    <div class="text-white-50">Terpercaya</div>
-                </div>
+            <div class="text-center">
+                <h1 class="display-4 fw-bold mb-3 text-white">Selamat Datang di<br><span class="text-gradient">PPDB SMK ANTARTIKA 1</span></h1>
             </div>
         </div>
     </header>
@@ -34,11 +17,11 @@
             <div class="text-center mb-5">
                 <h5 class="text-primary fw-bold text-uppercase mb-2">Sistem Digital</h5>
                 <h2 class="fw-bold mb-3">Mengapa Memilih PPDB Online Kami?</h2>
-                <p class="text-muted mx-auto" style="max-width:600px;">Sistem PPDB SMK Antartika 1 Sidoarjo dirancang untuk mempermudah calon siswa dalam proses pendaftaran sekolah secara cepat, mudah, dan tanpa antrian.</p>
+                <p class="text-muted mx-auto" style="max-width:700px;">Sistem PPDB SMK Antartika 1 Sidoarjo dirancang untuk memberikan kemudahan bagi calon siswa dalam proses pendaftaran yang cepat, mudah, dan tanpa antrian.</p>
             </div>
             <div class="row g-4">
                 <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm">
+                    <div class="card h-100 border-0 shadow-sm hover-lift">
                         <div class="card-body text-center">
                             <div class="mb-3"><i class="fas fa-laptop fa-2x text-primary"></i></div>
                             <h5 class="fw-bold mb-2">Pendaftaran Online</h5>
@@ -47,7 +30,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm">
+                    <div class="card h-100 border-0 shadow-sm hover-lift">
                         <div class="card-body text-center">
                             <div class="mb-3"><i class="fas fa-check-double fa-2x text-success"></i></div>
                             <h5 class="fw-bold mb-2">Verifikasi Data Cepat</h5>
@@ -56,7 +39,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm">
+                    <div class="card h-100 border-0 shadow-sm hover-lift">
                         <div class="card-body text-center">
                             <div class="mb-3"><i class="fas fa-chart-pie fa-2x text-warning"></i></div>
                             <h5 class="fw-bold mb-2">Hasil Seleksi Transparan</h5>
@@ -74,11 +57,11 @@
             <div class="text-center mb-5">
                 <h5 class="text-primary fw-bold text-uppercase mb-2">Langkah Mudah</h5>
                 <h2 class="fw-bold mb-3">Alur Pendaftaran Online</h2>
-                <p class="text-muted mx-auto" style="max-width:600px;">Ikuti empat langkah sederhana untuk mendaftar di SMK Antartika 1 Sidoarjo dan wujudkan impianmu.</p>
+                <p class="text-muted mx-auto" style="max-width:700px;">Ikuti empat langkah sederhana untuk mendaftar di SMK Antartika 1 Sidoarjo dan wujudkan impianmu menjadi kenyataan.</p>
             </div>
             <div class="row g-4 justify-content-center">
                 <div class="col-md-3">
-                    <div class="card h-100 border-0 shadow-sm text-center">
+                    <div class="card h-100 border-0 shadow-sm text-center hover-lift">
                         <div class="card-body">
                             <div class="mb-3"><i class="fas fa-user-plus fa-2x text-primary"></i></div>
                             <h5 class="fw-bold mb-2">1. Daftar Akun</h5>
@@ -87,7 +70,7 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="card h-100 border-0 shadow-sm text-center">
+                    <div class="card h-100 border-0 shadow-sm text-center hover-lift">
                         <div class="card-body">
                             <div class="mb-3"><i class="fas fa-file-alt fa-2x text-primary"></i></div>
                             <h5 class="fw-bold mb-2">2. Isi Formulir</h5>
@@ -96,7 +79,7 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="card h-100 border-0 shadow-sm text-center">
+                    <div class="card h-100 border-0 shadow-sm text-center hover-lift">
                         <div class="card-body">
                             <div class="mb-3"><i class="fas fa-cloud-upload-alt fa-2x text-primary"></i></div>
                             <h5 class="fw-bold mb-2">3. Upload Dokumen</h5>
@@ -105,7 +88,7 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="card h-100 border-0 shadow-sm text-center">
+                    <div class="card h-100 border-0 shadow-sm text-center hover-lift">
                         <div class="card-body">
                             <div class="mb-3"><i class="fas fa-check-circle fa-2x text-primary"></i></div>
                             <h5 class="fw-bold mb-2">4. Lihat Hasil</h5>
@@ -122,7 +105,7 @@
         <div class="container">
             <h2 class="fw-bold mb-3">Siap Mendaftar?</h2>
             <p class="lead mb-4">Jangan lewatkan kesempatan emas ini untuk bergabung dengan SMK Antartika 1 Sidoarjo dan raih masa depan yang cemerlang.</p>
-            <a href="{{ route('login') }}" class="btn btn-light btn-lg fw-bold px-5 py-3">Mulai Pendaftaran Sekarang</a>
+            <a href="{{ url('/login') }}" class="btn btn-light btn-lg fw-bold px-5 py-3">Mulai Pendaftaran Sekarang</a>
         </div>
     </section>
 
@@ -131,7 +114,7 @@
         <div class="container">
             <div class="row g-4">
                 <div class="col-md-4">
-                    <div class="card border-0 shadow-sm h-100">
+                    <div class="card border-0 shadow-sm h-100 hover-lift">
                         <div class="card-body d-flex align-items-center">
                             <h2 class="text-primary mb-0">2.000+</h2>
                             <div class="ms-3">
@@ -142,7 +125,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card border-0 shadow-sm h-100">
+                    <div class="card border-0 shadow-sm h-100 hover-lift">
                         <div class="card-body d-flex align-items-center">
                             <h2 class="text-primary mb-0">10+</h2>
                             <div class="ms-3">
@@ -153,7 +136,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card border-0 shadow-sm h-100">
+                    <div class="card border-0 shadow-sm h-100 hover-lift">
                         <div class="card-body d-flex align-items-center">
                             <h2 class="text-primary mb-0">100%</h2>
                             <div class="ms-3">
@@ -171,13 +154,13 @@
     <section class="py-5">
         <div class="container">
             <div class="text-center mb-5">
-                <h5 class="text-primary mb-0">Testimoni</h5>
-                <h2 class="fw-bold my-3">Kata Mereka Tentang SMK Antartika 1</h2>
-                <p class="mb-0 text-muted">Simak pengalaman alumni dan siswa kami yang telah merasakan manfaat pembelajaran modern dan lingkungan positif.</p>
+                <h5 class="text-primary fw-bold text-uppercase mb-2">Testimoni</h5>
+                <h2 class="fw-bold mb-3">Kata Mereka Tentang SMK Antartika 1</h2>
+                <p class="text-muted mx-auto" style="max-width:700px;">Simak pengalaman alumni dan siswa kami yang telah merasakan manfaat pembelajaran modern dan lingkungan belajar yang positif.</p>
             </div>
             <div class="row g-4 justify-content-center">
                 <div class="col-md-4">
-                    <div class="card shadow-sm h-100">
+                    <div class="card shadow-sm h-100 hover-lift">
                         <div class="card-body d-flex">
                             <img src="../assets/images/user/avatar-1.jpg" alt="Alumni siswa RPL" class="img-fluid wid-40 rounded-circle me-3" style="width:48px;">
                             <div>
@@ -192,7 +175,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card shadow-sm h-100">
+                    <div class="card shadow-sm h-100 hover-lift">
                         <div class="card-body d-flex">
                             <img src="../assets/images/user/avatar-2.jpg" alt="Alumni TKJ" class="img-fluid wid-40 rounded-circle me-3" style="width:48px;">
                             <div>
@@ -207,7 +190,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card shadow-sm h-100">
+                    <div class="card shadow-sm h-100 hover-lift">
                         <div class="card-body d-flex">
                             <img src="../assets/images/user/avatar-3.jpg" alt="Siswa aktif" class="img-fluid wid-40 rounded-circle me-3" style="width:48px;">
                             <div>

@@ -18,8 +18,14 @@ class VerifikasiDokumenController extends Controller
      */
     public function index()
     {
-        $dokumen = Dokumen::with('siswa', 'jenisDokumen', 'statusVerifikasi')->paginate(15);
-        return view('admin.verifikasi.index', compact('dokumen'));
+        // Group dokumen per siswa
+        $siswa = \App\Models\Siswa::with(['dokumen' => function($query) {
+            $query->with('jenisDokumen', 'statusVerifikasi');
+        }])
+        ->whereHas('dokumen')
+        ->paginate(15);
+        
+        return view('admin.verifikasi.index', compact('siswa'));
     }
 
     /**
@@ -53,7 +59,8 @@ class VerifikasiDokumenController extends Controller
             ]);
         }
 
-        return back()->with('success', 'Dokumen berhasil diverifikasi');
+        // Always return JSON for consistency (AJAX + form requests)
+        return response()->json(['success' => true, 'message' => 'Dokumen berhasil diverifikasi'], 200);
     }
 
     /**
@@ -88,7 +95,8 @@ class VerifikasiDokumenController extends Controller
             ]);
         }
 
-        return back()->with('success', 'Dokumen berhasil ditolak');
+        // Always return JSON for consistency (AJAX + form requests)
+        return response()->json(['success' => true, 'message' => 'Dokumen berhasil ditolak'], 200);
     }
 
     /**
@@ -98,6 +106,17 @@ class VerifikasiDokumenController extends Controller
     {
         $statusVerifikasi = StatusVerifikasi::all();
         return view('admin.verifikasi.edit', compact('dokumen', 'statusVerifikasi'));
+    }
+
+    /**
+     * Show all documents for a specific student
+     */
+    public function showSiswa(\App\Models\Siswa $siswa)
+    {
+        $dokumen = $siswa->dokumen()->with('jenisDokumen', 'statusVerifikasi')->get();
+        $statusVerifikasi = StatusVerifikasi::all();
+        
+        return view('admin.verifikasi.siswa', compact('siswa', 'dokumen', 'statusVerifikasi'));
     }
 
     /**

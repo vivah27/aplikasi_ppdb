@@ -26,6 +26,16 @@
         </div>
     @endif
 
+    @if (session('error'))
+        <div style="background: rgba(239, 68, 68, 0.1); border-left: 4px solid #ef4444; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px;">
+            <i class="fas fa-exclamation-circle" style="color: #ef4444; font-size: 18px;"></i>
+            <div>
+                <strong style="color: #ef4444;">Gagal!</strong>
+                <p style="margin: 3px 0 0 0; font-size: 14px; color: #ef4444;">{{ session('error') }}</p>
+            </div>
+        </div>
+    @endif
+
     <!-- List Card -->
     <div style="background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); overflow: hidden;">
         <div style="overflow-x: auto;">
@@ -63,13 +73,9 @@
                                     <a href="{{ route('admin.jenis-dokumen.edit', $item->id) }}" style="padding: 8px 12px; background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%); color: white; text-decoration: none; border-radius: 6px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; transition: all 0.3s;">
                                         <i class="fas fa-edit"></i> Edit
                                     </a>
-                                    <form action="{{ route('admin.jenis-dokumen.destroy', $item->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Yakin ingin menghapus?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" style="padding: 8px 12px; background: linear-gradient(135deg, #ef4444 0%, #f87171 100%); color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.3s;">
-                                            <i class="fas fa-trash"></i> Hapus
-                                        </button>
-                                    </form>
+                                    <button type="button" class="btn-delete-swal" data-action="{{ route('admin.jenis-dokumen.destroy', $item->id) }}" data-csrf="{{ csrf_token() }}" data-related="{{ $item->dokumen()->count() }}" style="padding: 8px 12px; background: linear-gradient(135deg, #ef4444 0%, #f87171 100%); color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.3s;">
+                                        <i class="fas fa-trash"></i> Hapus
+                                    </button>
                                 </div>
                             </td>
                         </tr>

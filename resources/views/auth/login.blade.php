@@ -3,7 +3,7 @@
 @section('title', 'Login - PPDB SMK Antartika 1 Sidoarjo')
 
 @section('content')
-<div class="container-fluid h-100" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100dvh; display: flex; align-items: center;">
+<div class="container-fluid h-100" style="min-height: 100dvh; display: flex; align-items: center;">
     <div class="row w-100 justify-content-center">
         <div class="col-md-8 col-lg-5 col-xl-4">
             <div class="card shadow-lg border-0" style="border-radius: 12px; overflow: hidden;">

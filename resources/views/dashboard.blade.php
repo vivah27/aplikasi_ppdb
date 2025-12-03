@@ -181,7 +181,7 @@
                 <a href="{{ route('user.dokumen') }}" class="btn btn-outline-primary w-100 mb-2">
                     <i class="fas fa-folder"></i> Kelola Dokumen
                 </a>
-                @if($pendaftaran && $pendaftaran->pembayaran && $pendaftaran->pembayaran->statusPembayaran->nama === 'LUNAS')
+                @if($pendaftaran && $pendaftaran->pembayaran && $pendaftaran->pembayaran->statusPembayaran && $pendaftaran->pembayaran->statusPembayaran->nama === 'LUNAS')
                     <a href="{{ route('cetak.kartu', ['pendaftaranId' => $pendaftaran->id]) }}" class="btn btn-outline-primary w-100">
                         <i class="fas fa-print"></i> Cetak Kartu
                     </a>

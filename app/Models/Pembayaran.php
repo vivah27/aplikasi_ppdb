@@ -19,30 +19,62 @@ class Pembayaran extends Model
         'tanggal_bayar',
         'bukti_pembayaran',
         'keterangan',
+        'nama',
+        'metode',
+        'bukti',
+        'status',
+        'catatan',
+        'nama_bank',
+        'nomor_rekening',
+        'atas_nama_rekening',
+        'jenis_ewallet',
+        'nomor_ewallet',
     ];
 
     protected $casts = [
-        'tanggal_bayar' => 'datetime',
         'jumlah' => 'decimal:2',
+        'tanggal_bayar' => 'datetime',
     ];
 
+    /**
+     * Relasi ke Pendaftaran
+     */
     public function pendaftaran()
     {
         return $this->belongsTo(Pendaftaran::class);
     }
 
+    /**
+     * Relasi ke MetodePembayaran
+     */
     public function metodePembayaran()
     {
         return $this->belongsTo(MetodePembayaran::class);
     }
 
+    /**
+     * Relasi ke StatusPembayaran
+     */
     public function statusPembayaran()
     {
         return $this->belongsTo(StatusPembayaran::class, 'status_pembayaran_id');
     }
 
-    public function metode()
+    /**
+     * Check if pembayaran sudah terverifikasi dan lunas
+     */
+    public function isTerverifikasi()
     {
-        return $this->belongsTo(MetodePembayaran::class, 'metode_pembayaran_id');
+        // Check by status field (legacy)
+        if ($this->status == 'Terverifikasi' || $this->status == 'LUNAS') {
+            return true;
+        }
+
+        // Check by status_pembayaran_id (new schema)
+        if ($this->statusPembayaran && in_array($this->statusPembayaran->nama, ['LUNAS', 'Terverifikasi'])) {
+            return true;
+        }
+
+        return false;
     }
 }

@@ -266,7 +266,7 @@
 
             <div class="form-group">
                 <div class="form-label">Status</div>
-                <div class="form-value">{{ $pendaftaran->statusPendaftaran->nama ?? 'BELUM DIVERIFIKASI' }}</div>
+                <div class="form-value">{{ $pendaftaran->statusPendaftaran->label ?? 'BELUM DIVERIFIKASI' }}</div>
             </div>
 
             <div class="form-group">

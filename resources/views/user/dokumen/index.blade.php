@@ -246,13 +246,9 @@
                                         <a href="{{ route('user.dokumen.download', $item->id) }}" class="btn btn-download">
                                             ↓ Unduh
                                         </a>
-                                        <form action="{{ route('user.dokumen.destroy', $item->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Yakin ingin menghapus dokumen ini?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-delete">
-                                                🗑 Hapus
-                                            </button>
-                                        </form>
+                                        <button type="button" class="btn btn-delete btn-delete" data-action="{{ route('user.dokumen.destroy', $item->id) }}" data-csrf="{{ csrf_token() }}">
+                                            🗑 Hapus
+                                        </button>
                                     </div>
                                 </td>
                             </tr>

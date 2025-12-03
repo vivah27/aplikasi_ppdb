@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Button Click</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Test Button Click</h1>
+        
+        <!-- Test 1: Simple anchor tag -->
+        <div class="mb-3">
+            <h3>Test 1: Anchor Tag</h3>
+            <a href="/login" class="btn btn-primary">Click me - Anchor</a>
+        </div>
+        
+        <!-- Test 2: Button with onclick -->
+        <div class="mb-3">
+            <h3>Test 2: Button with onclick</h3>
+            <button class="btn btn-success" onclick="window.location.href='/login';">Click me - Button</button>
+        </div>
+        
+        <!-- Test 3: Check if /login exists -->
+        <div class="mb-3">
+            <h3>Test 3: AJAX Check</h3>
+            <button class="btn btn-info" onclick="testLogin();">Test /login Route</button>
+            <p id="result"></p>
+        </div>
+    </div>
+
+    <script>
+        function testLogin() {
+            fetch('/login')
+                .then(response => {
+                    document.getElementById('result').innerHTML = 
+                        `Status: ${response.status} - Route exists: ${response.status === 200 ? 'YES ✅' : 'NO ❌'}`;
+                })
+                .catch(error => {
+                    document.getElementById('result').innerHTML = 
+                        `Error: ${error.message}`;
+                });
+        }
+    </script>
+</body>
+</html>

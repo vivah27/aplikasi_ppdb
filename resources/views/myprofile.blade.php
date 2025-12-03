@@ -11,6 +11,21 @@
 @php
     $user = auth()->user();
     $siswa = $user ? $user->siswa : null;
+    // Biodata passed dari controller - gunakan langsung jika tersedia
+    // Gunakan biodata jika tersedia, jika tidak gunakan siswa
+    $profileData = ($biodata ?? null) ?? $siswa;
+    // ✅ Untuk foto, prioritaskan biodata->foto karena itu sumber kebenaran (single source of truth)
+    $fotoDisplay = ($biodata && $biodata->foto) ? $biodata->foto : ($siswa && $siswa->foto ? $siswa->foto : null);
+    
+    // DEBUG
+    \Log::debug('MyProfile Debug', [
+        'biodata_exists' => $biodata ? true : false,
+        'biodata_foto' => $biodata ? $biodata->foto : null,
+        'siswa_exists' => $siswa ? true : false,
+        'siswa_foto' => $siswa ? $siswa->foto : null,
+        'fotoDisplay' => $fotoDisplay,
+    ]);
+    
     $dokumenCount = $siswa ? $siswa->dokumen()->count() : 0;
     $pendaftaran = $siswa ? $siswa->pendaftaran()->first() : null;
     $statusPendaftaran = $pendaftaran ? $pendaftaran->statusPendaftaran : null;
@@ -20,16 +35,16 @@
     <div class="col-12 col-lg-4">
         <div class="card">
             <div class="card-body text-center">
-                @if($siswa && $siswa->foto)
-                    <img src="{{ asset('storage/' . $siswa->foto) }}" alt="Foto Profil" class="rounded-circle mb-3" style="width:110px;height:110px;object-fit:cover;">
+                @if($fotoDisplay)
+                    <img src="{{ asset('storage/' . $fotoDisplay) }}" alt="Foto Profil" class="rounded-circle mb-3" style="width:110px;height:110px;object-fit:cover;">
                 @elseif($user && $user->avatar)
                     <img src="{{ asset('storage/' . $user->avatar) }}" alt="avatar" class="rounded-circle mb-3" style="width:110px;height:110px;object-fit:cover;">
                 @else
                     <div class="user-avatar mb-3" style="width:110px;height:110px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;background:#e9ecef;">{{ strtoupper(substr($user->name ?? 'U', 0, 1)) }}</div>
                 @endif
 
-                <h4 class="mb-0">{{ optional($siswa)->nama_lengkap ?? $user->name ?? 'Pengguna' }}</h4>
-                <p class="text-muted">{{ optional($siswa)->nisn ?? '-' }}</p>
+                <h4 class="mb-0">{{ optional($profileData)->nama_lengkap ?? $user->name ?? 'Pengguna' }}</h4>
+                <p class="text-muted">{{ optional($profileData)->nisn ?? '-' }}</p>
 
                 <div class="d-grid gap-2 mt-3">
                     <a href="{{ route('profil.edit') }}" class="btn btn-primary"><i class="fas fa-edit me-1"></i>Edit Profil</a>
@@ -51,8 +66,8 @@
                 </div>
                 <div class="d-flex justify-content-between">
                     <small class="text-muted">Status</small>
-                    <span class="badge badge-{{ $statusPendaftaran && $statusPendaftaran->nama == 'Diterima' ? 'success' : ($statusPendaftaran && $statusPendaftaran->nama == 'Menunggu' ? 'warning' : 'secondary') }}">
-                        {{ $statusPendaftaran ? $statusPendaftaran->nama : 'Belum Daftar' }}
+                    <span class="badge badge-{{ $statusPendaftaran && $statusPendaftaran->label == 'Diterima' ? 'success' : ($statusPendaftaran && $statusPendaftaran->label == 'Menunggu' ? 'warning' : 'secondary') }}">
+                        {{ $statusPendaftaran ? $statusPendaftaran->label : 'Belum Daftar' }}
                     </span>
                 </div>
             </div>
@@ -77,7 +92,7 @@
                 <div class="row">
                     <div class="col-6 mb-3">
                         <small class="text-muted">Nama Lengkap</small>
-                        <div>{{ optional($siswa)->nama_lengkap ?? $user->name ?? '-' }}</div>
+                        <div>{{ optional($profileData)->nama_lengkap ?? $user->name ?? '-' }}</div>
                     </div>
                     <div class="col-6 mb-3">
                         <small class="text-muted">Email</small>
@@ -85,38 +100,64 @@
                     </div>
                     <div class="col-6 mb-3">
                         <small class="text-muted">NISN</small>
-                        <div>{{ optional($siswa)->nisn ?? '-' }}</div>
+                        <div>{{ optional($profileData)->nisn ?? '-' }}</div>
                     </div>
                     <div class="col-6 mb-3">
                         <small class="text-muted">NIK</small>
-                        <div>{{ optional($siswa)->nik ?? '-' }}</div>
+                        <div>{{ optional($profileData)->nik ?? '-' }}</div>
                     </div>
                     <div class="col-6 mb-3">
                         <small class="text-muted">Tempat, Tanggal Lahir</small>
                         <div>
                             @php
-                                $tempat = optional($siswa)->tempat_lahir ?? '-';
-                                $tanggal = optional($siswa)->tanggal_lahir ? optional($siswa)->tanggal_lahir->format('d M Y') : '-';
+                                $tempat = optional($profileData)->tempat_lahir ?? '-';
+                                $tanggal = '-';
+                                if ($profileData && $profileData->tanggal_lahir) {
+                                    $tglLahir = $profileData->tanggal_lahir;
+                                    if (is_object($tglLahir) && method_exists($tglLahir, 'format')) {
+                                        $tanggal = $tglLahir->format('d M Y');
+                                    } else {
+                                        $tanggal = $tglLahir;
+                                    }
+                                }
                             @endphp
                             {{ $tempat . ', ' . $tanggal }}
                         </div>
                     </div>
                     <div class="col-6 mb-3">
                         <small class="text-muted">Jenis Kelamin</small>
-                        <div>{{ optional($siswa)->jenis_kelamin ?? '-' }}</div>
+                        <div>{{ optional($profileData)->jenis_kelamin ?? '-' }}</div>
                     </div>
                     <div class="col-6 mb-3">
                         <small class="text-muted">Asal Sekolah</small>
-                        <div>{{ optional($siswa)->asal_sekolah ?? '-' }}</div>
+                        <div>{{ optional($profileData)->asal_sekolah ?? '-' }}</div>
                     </div>
                     <div class="col-6 mb-3">
                         <small class="text-muted">No. Telepon</small>
-                        <div>{{ optional($siswa)->no_telepon ?? '-' }}</div>
+                        <div>{{ optional($profileData)->no_hp ?? optional($profileData)->no_telepon ?? '-' }}</div>
                     </div>
-                    <div class="col-12">
+                    <div class="col-12 mb-3">
                         <small class="text-muted">Alamat</small>
-                        <div>{{ optional($siswa)->alamat ?? '-' }}</div>
+                        <div>{{ optional($profileData)->alamat ?? '-' }}</div>
                     </div>
+                    @if($biodata && $biodata->agama)
+                    <div class="col-6 mb-3">
+                        <small class="text-muted">Agama</small>
+                        <div>{{ $biodata->agama ?? '-' }}</div>
+                    </div>
+                    @endif
+                    @if($biodata && $biodata->nama_ayah)
+                    <div class="col-6 mb-3">
+                        <small class="text-muted">Nama Ayah</small>
+                        <div>{{ $biodata->nama_ayah ?? '-' }}</div>
+                    </div>
+                    @endif
+                    @if($biodata && $biodata->nama_ibu)
+                    <div class="col-6 mb-3">
+                        <small class="text-muted">Nama Ibu</small>
+                        <div>{{ $biodata->nama_ibu ?? '-' }}</div>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>

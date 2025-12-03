@@ -29,12 +29,45 @@
                             Anda belum melakukan pendaftaran. Silakan <a href="{{ route('formulir.index') }}">daftar terlebih dahulu</a>.
                         </div>
                     @else
-                        <!-- Status Pendaftaran -->
-                        <div class="alert alert-info mb-4">
-                            <strong>Status Pendaftaran:</strong> 
-                            <span class="badge bg-info">{{ $pendaftaran->statusPendaftaran->nama ?? 'BELUM DIVERIFIKASI' }}</span>
-                            <br>
-                            <small>Tahun Ajaran: {{ $pendaftaran->tahun_ajaran ?? '-' }}</small>
+                        <!-- Status Pembayaran -->
+                        @php
+                            // Check pembayaran status - admin verifikasi set status = "Terverifikasi" di kolom status
+                            $pembayaranLunas = false;
+                            
+                            // DEBUG: Force load pembayaran if not already loaded
+                            if ($pendaftaran && !$pendaftaran->relationLoaded('pembayaran')) {
+                                $pendaftaran->load('pembayaran.statusPembayaran');
+                            }
+                            
+                            if ($pendaftaran && $pendaftaran->pembayaran) {
+                                $pembayaran = $pendaftaran->pembayaran;
+                                // Check status field (from admin verification) - case insensitive
+                                if ($pembayaran->status && strtoupper(trim($pembayaran->status)) === 'TERVERIFIKASI') {
+                                    $pembayaranLunas = true;
+                                }
+                                // Also check statusPembayaran relationship if exists
+                                elseif ($pembayaran->statusPembayaran && in_array(strtoupper($pembayaran->statusPembayaran->nama ?? ''), ['LUNAS', 'TERVERIFIKASI'])) {
+                                    $pembayaranLunas = true;
+                                }
+                            }
+                            
+                            $pembayaranStatus = $pendaftaran && $pendaftaran->pembayaran ? ($pendaftaran->pembayaran->status ?? 'MENUNGGU VERIFIKASI') : 'TIDAK ADA';
+                        @endphp
+                        <div class="alert {{ $pembayaranLunas ? 'alert-success' : 'alert-warning' }} mb-4">
+                            <strong>Status Pembayaran:</strong> 
+                            <span class="badge {{ $pembayaranLunas ? 'bg-success' : 'bg-warning' }}">
+                                {{ strtoupper($pembayaranStatus) }}
+                            </span>
+                            @if(!$pembayaranLunas && $pendaftaran->pembayaran)
+                                <br>
+                                <small>Menunggu verifikasi dari admin. Silakan hubungi admin untuk verifikasi pembayaran Anda.</small>
+                            @elseif(!$pendaftaran->pembayaran)
+                                <br>
+                                <small>Anda belum membuat pembayaran. <a href="{{ route('user.pembayaran.create') }}">Lakukan pembayaran sekarang</a></small>
+                            @elseif($pembayaranLunas)
+                                <br>
+                                <small class="text-success"><i class="fas fa-check-circle"></i> Pembayaran Anda telah diverifikasi oleh admin!</small>
+                            @endif
                         </div>
 
                         <!-- Tombol Cetak -->
@@ -58,13 +91,10 @@
                                         <i class="fas fa-id-card fa-3x text-success mb-3"></i>
                                         <h6>Kartu Peserta</h6>
                                         <p class="text-muted small">
-                                            @php
-                                                $pembayaranLunas = $pendaftaran && $pendaftaran->pembayaran && $pendaftaran->pembayaran->statusPembayaran && $pendaftaran->pembayaran->statusPembayaran->nama == 'LUNAS';
-                                            @endphp
                                             @if($pembayaranLunas)
                                                 Cetak kartu peserta ujian
                                             @else
-                                                (Hanya untuk pembayaran lunas)
+                                                (Hanya untuk pembayaran terverifikasi)
                                             @endif
                                         </p>
                                         @if($pembayaranLunas)
@@ -72,7 +102,7 @@
                                                 <i class="fas fa-print"></i> Tampilkan
                                             </a>
                                         @else
-                                            <button class="btn btn-sm btn-secondary" disabled>
+                                            <button class="btn btn-sm btn-secondary" disabled title="Pembayaran belum diverifikasi admin">
                                                 <i class="fas fa-lock"></i> Terkunci
                                             </button>
                                         @endif
@@ -85,52 +115,21 @@
                             <div class="col-md-6">
                                 <div class="card h-100">
                                     <div class="card-body text-center">
-                                        <i class="fas fa-envelope fa-3x text-warning mb-3"></i>
-                                        <h6>Surat Penerimaan</h6>
-                                        <p class="text-muted small">
-                                            @php
-                                                $statusDiterima = $pendaftaran && $pendaftaran->statusPendaftaran && $pendaftaran->statusPendaftaran->nama == 'DITERIMA';
-                                            @endphp
-                                            @if($statusDiterima)
-                                                Cetak surat resmi penerimaan
-                                            @else
-                                                (Hanya untuk status DITERIMA)
-                                            @endif
-                                        </p>
-                                        @if($statusDiterima)
-                                            <a href="{{ route('cetak.surat', ['pendaftaranId' => $pendaftaran->id]) }}" class="btn btn-sm btn-warning" target="_blank">
-                                                <i class="fas fa-print"></i> Tampilkan
-                                            </a>
-                                        @else
-                                            <button class="btn btn-sm btn-secondary" disabled>
-                                                <i class="fas fa-lock"></i> Terkunci
-                                            </button>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="card h-100">
-                                    <div class="card-body text-center">
                                         <i class="fas fa-receipt fa-3x text-info mb-3"></i>
                                         <h6>Kuitansi Pembayaran</h6>
                                         <p class="text-muted small">
-                                            @php
-                                                $kuitansiLunas = $pendaftaran && $pendaftaran->pembayaran && $pendaftaran->pembayaran->statusPembayaran && $pendaftaran->pembayaran->statusPembayaran->nama == 'LUNAS';
-                                            @endphp
-                                            @if($kuitansiLunas)
+                                            @if($pembayaranLunas)
                                                 Cetak bukti pembayaran
                                             @else
-                                                (Hanya untuk pembayaran lunas)
+                                                (Hanya untuk pembayaran terverifikasi)
                                             @endif
                                         </p>
-                                        @if($kuitansiLunas && $pendaftaran->pembayaran)
+                                        @if($pembayaranLunas && $pendaftaran->pembayaran)
                                             <a href="{{ route('cetak.kuitansi', ['pembayaranId' => $pendaftaran->pembayaran->id]) }}" class="btn btn-sm btn-info" target="_blank">
                                                 <i class="fas fa-print"></i> Tampilkan
                                             </a>
                                         @else
-                                            <button class="btn btn-sm btn-secondary" disabled>
+                                            <button class="btn btn-sm btn-secondary" disabled title="Pembayaran belum diverifikasi admin">
                                                 <i class="fas fa-lock"></i> Terkunci
                                             </button>
                                         @endif

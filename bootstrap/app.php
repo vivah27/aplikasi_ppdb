@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\CheckRole;
+use App\Http\Middleware\SetupSSLForSocialite;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -15,6 +16,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'cekRole' => CheckRole::class,
         ]);
+        // Add global middleware for SSL setup
+        $middleware->append(SetupSSLForSocialite::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

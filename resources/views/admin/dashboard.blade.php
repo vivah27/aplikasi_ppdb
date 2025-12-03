@@ -5,11 +5,11 @@
 @section('content')
 <style>
     .dashboard-header {
-        padding: 24px 0 32px 0;
-        margin-bottom: 24px;
+        padding: 0 0 24px 0;
+        margin-bottom: 32px;
     }
     .dashboard-title {
-        font-size: 32px;
+        font-size: 28px;
         font-weight: 700;
         color: #1f2937;
         margin: 0 0 8px 0;
@@ -19,80 +19,71 @@
         font-size: 14px;
         margin: 0;
     }
+
     .stat-cards-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
         gap: 20px;
-        margin-bottom: 30px;
+        margin-bottom: 32px;
     }
+
     .stat-card {
         background: white;
         border-radius: 12px;
         padding: 24px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        border: 1px solid rgba(0, 0, 0, 0.05);
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        position: relative;
-        overflow: hidden;
+        border-left: 4px solid;
+        transition: all 0.3s;
     }
-    .stat-card::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 4px;
-        height: 100%;
-        border-radius: 4px;
+
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
     }
-    .stat-card.primary::before { background: #4f46e5; }
-    .stat-card.success::before { background: #10b981; }
-    .stat-card.warning::before { background: #f59e0b; }
-    .stat-card.info::before { background: #0ea5e9; }
-    .stat-content {
-        flex: 1;
-    }
+
+    .stat-card.primary { border-left-color: #6366f1; }
+    .stat-card.success { border-left-color: #10b981; }
+    .stat-card.warning { border-left-color: #f59e0b; }
+    .stat-card.danger { border-left-color: #ef4444; }
+
     .stat-value {
         font-size: 32px;
         font-weight: 700;
         color: #1f2937;
-        line-height: 1;
         margin-bottom: 8px;
     }
+
     .stat-label {
-        font-size: 14px;
+        font-size: 13px;
         color: #6b7280;
         font-weight: 500;
     }
-    .stat-icon {
-        font-size: 40px;
-        opacity: 0.15;
-        margin-left: 16px;
-    }
+
     .section-title {
         font-size: 18px;
-        font-weight: 600;
+        font-weight: 700;
         color: #1f2937;
         margin: 32px 0 20px 0;
         padding-bottom: 12px;
         border-bottom: 2px solid #e5e7eb;
     }
+
     .cards-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 20px;
-        margin-bottom: 30px;
+        margin-bottom: 32px;
     }
+
     .card {
         background: white;
         border-radius: 12px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        border: 1px solid rgba(0, 0, 0, 0.05);
         overflow: hidden;
     }
+
     .card-header {
-        background: #f9fafb;
+        background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
         padding: 16px 20px;
         border-bottom: 1px solid #e5e7eb;
         font-weight: 600;
@@ -101,310 +92,352 @@
         justify-content: space-between;
         align-items: center;
     }
+
     .card-body {
         padding: 20px;
     }
-    .status-cards {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        gap: 16px;
-        margin-bottom: 30px;
-    }
-    .status-card {
-        background: white;
-        border-radius: 12px;
-        padding: 20px;
-        text-align: center;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        border: 1px solid rgba(0, 0, 0, 0.05);
-    }
-    .status-icon {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 12px;
-        font-size: 24px;
-        color: white;
-    }
-    .status-icon.success { background: #10b981; }
-    .status-icon.warning { background: #f59e0b; }
-    .status-icon.danger { background: #ef4444; }
-    .status-icon.info { background: #0ea5e9; }
-    .status-number {
-        font-size: 24px;
-        font-weight: 700;
-        color: #1f2937;
-        margin-bottom: 4px;
-    }
-    .status-label {
-        font-size: 12px;
-        color: #6b7280;
-    }
-    .table-responsive {
-        overflow-x: auto;
-    }
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 14px;
-    }
-    table thead {
-        background: #f9fafb;
-    }
-    table th {
-        padding: 12px;
-        text-align: left;
-        font-weight: 600;
-        color: #1f2937;
-        border-bottom: 1px solid #e5e7eb;
-    }
-    table td {
-        padding: 12px;
-        border-bottom: 1px solid #e5e7eb;
-    }
-    table tbody tr:hover {
-        background: #f9fafb;
-    }
-    .badge {
-        display: inline-block;
-        padding: 4px 8px;
-        border-radius: 4px;
-        font-size: 12px;
-        font-weight: 500;
-    }
-    .badge-success { background: rgba(16, 185, 129, 0.1); color: #047857; }
-    .badge-warning { background: rgba(245, 158, 11, 0.1); color: #92400e; }
-    .badge-danger { background: rgba(239, 68, 68, 0.1); color: #991b1b; }
-    .badge-info { background: rgba(14, 165, 233, 0.1); color: #0c4a6e; }
-    .empty-state {
-        text-align: center;
-        padding: 40px 20px;
-        color: #9ca3af;
-    }
-    .empty-state-icon {
-        font-size: 40px;
-        margin-bottom: 12px;
-        opacity: 0.5;
-    }
-    .quick-actions {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 12px;
-        background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
-        padding: 20px;
-        border-radius: 12px;
-    }
+
     .btn {
-        padding: 10px 16px;
-        border-radius: 8px;
+        padding: 8px 14px;
+        border-radius: 6px;
         font-weight: 600;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
+        gap: 6px;
         border: none;
         cursor: pointer;
-        transition: all 0.3s ease;
-        font-size: 13px;
+        transition: all 0.3s;
+        font-size: 12px;
     }
+
     .btn-primary {
-        background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+        background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
         color: white;
     }
+
     .btn-primary:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
     }
-    .btn-secondary {
-        background: #e5e7eb;
-        color: #1f2937;
-    }
-    .btn-secondary:hover {
-        background: #d1d5db;
-    }
+
     .list-group {
         list-style: none;
         padding: 0;
         margin: 0;
     }
+
     .list-item {
-        padding: 16px;
+        padding: 14px 0;
         border-bottom: 1px solid #e5e7eb;
         display: flex;
         justify-content: space-between;
-        align-items: flex-start;
+        align-items: center;
     }
+
     .list-item:last-child {
         border-bottom: none;
     }
+
     .list-item-main h6 {
         margin: 0 0 4px 0;
         font-weight: 600;
         color: #1f2937;
         font-size: 13px;
     }
+
     .list-item-main p {
         margin: 0;
         font-size: 12px;
         color: #6b7280;
     }
+
+    .badge {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .badge-success { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+    .badge-warning { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+    .badge-danger { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+    .badge-info { background: rgba(99, 102, 241, 0.15); color: #6366f1; }
+
+    .alert {
+        padding: 14px 16px;
+        border-radius: 8px;
+        border-left: 4px solid;
+        font-size: 13px;
+        margin-bottom: 16px;
+    }
+
+    .alert-warning {
+        background: rgba(245, 158, 11, 0.1);
+        border-left-color: #f59e0b;
+        color: #92400e;
+    }
+
+    .alert-success {
+        background: rgba(16, 185, 129, 0.1);
+        border-left-color: #10b981;
+        color: #047857;
+    }
+
+    .action-links {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+        margin-top: 16px;
+    }
+
+    .action-link {
+        padding: 12px;
+        background: #f9fafb;
+        border-radius: 8px;
+        text-decoration: none;
+        color: #1f2937;
+        font-weight: 500;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid #e5e7eb;
+        transition: all 0.3s;
+    }
+
+    .action-link:hover {
+        background: #f3f4f6;
+        border-color: #6366f1;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+    }
+
+    table th {
+        padding: 12px;
+        text-align: left;
+        font-weight: 600;
+        color: #1f2937;
+        background: #f9fafb;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    table td {
+        padding: 12px;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    table tbody tr:hover {
+        background: #f9fafb;
+    }
+
+    .text-muted {
+        color: #6b7280;
+    }
 </style>
 
+<!-- Dashboard Header -->
 <div class="dashboard-header">
-    <h1 class="dashboard-title">📊 Dashboard PPDB SMK</h1>
-    <p class="dashboard-subtitle">Selamat datang, {{ Auth::user()->name }}! • {{ now()->format('d F Y, H:i') }}</p>
+    <h1 class="dashboard-title">Dashboard Admin</h1>
+    <p class="dashboard-subtitle">Selamat datang, {{ Auth::user()->name }}</p>
 </div>
 
-<!-- QUICK STATS ROW -->
+<!-- Key Statistics -->
 <div class="stat-cards-grid">
     <div class="stat-card primary">
-        <div class="stat-content">
-            <div class="stat-value">{{ $totalPendaftaran }}</div>
-            <div class="stat-label">Total Pendaftar</div>
-        </div>
-        <div class="stat-icon">📋</div>
+        <div class="stat-value">{{ $totalPendaftaran }}</div>
+        <div class="stat-label">Total Pendaftar</div>
     </div>
     <div class="stat-card success">
-        <div class="stat-content">
-            <div class="stat-value">{{ $diterima }}</div>
-            <div class="stat-label">Diterima</div>
-        </div>
-        <div class="stat-icon">✓</div>
+        <div class="stat-value">{{ $diterima }}</div>
+        <div class="stat-label">Diterima</div>
     </div>
     <div class="stat-card warning">
-        <div class="stat-content">
-            <div class="stat-value">{{ $menunggu }}</div>
-            <div class="stat-label">Menunggu Verifikasi</div>
-        </div>
-        <div class="stat-icon">⏳</div>
+        <div class="stat-value">{{ $menunggu }}</div>
+        <div class="stat-label">Menunggu Keputusan</div>
     </div>
-    <div class="stat-card danger" style="border-left: 4px solid #ef4444;">
-        <div class="stat-content">
-            <div class="stat-value">{{ $ditolak }}</div>
-            <div class="stat-label">Ditolak</div>
-        </div>
-        <div class="stat-icon">✕</div>
+    <div class="stat-card danger">
+        <div class="stat-value">{{ $ditolak }}</div>
+        <div class="stat-label">Ditolak</div>
     </div>
 </div>
 
-<!-- DOKUMEN & RATE VERIFIKASI -->
-<h2 class="section-title">📄 Status Dokumen</h2>
-<div class="status-cards">
-    <div class="status-card">
-        <div class="status-icon info">📁</div>
-        <div class="status-number">{{ $totalDokumen }}</div>
-        <div class="status-label">Total Dokumen</div>
-    </div>
-    <div class="status-card">
-        <div class="status-icon success">✓</div>
-        <div class="status-number">{{ $dokumenTerverifikasi }}</div>
-        <div class="status-label">Terverifikasi</div>
-    </div>
-    <div class="status-card">
-        <div class="status-icon warning">⏳</div>
-        <div class="status-number">{{ $dokumenTertunda }}</div>
-        <div class="status-label">Menunggu</div>
-    </div>
-    <div class="status-card">
-        <div class="status-icon info">📊</div>
-        <div class="status-number">{{ round($verificationRate) }}%</div>
-        <div class="status-label">Rate Verifikasi</div>
-    </div>
-</div>
-
-<!-- MAIN CONTENT -->
-<h2 class="section-title">🔄 Manajemen Pendaftaran</h2>
+<!-- Main Content -->
+<h2 class="section-title">Manajemen PPDB</h2>
 <div class="cards-grid">
-    <!-- Action Required -->
+    <!-- Document Verification -->
     <div class="card">
         <div class="card-header">
-            ⚡ Perlu Tindakan Segera
-            <a href="{{ route('admin.verifikasi') }}" class="btn btn-primary" style="padding: 6px 12px;">Verifikasi</a>
+            Verifikasi Dokumen
+            <a href="{{ route('admin.verifikasi') }}" class="btn btn-primary">Lihat</a>
         </div>
         <div class="card-body">
             @if($dokumenTertunda > 0)
-                <div style="padding: 15px; background: rgba(245, 158, 11, 0.1); border-left: 4px solid #f59e0b; border-radius: 6px; margin-bottom: 15px;">
-                    <strong style="color: #f59e0b;">{{ $dokumenTertunda }} dokumen</strong> menunggu verifikasi
+                <div class="alert alert-warning">
+                    <strong>{{ $dokumenTertunda }} dokumen</strong> menunggu verifikasi
                 </div>
             @else
-                <div style="padding: 15px; background: rgba(16, 185, 129, 0.1); border-left: 4px solid #10b981; border-radius: 6px; margin-bottom: 15px;">
-                    <strong style="color: #10b981;">Semua dokumen</strong> sudah terverifikasi ✓
+                <div class="alert alert-success">
+                    <strong>Semua dokumen</strong> sudah terverifikasi ✓
                 </div>
             @endif
-            
-            @if($menunggu > 0)
-                <div style="padding: 15px; background: rgba(59, 130, 246, 0.1); border-left: 4px solid #3b82f6; border-radius: 6px;">
-                    <strong style="color: #3b82f6;">{{ $menunggu }} pendaftar</strong> menunggu keputusan
-                </div>
-            @endif
+            <div class="action-links">
+                <a href="{{ route('admin.verifikasi') }}" class="action-link">
+                    <i class="fas fa-check-circle"></i> Verifikasi
+                </a>
+                <a href="{{ route('admin.jenis-dokumen.index') }}" class="action-link">
+                    <i class="fas fa-file-alt"></i> Jenis Dokumen
+                </a>
+            </div>
         </div>
     </div>
 
-    <!-- Registrations by Major -->
+    <!-- Document Statistics -->
     <div class="card">
         <div class="card-header">
-            🎓 Distribusi Jurusan
-            <a href="{{ route('admin.siswa.index') }}" class="btn btn-secondary" style="padding: 6px 12px;">Lihat Detail</a>
+            Status Dokumen
+        </div>
+        <div class="card-body">
+            <ul class="list-group">
+                <li class="list-item">
+                    <div class="list-item-main">
+                        <h6>Total Dokumen</h6>
+                    </div>
+                    <span class="badge badge-info">{{ $totalDokumen }}</span>
+                </li>
+                <li class="list-item">
+                    <div class="list-item-main">
+                        <h6>Terverifikasi</h6>
+                    </div>
+                    <span class="badge badge-success">{{ $dokumenTerverifikasi }}</span>
+                </li>
+                <li class="list-item">
+                    <div class="list-item-main">
+                        <h6>Menunggu Verifikasi</h6>
+                    </div>
+                    <span class="badge badge-warning">{{ $dokumenTertunda }}</span>
+                </li>
+                <li class="list-item">
+                    <div class="list-item-main">
+                        <h6>Tingkat Verifikasi</h6>
+                    </div>
+                    <span class="badge badge-info">{{ round($verificationRate) }}%</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Student Distribution -->
+    <div class="card">
+        <div class="card-header">
+            Distribusi Jurusan
+            <a href="{{ route('admin.siswa.index') }}" class="btn btn-primary">Lihat Semua</a>
         </div>
         <div class="card-body">
             @if($popularMajors->count() > 0)
                 <ul class="list-group">
-                    @foreach($popularMajors as $major)
+                    @foreach($popularMajors->take(5) as $major)
                         <li class="list-item">
                             <div class="list-item-main">
                                 <h6>{{ $major->nama ?? 'N/A' }}</h6>
                             </div>
-                            <span class="badge badge-info" style="background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%); color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px;">{{ $major->total }} pendaftar</span>
+                            <span class="badge badge-info">{{ $major->total }}</span>
                         </li>
                     @endforeach
                 </ul>
             @else
-                <div class="empty-state">
-                    <p>Belum ada data jurusan</p>
-                </div>
-            @endif
-        </div>
-    </div>
-
-    <!-- Document Types -->
-    <div class="card">
-        <div class="card-header">
-            📚 Jenis Dokumen
-            <a href="{{ route('admin.jenis-dokumen.index') }}" class="btn btn-secondary" style="padding: 6px 12px;">Kelola</a>
-        </div>
-        <div class="card-body">
-            @if($dokumenPerJenis->count() > 0)
-                <ul class="list-group">
-                    @foreach($dokumenPerJenis as $jenis)
-                        <li class="list-item">
-                            <div class="list-item-main">
-                                <h6>{{ $jenis->nama ?? 'N/A' }}</h6>
-                            </div>
-                            <span class="badge badge-info" style="background: #f3f4f6; color: #1f2937; padding: 6px 12px; border-radius: 6px; font-size: 12px;">{{ $jenis->total }}</span>
-                        </li>
-                    @endforeach
-                </ul>
-            @else
-                <div class="empty-state">
-                    <p>Belum ada dokumen</p>
-                </div>
+                <p class="text-muted">Belum ada data</p>
             @endif
         </div>
     </div>
 </div>
 
-<!-- DETAILED MANAGEMENT -->
-<h2 class="section-title">📑 Daftar Pendaftar</h2>
-<div class="cards-grid">
-    <!-- Recent Registrations Table -->
-    <div class="card" style="grid-column: 1 / -1;">
+<!-- Recent Registrations -->
+<h2 class="section-title">Pendaftar Terbaru</h2>
+<div style="display: grid; grid-template-columns: 250px 1fr; gap: 20px;">
+    <!-- Sidebar Filter -->
+    <div class="card" style="height: fit-content; position: sticky; top: 100px;">
+        <div class="card-header" style="padding: 14px 16px; font-size: 14px;">
+            🔍 Filter & Cari
+        </div>
+        <div class="card-body" style="padding: 16px;">
+            <form method="GET" action="{{ route('admin.dashboard') }}" style="display: flex; flex-direction: column; gap: 16px;">
+                <!-- Search by Name -->
+                <div>
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: #1f2937; margin-bottom: 6px; text-transform: uppercase;">Cari Nama</label>
+                    <input type="text" name="search" placeholder="Nama atau NISN" value="{{ request('search') }}" style="width: 100%; padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 13px;">
+                </div>
+
+                <!-- Filter by Status -->
+                <div>
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: #1f2937; margin-bottom: 6px; text-transform: uppercase;">Status</label>
+                    <select name="status" style="width: 100%; padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 13px;">
+                        <option value="">Semua Status</option>
+                        <option value="waiting" {{ request('status') === 'waiting' ? 'selected' : '' }}>Menunggu</option>
+                        <option value="accepted" {{ request('status') === 'accepted' ? 'selected' : '' }}>Diterima</option>
+                        <option value="rejected" {{ request('status') === 'rejected' ? 'selected' : '' }}>Ditolak</option>
+                    </select>
+                </div>
+
+                <!-- Filter by Date Range -->
+                <div>
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: #1f2937; margin-bottom: 6px; text-transform: uppercase;">Dari Tanggal</label>
+                    <input type="date" name="date_from" value="{{ request('date_from') }}" style="width: 100%; padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 13px;">
+                </div>
+
+                <div>
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: #1f2937; margin-bottom: 6px; text-transform: uppercase;">Sampai Tanggal</label>
+                    <input type="date" name="date_to" value="{{ request('date_to') }}" style="width: 100%; padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 13px;">
+                </div>
+
+                <!-- Action Buttons -->
+                <div style="display: flex; gap: 8px;">
+                    <button type="submit" style="flex: 1; padding: 10px; background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%); color: white; border: none; border-radius: 6px; font-weight: 600; font-size: 12px; cursor: pointer; transition: all 0.3s;">
+                        Cari
+                    </button>
+                    <a href="{{ route('admin.dashboard') }}" style="flex: 1; padding: 10px; background: #f3f4f6; color: #1f2937; border: none; border-radius: 6px; font-weight: 600; font-size: 12px; cursor: pointer; text-align: center; text-decoration: none; transition: all 0.3s;">
+                        Reset
+                    </a>
+                </div>
+
+                <!-- Quick Stats -->
+                <div style="border-top: 1px solid #e5e7eb; padding-top: 16px; margin-top: 8px;">
+                    <div style="font-size: 12px; font-weight: 600; color: #1f2937; margin-bottom: 10px;">📊 Statistik</div>
+                    <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;">
+                        <li style="padding: 8px; background: rgba(99, 102, 241, 0.1); border-radius: 6px; font-size: 12px;">
+                            <div style="color: #6366f1; font-weight: 600;">{{ $totalPendaftaran }}</div>
+                            <div style="color: #6b7280; font-size: 11px;">Total Pendaftar</div>
+                        </li>
+                        <li style="padding: 8px; background: rgba(245, 158, 11, 0.1); border-radius: 6px; font-size: 12px;">
+                            <div style="color: #f59e0b; font-weight: 600;">{{ $menunggu }}</div>
+                            <div style="color: #6b7280; font-size: 11px;">Menunggu Verifikasi</div>
+                        </li>
+                        <li style="padding: 8px; background: rgba(16, 185, 129, 0.1); border-radius: 6px; font-size: 12px;">
+                            <div style="color: #10b981; font-weight: 600;">{{ $diterima }}</div>
+                            <div style="color: #6b7280; font-size: 11px;">Diterima</div>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="card">
         <div class="card-header">
-            👥 Pendaftar Terbaru
-            <a href="{{ route('admin.siswa.index') }}" class="btn btn-primary" style="padding: 6px 12px;">Lihat Semua</a>
+            10 Pendaftar Terbaru
+            <a href="{{ route('admin.siswa.index') }}" class="btn btn-primary">Lihat Semua</a>
         </div>
         <div class="card-body">
             @if($recentRegistrations->count() > 0)
@@ -412,58 +445,37 @@
                     <table>
                         <thead>
                             <tr>
-                                <th style="width: 5%;">No</th>
-                                <th style="width: 25%;">Nama Pendaftar</th>
-                                <th style="width: 20%;">Jurusan Pilihan</th>
-                                <th style="width: 15%;">Tanggal Daftar</th>
-                                <th style="width: 15%;">Status</th>
-                                <th style="width: 20%;">Aksi</th>
+                                <th width="20%">Nama</th>
+                                <th width="15%">NISN</th>
+                                <th width="20%">Jurusan</th>
+                                <th width="15%">Tanggal Daftar</th>
+                                <th width="15%">Status</th>
+                                <th width="15%">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($recentRegistrations as $reg)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>
-                                        <strong>{{ $reg->siswa?->nama_lengkap ?? 'N/A' }}</strong><br>
-                                        <small style="color: #9ca3af;">NISN: {{ $reg->siswa?->nisn ?? '-' }}</small>
-                                    </td>
+                                    <td><strong>{{ $reg->siswa?->nama_lengkap ?? 'N/A' }}</strong></td>
+                                    <td class="text-muted">{{ $reg->siswa?->nisn ?? '-' }}</td>
                                     <td>{{ $reg->jurusanPilihan1?->nama ?? '-' }}</td>
                                     <td>{{ $reg->created_at->format('d M Y') }}</td>
                                     <td>
                                         @php
-                                            $statusLabel = $reg->statusPendaftaran?->label ?? 'Menunggu';
-                                            $statusClass = match($statusLabel) {
-                                                'Diterima' => 'success',
-                                                'Menunggu' => 'warning',
-                                                'Ditolak' => 'danger',
-                                                default => 'info'
+                                            $status = $reg->statusPendaftaran?->label ?? 'Menunggu';
+                                            $badgeClass = match($status) {
+                                                'Diterima' => 'badge-success',
+                                                'Menunggu' => 'badge-warning',
+                                                'Ditolak' => 'badge-danger',
+                                                default => 'badge-info'
                                             };
                                         @endphp
-                                        <span class="badge" style="background: {{ $statusClass === 'success' ? '#d1fae5' : ($statusClass === 'warning' ? '#fef3c7' : ($statusClass === 'danger' ? '#fee2e2' : '#dbeafe')) }}; color: {{ $statusClass === 'success' ? '#065f46' : ($statusClass === 'warning' ? '#78350f' : ($statusClass === 'danger' ? '#7f1d1d' : '#0c2d6b')) }}; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600;">
-                                            {{ $statusLabel }}
-                                        </span>
+                                        <span class="badge {{ $badgeClass }}">{{ $status }}</span>
                                     </td>
                                     <td>
-                                        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                                            <a href="{{ route('admin.verifikasi') }}" class="btn btn-secondary" style="padding: 6px 10px; font-size: 11px;">
-                                                <i class="fas fa-file-check"></i> Verifikasi
-                                            </a>
-                                            @if($statusLabel === 'Menunggu')
-                                                <form action="{{ route('admin.pendaftaran.accept', $reg->id) }}" method="POST" style="display: inline;">
-                                                    @csrf
-                                                    <button type="submit" style="padding: 6px 10px; background: linear-gradient(135deg, #10b981 0%, #34d399 100%); color: white; border: none; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;" title="Terima">
-                                                        <i class="fas fa-check"></i>
-                                                    </button>
-                                                </form>
-                                                <form action="{{ route('admin.pendaftaran.reject', $reg->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Yakin ingin menolak?')">
-                                                    @csrf
-                                                    <button type="submit" style="padding: 6px 10px; background: linear-gradient(135deg, #ef4444 0%, #f87171 100%); color: white; border: none; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;" title="Tolak">
-                                                        <i class="fas fa-times"></i>
-                                                    </button>
-                                                </form>
-                                            @endif
-                                        </div>
+                                        <a href="{{ route('admin.verifikasi') }}" class="btn btn-primary" style="font-size: 11px; padding: 6px 10px;">
+                                            Verifikasi
+                                        </a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -471,112 +483,10 @@
                     </table>
                 </div>
             @else
-                <div style="padding: 40px; text-align: center;">
-                    <div style="font-size: 40px; margin-bottom: 15px; opacity: 0.3;">📭</div>
-                    <p style="color: #6b7280;">Belum ada pendaftar</p>
-                </div>
+                <p class="text-muted" style="text-align: center; padding: 30px;">Belum ada pendaftar</p>
             @endif
         </div>
     </div>
 </div>
 
-<!-- MONITORING -->
-<h2 class="section-title">📊 Monitoring Dokumen</h2>
-<div class="cards-grid">
-    <!-- Recent Documents -->
-    <div class="card">
-        <div class="card-header">
-            📄 Dokumen Terbaru
-            <a href="{{ route('admin.verifikasi') }}" class="btn btn-primary" style="padding: 6px 12px;">Verifikasi</a>
-        </div>
-        <div class="card-body">
-            @if($recentDocuments->count() > 0)
-                <ul class="list-group">
-                    @foreach($recentDocuments->take(8) as $doc)
-                        <li class="list-item">
-                            <div class="list-item-main">
-                                <h6>{{ $doc->jenisDokumen?->nama ?? 'N/A' }}</h6>
-                                <p>{{ $doc->siswa?->nama_lengkap ?? 'N/A' }} • {{ $doc->created_at->diffForHumans() }}</p>
-                            </div>
-                            @php
-                                $statusClass = match($doc->statusVerifikasi?->label ?? '') {
-                                    'Terverifikasi' => 'success',
-                                    'Menunggu Verifikasi' => 'warning',
-                                    'Ditolak' => 'danger',
-                                    default => 'info'
-                                };
-                            @endphp
-                            <span class="badge badge-{{ $statusClass }}">{{ $doc->statusVerifikasi?->label ?? '-' }}</span>
-                        </li>
-                    @endforeach
-                </ul>
-            @else
-                <div class="empty-state">
-                    <p>Belum ada dokumen</p>
-                </div>
-            @endif
-        </div>
-    </div>
-
-    <!-- Recent Activities -->
-    <div class="card">
-        <div class="card-header">🔔 Aktivitas Terbaru</div>
-        <div class="card-body">
-            @if($recentVerifications->count() > 0)
-                <ul class="list-group">
-                    @foreach($recentVerifications->take(8) as $verify)
-                        <li class="list-item">
-                            <div class="list-item-main">
-                                <h6>✓ {{ ucfirst($verify->tipe) }} Terverifikasi</h6>
-                                <p>{{ $verify->pendaftaran?->siswa?->nama_lengkap ?? 'N/A' }}<br><small style="color: #9ca3af;">{{ $verify->tanggal_verifikasi->diffForHumans() }}</small></p>
-                            </div>
-                            <span class="badge" style="background: {{ $verify->status?->kode === 'verified' ? '#d1fae5' : ($verify->status?->kode === 'pending' ? '#fef3c7' : '#fee2e2') }}; color: {{ $verify->status?->kode === 'verified' ? '#065f46' : ($verify->status?->kode === 'pending' ? '#78350f' : '#7f1d1d') }}; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600;">
-                                {{ $verify->status?->label ?? '-' }}
-                            </span>
-                        </li>
-                    @endforeach
-                </ul>
-            @else
-                <div class="empty-state">
-                    <p>Belum ada aktivitas</p>
-                </div>
-            @endif
-        </div>
-    </div>
-</div>
-
-<!-- QUICK ACTIONS -->
-<h2 class="section-title">⚡ Menu Cepat Admin PPDB</h2>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-    <a href="{{ route('admin.verifikasi') }}" style="padding: 20px; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); text-decoration: none; border-left: 4px solid #4f46e5; transition: all 0.3s;">
-        <div style="font-size: 24px; margin-bottom: 10px;">✓</div>
-        <div style="font-weight: 600; color: #1f2937; margin-bottom: 5px;">Verifikasi Dokumen</div>
-        <div style="font-size: 13px; color: #6b7280;">{{ $dokumenTertunda }} dokumen menunggu</div>
-    </a>
-    <a href="{{ route('admin.jenis-dokumen.index') }}" style="padding: 20px; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); text-decoration: none; border-left: 4px solid #f59e0b; transition: all 0.3s;">
-        <div style="font-size: 24px; margin-bottom: 10px;">📄</div>
-        <div style="font-weight: 600; color: #1f2937; margin-bottom: 5px;">Jenis Dokumen</div>
-        <div style="font-size: 13px; color: #6b7280;">Kelola jenis dokumen</div>
-    </a>
-    <a href="{{ route('admin.siswa.index') }}" style="padding: 20px; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); text-decoration: none; border-left: 4px solid #10b981; transition: all 0.3s;">
-        <div style="font-size: 24px; margin-bottom: 10px;">👥</div>
-        <div style="font-weight: 600; color: #1f2937; margin-bottom: 5px;">Data Siswa</div>
-        <div style="font-size: 13px; color: #6b7280;">{{ $totalPendaftaran }} pendaftar</div>
-    </a>
-    <a href="{{ route('admin.peran.index') }}" style="padding: 20px; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); text-decoration: none; border-left: 4px solid #8b5cf6; transition: all 0.3s;">
-        <div style="font-size: 24px; margin-bottom: 10px;">🔐</div>
-        <div style="font-weight: 600; color: #1f2937; margin-bottom: 5px;">Manajemen Peran</div>
-        <div style="font-size: 13px; color: #6b7280;">Kelola akses pengguna</div>
-    </a>
-    <a href="{{ route('admin.reports.index') }}" style="padding: 20px; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); text-decoration: none; border-left: 4px solid #0ea5e9; transition: all 0.3s;">
-        <div style="font-size: 24px; margin-bottom: 10px;">📊</div>
-        <div style="font-weight: 600; color: #1f2937; margin-bottom: 5px;">Laporan & Export</div>
-        <div style="font-size: 13px; color: #6b7280;">Lihat statistik lengkap</div>
-    </a>
-    <a href="{{ route('admin.dashboard') }}" style="padding: 20px; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); text-decoration: none; border-left: 4px solid #ec4899; transition: all 0.3s;">
-        <div style="font-size: 24px; margin-bottom: 10px;">🔄</div>
-        <div style="font-weight: 600; color: #1f2937; margin-bottom: 5px;">Refresh Dashboard</div>
-        <div style="font-size: 13px; color: #6b7280;">Perbarui data terbaru</div>
-    </a>
-</div>
 @endsection

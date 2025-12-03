@@ -16,9 +16,12 @@ use App\Mail\SendOtpMail;
 
 
 use Laravel\Socialite\Facades\Socialite;
+use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\RequestOptions;
 
 class AuthController extends Controller
 {
+
 
 
     public function showLoginForm()
@@ -221,48 +224,90 @@ class AuthController extends Controller
 
     public function redirect($provider)
     {
-        return Socialite::driver($provider)->redirect();
-    }
-    public function callback($provider)
-{
-    try {
-        // Perbaiki kasus "localhost" agar tidak gagal redirect dari Google
-        $currentUrl = request()->fullUrl();
-        if (str_contains($currentUrl, 'localhost')) {
-            $newUrl = str_replace('localhost', '127.0.0.1', $currentUrl);
-            return redirect()->to($newUrl);
+        try {
+            Log::info('SSO redirect initiated for provider: ' . $provider);
+            Log::info('Current APP_URL: ' . config('app.url'));
+            Log::info('Google Redirect URI: ' . config('services.google.redirect'));
+            Log::info('APP_ENV: ' . config('app.env'));
+            
+            $driver = Socialite::driver($provider);
+            
+            // Set custom HTTP client without SSL verification for local dev
+            if (config('app.env') === 'local') {
+                $driver->setHttpClient($this->getSocialiteHttpClient());
+            }
+            
+            // Redirect to provider
+            return $driver->redirect();
+        } catch (\Throwable $e) {
+            Log::error('SSO redirect error for ' . $provider . ': ' . $e->getMessage());
+            return redirect()->route('login')->withErrors([
+                'sso' => 'Terjadi kesalahan saat redirect ke ' . ucfirst($provider),
+            ]);
         }
+    }
 
-        // Ambil data user dari provider (Google, GitHub, dll)
-        $socialUser = Socialite::driver($provider)->user();
+    public function callback($provider)
+    {
+        try {
+            Log::info('SSO callback received for provider: ' . $provider);
+            Log::info('Request URL: ' . request()->fullUrl());
+            
+            $driver = Socialite::driver($provider);
+            
+            // Set custom HTTP client without SSL verification for local dev
+            if (config('app.env') === 'local') {
+                $driver->setHttpClient($this->getSocialiteHttpClient());
+            }
+            
+            // Ambil data user dari provider
+            $socialUser = $driver->user();
+            
+            Log::info('Social user data retrieved: ' . $socialUser->getEmail());
 
-        // Cek apakah user sudah pernah login sebelumnya
-        $user = User::updateOrCreate(
-            ['email' => $socialUser->email],
-            [
-                'name' => $socialUser->name ?? $socialUser->getNickname(),
-                'provider' => $provider,
-                'provider_id' => $socialUser->getId(),
-                'avatar' => $socialUser->getAvatar(),
-                'is_verified' => true,
-                // Jika role belum ada, beri default 'user'
-                'role' => User::where('email', $socialUser->email)->value('role') ?? 'user',
-            ]
-        );
+            // Cek apakah user sudah ada
+            $user = User::where('email', $socialUser->getEmail())->first();
 
-        // Login ke aplikasi
-        Auth::login($user);
+            if (!$user) {
+                // Create user baru
+                $user = User::create([
+                    'name' => $socialUser->getName(),
+                    'email' => $socialUser->getEmail(),
+                    'password' => bcrypt(Str::random(24)), // random password
+                    'role' => 'user',
+                    'is_verified' => true, // SSO users are automatically verified
+                ]);
+                Log::info('New user created via SSO: ' . $user->email);
+            }
 
-        // PERBAIKAN: Redirect semua user (admin dan user biasa) ke dashboard
-        return redirect()->route('dashboard')->with('success', 'Berhasil login menggunakan akun ' . ucfirst($provider) . '!');
-        
-    } catch (\Exception $e) {
-        // Tangani error login
-        return redirect()->route('login')->withErrors([
-            'google' => 'Terjadi kesalahan saat login dengan ' . ucfirst($provider) . ': ' . $e->getMessage(),
+            Log::info('User created/updated: ' . $user->email . ' with role: ' . $user->role);
+
+            // Login ke aplikasi
+            Auth::login($user, remember: true);
+
+            // Redirect sesuai role
+            if ($user->role === 'admin') {
+                return redirect()->route('admin.dashboard')->with('success', 'Berhasil login sebagai admin menggunakan ' . ucfirst($provider) . '!');
+            }
+            
+            return redirect()->route('dashboard')->with('success', 'Berhasil login menggunakan ' . ucfirst($provider) . '!');
+            
+        } catch (\Throwable $e) {
+            Log::error('SSO callback error for ' . $provider . ': ' . $e->getMessage() . ' | ' . $e->getFile() . ':' . $e->getLine());
+            Log::error('Stack trace: ' . $e->getTraceAsString());
+            
+            return redirect()->route('login')->withErrors([
+                'sso' => 'Terjadi kesalahan saat login dengan ' . ucfirst($provider) . ': ' . $e->getMessage(),
+            ]);
+        }
+    }
+
+    private function getSocialiteHttpClient()
+    {
+        return new GuzzleClient([
+            RequestOptions::VERIFY => false,
         ]);
     }
-}
 
 
     // Form untuk request reset

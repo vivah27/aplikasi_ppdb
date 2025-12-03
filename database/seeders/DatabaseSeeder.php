@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             FeatureSeeder::class,
             JenisBerkasSeeder::class,
+            PembayaranSeeder::class,
         ]);
     }
 }

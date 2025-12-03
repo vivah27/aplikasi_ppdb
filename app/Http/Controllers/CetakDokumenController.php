@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use App\Models\Pendaftaran;
 use App\Models\BerkasCetak;
 use App\Models\JenisBerkas;
+use App\Models\Jurusan;
 
 class CetakDokumenController extends Controller
 {
@@ -93,12 +94,14 @@ class CetakDokumenController extends Controller
 
     /**
      * Generate kartu peserta
+     * 
+     * Syarat: Pembayaran harus LUNAS/TERVERIFIKASI oleh admin
      */
     public function generateKartuPeserta($pendaftaranId)
     {
         try {
             $user = Auth::user();
-            $pendaftaran = Pendaftaran::with(['siswa', 'jurusanPilihan1', 'statusPendaftaran', 'pembayaran.statusPembayaran'])
+            $pendaftaran = Pendaftaran::with(['siswa', 'jurusanPilihan1', 'statusPendaftaran', 'pembayaran'])
                 ->findOrFail($pendaftaranId);
 
             // Check authorization
@@ -106,16 +109,42 @@ class CetakDokumenController extends Controller
                 abort(403, 'Unauthorized');
             }
 
-            // Check if pembayaran sudah lunas
-            $pembayaran = $pendaftaran->pembayaran()->with('statusPembayaran')->first();
-            if (!$pembayaran || $pembayaran->statusPembayaran->nama != 'LUNAS') {
-                return back()->withErrors(['error' => 'Pembayaran belum lunas']);
+            // Check if jurusan sudah dipilih
+            if (!$pendaftaran->jurusanPilihan1 && !$pendaftaran->jurusan_pilihan_1) {
+                return back()->withErrors(['error' => 'Pilihan jurusan belum dipilih']);
             }
+
+            // Check if pembayaran sudah terverifikasi dan lunas
+            $pembayaran = $pendaftaran->pembayaran;
+            
+            if (!$pembayaran) {
+                return back()->withErrors(['error' => 'Pembayaran belum dibuat']);
+            }
+
+            // Check if pembayaran sudah terverifikasi dan lunas
+            if (!$pembayaran->isTerverifikasi()) {
+                $currentStatus = $pembayaran->status ?? 'MENUNGGU VERIFIKASI';
+                return back()->withErrors(['error' => 'Kuitansi hanya tersedia untuk pembayaran yang terverifikasi. Status: ' . strtoupper(trim($currentStatus))]);
+            }
+
+            // Fetch jurusan dengan fallback
+            $jurusan = $pendaftaran->jurusanPilihan1;
+            if (!$jurusan && $pendaftaran->jurusan_pilihan_1) {
+                $jurusan = Jurusan::findOrFail($pendaftaran->jurusan_pilihan_1);
+            }
+
+            // Log jurusan data untuk debugging
+            Log::info('Kartu Peserta - Jurusan Info', [
+                'pendaftaran_id' => $pendaftaran->id,
+                'jurusan_pilihan_1_id' => $pendaftaran->jurusan_pilihan_1,
+                'jurusan_loaded' => $jurusan ? 'yes' : 'no',
+                'jurusan_nama' => $jurusan?->nama_jurusan ?? 'null'
+            ]);
 
             $data = [
                 'pendaftaran' => $pendaftaran,
                 'siswa' => $pendaftaran->siswa,
-                'jurusan' => $pendaftaran->jurusanPilihan1,
+                'jurusan' => $jurusan,
                 'barcode' => 'PPDB-' . $pendaftaran->id . '-' . $pendaftaran->tahun_ajaran,
             ];
 
@@ -143,13 +172,15 @@ class CetakDokumenController extends Controller
     }
 
     /**
-     * Generate surat penerimaan (hanya untuk diterima)
+     * Generate surat penerimaan
+     * 
+     * Syarat: Status DITERIMA dan Pembayaran LUNAS/TERVERIFIKASI
      */
     public function generateSuratPenerimaan($pendaftaranId)
     {
         try {
             $user = Auth::user();
-            $pendaftaran = Pendaftaran::with(['siswa', 'jurusanPilihan1', 'statusPendaftaran'])
+            $pendaftaran = Pendaftaran::with(['siswa', 'jurusanPilihan1', 'statusPendaftaran', 'pembayaran'])
                 ->findOrFail($pendaftaranId);
 
             // Check authorization
@@ -158,8 +189,27 @@ class CetakDokumenController extends Controller
             }
 
             // Check if status DITERIMA
-            if ($pendaftaran->statusPendaftaran->nama != 'DITERIMA') {
-                return back()->withErrors(['error' => 'Hanya dapat dicetak untuk status DITERIMA']);
+            if (!$pendaftaran->statusPendaftaran || strtoupper($pendaftaran->statusPendaftaran->label) !== 'DITERIMA') {
+                $statusName = $pendaftaran->statusPendaftaran ? $pendaftaran->statusPendaftaran->label : 'BELUM DIVERIFIKASI';
+                return back()->withErrors(['error' => 'Hanya dapat dicetak untuk status DITERIMA. Status saat ini: ' . $statusName]);
+            }
+
+            // Check if jurusan sudah dipilih
+            if (!$pendaftaran->jurusanPilihan1) {
+                return back()->withErrors(['error' => 'Pilihan jurusan belum dipilih']);
+            }
+
+            // Check if pembayaran sudah terverifikasi dan lunas
+            $pembayaran = $pendaftaran->pembayaran;
+            
+            if (!$pembayaran) {
+                return back()->withErrors(['error' => 'Pembayaran belum dibuat']);
+            }
+
+            // Check status pembayaran - admin verifikasi set status = "Terverifikasi"
+            if (!$pembayaran->isTerverifikasi()) {
+                $currentStatus = $pembayaran->status ?? 'MENUNGGU VERIFIKASI';
+                return back()->withErrors(['error' => 'Pembayaran belum terverifikasi oleh admin. Status: ' . strtoupper(trim($currentStatus))]);
             }
 
             $data = [
@@ -194,12 +244,14 @@ class CetakDokumenController extends Controller
 
     /**
      * Generate kuitansi pembayaran
+     * 
+     * Syarat: Pembayaran LUNAS/TERVERIFIKASI oleh admin
      */
     public function generateKuitansi($pembayaranId)
     {
         try {
             $user = Auth::user();
-            $pembayaran = \App\Models\Pembayaran::with(['pendaftaran.siswa', 'statusPembayaran', 'metode'])
+            $pembayaran = \App\Models\Pembayaran::with(['pendaftaran.siswa', 'metodePembayaran', 'statusPembayaran'])
                 ->findOrFail($pembayaranId);
 
             // Check authorization
@@ -207,9 +259,10 @@ class CetakDokumenController extends Controller
                 abort(403, 'Unauthorized');
             }
 
-            // Check if LUNAS
-            if ($pembayaran->statusPembayaran->nama != 'LUNAS') {
-                return back()->withErrors(['error' => 'Kuitansi hanya tersedia untuk pembayaran yang lunas']);
+            // Check if pembayaran sudah terverifikasi dan lunas
+            if (!$pembayaran->isTerverifikasi()) {
+                $currentStatus = $pembayaran->status ?? 'MENUNGGU VERIFIKASI';
+                return back()->withErrors(['error' => 'Kuitansi hanya tersedia untuk pembayaran yang terverifikasi. Status: ' . strtoupper(trim($currentStatus))]);
             }
 
             $data = [

@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use App\Models\Siswa;
+use App\Models\Biodata;
 use App\Models\Pendaftaran;
 use App\Models\Jurusan;
 use App\Models\User;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
@@ -22,6 +23,34 @@ class ProfileController extends Controller
         }
 
         $siswa = Siswa::where('pengguna_id', $user->id)->first();
+        $biodata = Biodata::where('user_id', $user->id)->first();
+        
+        // ✅ Sinkronkan foto dari biodata ke siswa jika ada perbedaan
+        // Ini memastikan bahwa foto di siswa selalu up-to-date dengan biodata
+        if ($biodata && $biodata->foto) {
+            if (!$siswa) {
+                // Jika belum ada siswa, buat yang baru
+                $siswa = new Siswa();
+                $siswa->pengguna_id = $user->id;
+                $siswa->foto = $biodata->foto;
+                $siswa->save();
+            } elseif ($siswa->foto !== $biodata->foto) {
+                // Jika foto berbeda, update foto siswa dengan foto biodata
+                $siswa->foto = $biodata->foto;
+                $siswa->save();
+            }
+        }
+        
+        // Debug logging
+        Log::info('ProfileController@index', [
+            'user_id' => $user->id,
+            'user_name' => $user->name,
+            'siswa_found' => $siswa ? true : false,
+            'biodata_found' => $biodata ? true : false,
+            'biodata_foto' => $biodata ? $biodata->foto : null,
+            'siswa_foto' => $siswa ? $siswa->foto : null,
+        ]);
+        
         $pendaftaran = null;
         if ($siswa) {
             $pendaftaran = $siswa->pendaftaran()->first();
@@ -29,7 +58,7 @@ class ProfileController extends Controller
 
         $jurusans = Jurusan::all();
 
-        return view('myprofile', compact('user', 'siswa', 'pendaftaran', 'jurusans'));
+        return view('myprofile', compact('user', 'siswa', 'biodata', 'pendaftaran', 'jurusans'));
     }
 
     /**
@@ -77,9 +106,10 @@ class ProfileController extends Controller
         }
 
         $siswa = Siswa::where('pengguna_id', $user->id)->first();
+        $biodata = Biodata::where('user_id', $user->id)->first();
         $jurusans = Jurusan::all();
 
-        return view('profil.edit', compact('user', 'siswa', 'jurusans'));
+        return view('profil.edit', compact('user', 'siswa', 'biodata', 'jurusans'));
     }
 
     /**

@@ -3,6 +3,8 @@
 @section('page_title', 'Daftar Siswa')
 
 @section('content')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 <div class="page-wrapper">
     <div class="container-fluid">
         <!-- Page Header -->
@@ -144,10 +146,22 @@
                                     @endif
                                 </td>
                                 <td class="text-end">
+                                    @php
+                                        $pendaftaran = $pendaftaran ?? $item->pendaftaran()->first();
+                                        $status = $pendaftaran?->statusPendaftaran?->kode;
+                                    @endphp
                                     <div class="btn-group btn-group-sm" role="group">
-                                        <button type="button" class="btn btn-info" title="Lihat Detail" disabled>
+                                        <a href="{{ route('admin.siswa.show', $item->id) }}" class="btn btn-info" title="Lihat Detail">
                                             <i class="fas fa-eye"></i>
-                                        </button>
+                                        </a>
+                                        @if($status === 'menunggu')
+                                            <button type="button" class="btn btn-success btn-accept" data-siswa-id="{{ $item->id }}" data-siswa-name="{{ $item->nama_lengkap }}" title="Terima">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-danger btn-reject" data-siswa-id="{{ $item->id }}" data-siswa-name="{{ $item->nama_lengkap }}" title="Tolak">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
@@ -168,4 +182,76 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Accept student
+    document.querySelectorAll('.btn-accept').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const siswaId = this.dataset.siswaId;
+            const siswaName = this.dataset.siswaName;
+
+            Swal.fire({
+                title: 'Terima Pendaftar?',
+                html: `<strong>${siswaName}</strong> akan diterima sebagai siswa baru`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#10b981',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Terima',
+                cancelButtonText: 'Batal',
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-secondary'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = `/admin/siswa/${siswaId}/accept`;
+                    form.innerHTML = `
+                        @csrf
+                        <input type="hidden" name="siswa_id" value="${siswaId}">
+                    `;
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+        });
+    });
+
+    // Reject student
+    document.querySelectorAll('.btn-reject').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const siswaId = this.dataset.siswaId;
+            const siswaName = this.dataset.siswaName;
+
+            Swal.fire({
+                title: 'Tolak Pendaftar?',
+                html: `<strong>${siswaName}</strong> akan ditolak dan tidak diterima`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Tolak',
+                cancelButtonText: 'Batal',
+                customClass: {
+                    confirmButton: 'btn btn-danger',
+                    cancelButton: 'btn btn-secondary'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = `/admin/siswa/${siswaId}/reject`;
+                    form.innerHTML = `
+                        @csrf
+                        <input type="hidden" name="siswa_id" value="${siswaId}">
+                    `;
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
 @endsection

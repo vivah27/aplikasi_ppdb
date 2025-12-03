@@ -305,24 +305,24 @@
             <div class="section-title">INFORMASI PEMBAYARAN</div>
             <div class="info-row">
                 <div class="info-label">Metode Pembayaran</div>
-                <div class="info-value">{{ $pembayaran->metode->nama ?? 'TRANSFER BANK' }}</div>
+                <div class="info-value">{{ $pembayaran->metodePembayaran->nama ?? ($pembayaran->metode ?? 'TRANSFER BANK') }}</div>
             </div>
             <div class="info-row">
                 <div class="info-label">Status Pembayaran</div>
                 <div class="info-value">
-                    <span class="status-badge">{{ strtoupper($pembayaran->statusPembayaran->nama ?? 'LUNAS') }}</span>
+                    <span class="status-badge">{{ strtoupper($pembayaran->statusPembayaran->nama ?? $pembayaran->status ?? 'LUNAS') }}</span>
                 </div>
             </div>
             <div class="info-row">
                 <div class="info-label">Tanggal Pembayaran</div>
-                <div class="info-value">{{ $pembayaran->tanggal_pembayaran ? \Carbon\Carbon::parse($pembayaran->tanggal_pembayaran)->format('d/m/Y H:i') : '-' }}</div>
+                <div class="info-value">{{ $pembayaran->tanggal_bayar ? \Carbon\Carbon::parse($pembayaran->tanggal_bayar)->format('d/m/Y H:i') : '-' }}</div>
             </div>
         </div>
 
         <!-- Payment Method Details -->
-        @if($pembayaran->metode && $pembayaran->metode->nama != 'TRANSFER BANK')
+        @if($pembayaran->metodePembayaran && $pembayaran->metodePembayaran->nama != 'TRANSFER BANK')
         <div class="payment-method">
-            <strong>Metode:</strong> {{ $pembayaran->metode->nama ?? '-' }}
+            <strong>Metode:</strong> {{ $pembayaran->metodePembayaran->nama ?? '-' }}
             @if($pembayaran->reference)
                 <br><strong>Referensi:</strong> {{ $pembayaran->reference }}
             @endif

@@ -15,6 +15,7 @@ use App\Http\Controllers\VerifikasiDokumenController;
 use App\Http\Controllers\JenisDokumenController;
 use App\Http\Controllers\PeranController;
 use App\Http\Controllers\UserPeranController;
+use App\Http\Controllers\AdminPembayaranController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\CetakDokumenController;
 
@@ -39,6 +40,10 @@ Route::get('/profil-sekolah', function () {
     return view('profil-sekolah');
 });
 
+// Login & Register - Accessible to all (redirect if already authenticated)
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login')->middleware('guest');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post')->middleware('throttle:5,1');
+
 // ============================
 // ROUTE UNTUK USER BELUM LOGIN
 // ============================
@@ -49,10 +54,6 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/verify-email', [AuthController::class, 'verify'])->name('verify.otp')->middleware('throttle:10,1');
     Route::get('/send-otp', [AuthController::class, 'sendOtp'])->name('send.otp.get'); // GET untuk testing/manual
     Route::post('/send-otp', [AuthController::class, 'sendOtp'])->name('send.otp')->middleware('throttle:5,1');
-
-    // Login & Register
-    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-    Route::post('/login', [AuthController::class, 'login'])->name('login.post')->middleware('throttle:5,1');
 
     Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
     Route::post('/register', [AuthController::class, 'register'])->name('register.post');
@@ -142,6 +143,7 @@ Route::middleware(['auth', 'web'])->group(function () {
             Route::get('/{id}', [PembayaranController::class, 'show'])->name('show');
             Route::put('/{id}', [PembayaranController::class, 'update'])->name('update');
             Route::delete('/{id}', [PembayaranController::class, 'destroy'])->name('destroy');
+            Route::get('/api/harga-gelombang/{gelombang}', [PembayaranController::class, 'getHargaGelombang'])->name('api.harga-gelombang');
 
         });
         /*
@@ -165,10 +167,50 @@ Route::middleware(['auth', 'web'])->group(function () {
         // Signed URL generation for dokumen (admin)
         Route::post('/admin/dokumen/{dokumen}/signed-url', [DokumenController::class, 'signedUrl'])->name('admin.dokumen.signed_url');
         
+        // === MANAJEMEN PEMBAYARAN ===
+        Route::prefix('admin/pembayaran')->as('admin.pembayaran.')->group(function () {
+            Route::get('/', [AdminPembayaranController::class, 'index'])->name('index');
+            Route::get('/{pembayaran}', [AdminPembayaranController::class, 'show'])->name('show');
+            Route::get('/{pembayaran}/edit', [AdminPembayaranController::class, 'edit'])->name('edit');
+            Route::put('/{pembayaran}', [AdminPembayaranController::class, 'update'])->name('update');
+            Route::post('/{pembayaran}/verify', [AdminPembayaranController::class, 'verify'])->name('verify');
+            Route::delete('/{pembayaran}', [AdminPembayaranController::class, 'destroy'])->name('destroy');
+            Route::get('/export/csv', [AdminPembayaranController::class, 'export'])->name('export');
+            Route::post('/bulk/update', [AdminPembayaranController::class, 'bulkUpdate'])->name('bulk-update');
+            Route::get('/api/statistics', [AdminPembayaranController::class, 'getStatistics'])->name('statistics');
+        });
+
         // === ADMIN SISWA ===
         Route::get('/admin/siswa', [AdminSiswaController::class, 'index'])->name('admin.siswa.index');
+        Route::get('/admin/siswa/{siswa}', [AdminSiswaController::class, 'show'])->name('admin.siswa.show');
+        Route::post('/admin/siswa/{siswa}/accept', [AdminSiswaController::class, 'accept'])->name('admin.siswa.accept');
+        Route::post('/admin/siswa/{siswa}/reject', [AdminSiswaController::class, 'reject'])->name('admin.siswa.reject');
+        Route::post('/admin/siswa/{siswa}/reset-biodata', [AdminSiswaController::class, 'resetBiodata'])->name('admin.siswa.reset-biodata');
+        
+        // === MANAJEMEN GELOMBANG ===
+        Route::get('/admin/gelombang', 'App\Http\Controllers\Admin\GelombangController@index')->name('admin.gelombang.index');
+        Route::get('/admin/gelombang/create', 'App\Http\Controllers\Admin\GelombangController@create')->name('admin.gelombang.create');
+        Route::post('/admin/gelombang', 'App\Http\Controllers\Admin\GelombangController@store')->name('admin.gelombang.store');
+        Route::get('/admin/gelombang/{gelombang}', 'App\Http\Controllers\Admin\GelombangController@show')->name('admin.gelombang.show');
+        Route::get('/admin/gelombang/{gelombang}/edit', 'App\Http\Controllers\Admin\GelombangController@edit')->name('admin.gelombang.edit');
+        Route::put('/admin/gelombang/{gelombang}', 'App\Http\Controllers\Admin\GelombangController@update')->name('admin.gelombang.update');
+        Route::delete('/admin/gelombang/{gelombang}', 'App\Http\Controllers\Admin\GelombangController@destroy')->name('admin.gelombang.destroy');
+        
+        // === MANAJEMEN JURUSAN ===
+        Route::get('/admin/jurusan', 'App\Http\Controllers\Admin\JurusanController@index')->name('admin.jurusan.index');
+        Route::get('/admin/jurusan/create', 'App\Http\Controllers\Admin\JurusanController@create')->name('admin.jurusan.create');
+        Route::post('/admin/jurusan', 'App\Http\Controllers\Admin\JurusanController@store')->name('admin.jurusan.store');
+        Route::get('/admin/jurusan/{jurusan}', 'App\Http\Controllers\Admin\JurusanController@show')->name('admin.jurusan.show');
+        Route::get('/admin/jurusan/{jurusan}/edit', 'App\Http\Controllers\Admin\JurusanController@edit')->name('admin.jurusan.edit');
+        Route::put('/admin/jurusan/{jurusan}', 'App\Http\Controllers\Admin\JurusanController@update')->name('admin.jurusan.update');
+        Route::delete('/admin/jurusan/{jurusan}', 'App\Http\Controllers\Admin\JurusanController@destroy')->name('admin.jurusan.destroy');
+        
+        // === MANAJEMEN HARGA GELOMBANG ===
+        Route::get('/admin/harga-gelombang', 'App\Http\Controllers\HargaGelombangController@index')->name('admin.harga-gelombang.index');
+        Route::post('/admin/harga-gelombang/update', 'App\Http\Controllers\HargaGelombangController@update')->name('admin.harga-gelombang.update');
         
         Route::get('/admin/verifikasi', [VerifikasiDokumenController::class, 'index'])->name('admin.verifikasi');
+        Route::get('/admin/verifikasi/siswa/{siswa}', [VerifikasiDokumenController::class, 'showSiswa'])->name('admin.verifikasi.siswa');
         Route::get('/admin/verifikasi/{dokumen}/preview', [VerifikasiDokumenController::class, 'preview'])->name('admin.verifikasi.preview');
         Route::get('/admin/verifikasi/{dokumen}/edit', [VerifikasiDokumenController::class, 'edit'])->name('admin.verifikasi.edit');
         Route::put('/admin/verifikasi/{dokumen}', [VerifikasiDokumenController::class, 'update'])->name('admin.verifikasi.update');
@@ -224,6 +266,36 @@ Route::middleware(['auth', 'web'])->group(function () {
 
 // Public route for signed dokumen download (uses URL signature)
 Route::get('/dokumen/signed/{dokumen}/download', [DokumenController::class, 'signedDownload'])->name('dokumen.signed.download');
+
+// Debug route untuk check data photo
+Route::get('/debug/photo', function() {
+    $user = Auth::user();
+    if (!$user) {
+        return 'Not logged in';
+    }
+    
+    $siswa = \App\Models\Siswa::where('pengguna_id', $user->id)->first();
+    $biodata = \App\Models\Biodata::where('user_id', $user->id)->first();
+    
+    $fotoDisplay = ($biodata && $biodata->foto) ? $biodata->foto : ($siswa && $siswa->foto ? $siswa->foto : null);
+    
+    return response()->json([
+        'user' => [
+            'id' => $user->id,
+            'name' => $user->name,
+        ],
+        'biodata' => [
+            'found' => $biodata ? true : false,
+            'foto' => $biodata ? $biodata->foto : null,
+        ],
+        'siswa' => [
+            'found' => $siswa ? true : false,
+            'foto' => $siswa ? $siswa->foto : null,
+        ],
+        'fotoDisplay' => $fotoDisplay,
+        'asset_url' => $fotoDisplay ? asset('storage/' . $fotoDisplay) : null,
+    ]);
+})->name('debug.photo');
 
 });
 

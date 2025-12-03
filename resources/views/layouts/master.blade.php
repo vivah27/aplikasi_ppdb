@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'PPDB SMK ANTARTIKA 1') - SMK ANTARTIKA 1 SIDOARJO</title>
     
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <!-- Custom theme additions -->
     <link rel="stylesheet" href="{{ asset('assets/css/custom-theme.css') }}">
     <!-- Google Fonts -->
@@ -123,7 +126,17 @@
         .sidebar-divider {
             height: 1px;
             background: rgba(255, 255, 255, 0.2);
-            margin: 10px 0;
+            margin: 15px 0;
+        }
+
+        .sidebar-section-title {
+            padding: 12px 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 10px;
         }
         
         /* NAVBAR STYLING */
@@ -475,16 +488,21 @@
         
         <ul class="sidebar-menu">
             @if(Auth::check())
+                <!-- Dashboard -->
                 <li class="sidebar-menu-item">
                     <a href="@if(Auth::user()->hasRole('admin')){{ route('admin.dashboard') }}@else{{ route('dashboard') }}@endif" class="sidebar-menu-link @if(Auth::user()->hasRole('admin') && request()->routeIs('admin.dashboard'))active @elseif(!Auth::user()->hasRole('admin') && request()->routeIs('dashboard'))active @endif">
                         <i class="fas fa-home"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
-                
-                <div class="sidebar-divider"></div>
-                
+
                 @if(Auth::user()->hasRole('admin'))
+                    <!-- ADMIN SECTION -->
+                    <div class="sidebar-divider"></div>
+                    <div class="sidebar-section-title">
+                        <i class="fas fa-lock-open" style="margin-right: 6px; opacity: 0.7;"></i>Admin Tools
+                    </div>
+
                     <li class="sidebar-menu-item">
                         <a href="{{ route('admin.siswa.index') }}" class="sidebar-menu-link {{ request()->routeIs('admin.siswa*') ? 'active' : '' }}">
                             <i class="fas fa-users"></i>
@@ -498,6 +516,27 @@
                         </a>
                     </li>
                     <li class="sidebar-menu-item">
+                        <a href="{{ route('admin.gelombang.index') }}" class="sidebar-menu-link {{ request()->routeIs('admin.gelombang*') ? 'active' : '' }}">
+                            <i class="fas fa-wave-square"></i>
+                            <span>Atur Gelombang</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="{{ route('admin.jurusan.index') }}" class="sidebar-menu-link {{ request()->routeIs('admin.jurusan*') ? 'active' : '' }}">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>Atur Jurusan</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="{{ route('admin.pembayaran.index') }}" class="sidebar-menu-link {{ request()->routeIs('admin.pembayaran*') ? 'active' : '' }}">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>Kelola Pembayaran</span>
+                        </a>
+                    </li>
+
+                    <div class="sidebar-divider"></div>
+
+                    <li class="sidebar-menu-item">
                         <a href="{{ route('admin.jenis-dokumen.index') }}" class="sidebar-menu-link {{ request()->routeIs('admin.jenis-dokumen*') ? 'active' : '' }}">
                             <i class="fas fa-file-alt"></i>
                             <span>Jenis Dokumen</span>
@@ -509,7 +548,19 @@
                             <span>Laporan & Eksport</span>
                         </a>
                     </li>
+                    <li class="sidebar-menu-item">
+                        <a href="{{ route('admin.peran.index') }}" class="sidebar-menu-link {{ request()->routeIs('admin.peran*') ? 'active' : '' }}">
+                            <i class="fas fa-users-cog"></i>
+                            <span>Manajemen Peran</span>
+                        </a>
+                    </li>
                 @elseif(Auth::user()->hasRole('user'))
+                    <!-- USER SECTION -->
+                    <div class="sidebar-divider"></div>
+                    <div class="sidebar-section-title">
+                        <i class="fas fa-pencil-alt" style="margin-right: 6px; opacity: 0.7;"></i>Aplikasi
+                    </div>
+
                     <li class="sidebar-menu-item">
                         <a href="{{ route('formulir.index') }}" class="sidebar-menu-link {{ request()->routeIs('formulir*') ? 'active' : '' }}">
                             <i class="fas fa-edit"></i>
@@ -535,35 +586,31 @@
                         </a>
                     </li>
                     <li class="sidebar-menu-item">
-                        <a href="{{ route('user.status') }}" class="sidebar-menu-link {{ request()->routeIs('user.status') ? 'active' : '' }}">
-                            <i class="fas fa-info-circle"></i>
-                            <span>Status</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-menu-item">
                         <a href="{{ route('user.pembayaran.index') }}" class="sidebar-menu-link {{ request()->routeIs('user.pembayaran*') ? 'active' : '' }}">
                             <i class="fas fa-credit-card"></i>
                             <span>Pembayaran</span>
                         </a>
                     </li>
+                    <li class="sidebar-menu-item">
+                        <a href="{{ route('user.status') }}" class="sidebar-menu-link {{ request()->routeIs('user.status') ? 'active' : '' }}">
+                            <i class="fas fa-info-circle"></i>
+                            <span>Status</span>
+                        </a>
+                    </li>
                 @endif
-                
+
+                <!-- ACCOUNT SECTION -->
                 <div class="sidebar-divider"></div>
-                
+                <div class="sidebar-section-title">
+                    <i class="fas fa-user" style="margin-right: 6px; opacity: 0.7;"></i>Akun
+                </div>
+
                 <li class="sidebar-menu-item">
                     <a href="{{ route('profil.index') }}" class="sidebar-menu-link {{ request()->routeIs('profil.index') ? 'active' : '' }}">
                         <i class="fas fa-user-circle"></i>
                         <span>Profil</span>
                     </a>
                 </li>
-                @if(Auth::user()->hasRole('admin'))
-                    <li class="sidebar-menu-item">
-                        <a href="{{ route('admin.peran.index') }}" class="sidebar-menu-link {{ request()->routeIs('admin.peran*') ? 'active' : '' }}">
-                            <i class="fas fa-users-cog"></i>
-                            <span>Manajemen Peran</span>
-                        </a>
-                    </li>
-                @endif
                 <li class="sidebar-menu-item">
                     <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
                         @csrf
@@ -633,6 +680,10 @@
     
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    <!-- SweetAlert2 Helper Functions -->
+    <script src="{{ asset('assets/js/sweetalert-helpers.js') }}"></script>
     
     <script>
         function toggleSidebar() {
@@ -646,6 +697,30 @@
             if (window.innerWidth < 768) {
                 sidebar.classList.remove('active');
             }
+        });
+        
+        // Filter input number fields - hanya angka
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fields yang hanya boleh berisi angka
+            const numericFields = ['nomor_rekening', 'no_hp_wali'];
+            
+            numericFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    // Filter saat input
+                    field.addEventListener('input', function(e) {
+                        this.value = this.value.replace(/[^0-9]/g, '');
+                    });
+                    
+                    // Cegah paste non-numeric
+                    field.addEventListener('paste', function(e) {
+                        e.preventDefault();
+                        const text = (e.clipboardData || window.clipboardData).getData('text');
+                        const numbersOnly = text.replace(/[^0-9]/g, '');
+                        this.value = numbersOnly;
+                    });
+                }
+            });
         });
     </script>
     

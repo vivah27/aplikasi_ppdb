@@ -79,13 +79,17 @@ class JenisDokumenController extends Controller
      */
     public function destroy(JenisDokumen $jenisDokumen)
     {
-        // Check if jenis dokumen is still used by any documents
-        if ($jenisDokumen->dokumen()->exists()) {
-            return redirect()->route('admin.jenis-dokumen.index')
-                ->with('error', 'Tidak bisa menghapus jenis dokumen ini karena masih digunakan oleh ' . $jenisDokumen->dokumen()->count() . ' dokumen');
-        }
+        // Get count of related documents before deletion
+        $jumlahDokumen = $jenisDokumen->dokumen()->count();
 
+        // Delete jenis dokumen (cascade will delete related dokumen records)
         $jenisDokumen->delete();
+
+        // Show success message with info about deleted documents
+        if ($jumlahDokumen > 0) {
+            return redirect()->route('admin.jenis-dokumen.index')
+                ->with('success', "Jenis dokumen berhasil dihapus beserta $jumlahDokumen dokumen terkait yang telah diunggah siswa");
+        }
 
         return redirect()->route('admin.jenis-dokumen.index')
             ->with('success', 'Jenis dokumen berhasil dihapus');

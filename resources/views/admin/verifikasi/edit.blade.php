@@ -131,20 +131,13 @@
 
                     <!-- Quick action buttons (outside main form to avoid nested-form validation issues) -->
                     <div class="mt-3 d-flex gap-2">
-                        <form action="{{ route('admin.verifikasi.accept', $dokumen->id) }}" method="POST" onsubmit="return confirm('Yakin ingin langsung menandai dokumen ini sebagai TER-VERIFIKASI?');">
-                            @csrf
-                            <button type="submit" class="btn btn-primary">
-                                <i class="ti ti-check me-2"></i> Terima
-                            </button>
-                        </form>
+                        <button type="button" class="btn btn-primary btn-verify-accept" data-action="{{ route('admin.verifikasi.accept', $dokumen->id) }}" data-csrf="{{ csrf_token() }}">
+                            <i class="ti ti-check me-2"></i> Terima
+                        </button>
 
-                        <form action="{{ route('admin.verifikasi.reject', $dokumen->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menolak dokumen ini?');">
-                            @csrf
-                            <input type="hidden" name="catatan" value="Ditolak oleh admin (quick action)">
-                            <button type="submit" class="btn btn-danger">
-                                <i class="ti ti-x me-2"></i> Tolak
-                            </button>
-                        </form>
+                        <button type="button" class="btn btn-danger btn-verify-reject" data-action="{{ route('admin.verifikasi.reject', $dokumen->id) }}" data-csrf="{{ csrf_token() }}">
+                            <i class="ti ti-x me-2"></i> Tolak
+                        </button>
                     </div>
                     </form>
                 </div>

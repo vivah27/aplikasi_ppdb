@@ -123,13 +123,9 @@
                                 </button>
                             @endif
                             @if(in_array($dokumen->statusVerifikasi->kode, ['rejected', 'revision']))
-                                <form action="{{ route('user.dokumen.destroy', $dokumen->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">
-                                        <i class="fas fa-trash"></i> Hapus Dokumen
-                                    </button>
-                                </form>
+                                <button type="button" class="btn btn-danger btn-delete" data-action="{{ route('user.dokumen.destroy', $dokumen->id) }}" data-csrf="{{ csrf_token() }}">
+                                    <i class="fas fa-trash"></i> Hapus Dokumen
+                                </button>
                             @endif
                         </div>
                     </div>

@@ -225,13 +225,9 @@
                                                 <i class="fas fa-download"></i>
                                             </a>
                                             @if(in_array(optional($item->statusVerifikasi)->kode, ['rejected', 'revision']))
-                                                <form action="{{ route('user.dokumen.destroy', $item->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Hapus dokumen ini?')">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </form>
+                                                <button type="button" class="btn btn-sm btn-danger btn-delete" data-action="{{ route('user.dokumen.destroy', $item->id) }}" data-csrf="{{ csrf_token() }}" title="Hapus">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
                                             @endif
                                         </td>
                                     </tr>

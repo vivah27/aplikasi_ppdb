@@ -27,4 +27,9 @@ class Jurusan extends Model
     {
         return $this->hasMany(Siswa::class);
     }
+
+    public function pendaftarans()
+    {
+        return $this->hasMany(Pendaftaran::class, 'jurusan_pilihan_1', 'id');
+    }
 }
