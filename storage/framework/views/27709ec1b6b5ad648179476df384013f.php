@@ -1,8 +1,6 @@
-@extends('layouts.auth')
+<?php $__env->startSection('title', 'Register - PPDB SMK Antartika 1 Sidoarjo'); ?>
 
-@section('title', 'Register - PPDB SMK Antartika 1 Sidoarjo')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="auth-wrapper" style="min-height: 100dvh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #FF6B35 0%, #FF1493 50%, #FF69B4 100%); position: relative; overflow: hidden;">
     <!-- Animated Background Elements -->
     <div style="position: absolute; width: 400px; height: 400px; background: rgba(255,255,255,0.05); border-radius: 50%; top: -100px; right: -100px;"></div>
@@ -18,7 +16,7 @@
                         <div style="position: relative; z-index: 1;">
                             <!-- Logo Sekolah -->
                             <div style="margin-bottom: 1.5rem;">
-                                <img src="{{ asset('assets/images/my/logo-antrek-tp.png') }}" alt="Logo SMK Antartika 1" style="width: 70px; height: 70px; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">
+                                <img src="<?php echo e(asset('assets/images/my/logo-antrek-tp.png')); ?>" alt="Logo SMK Antartika 1" style="width: 70px; height: 70px; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">
                             </div>
                             <h2 class="text-white mb-2" style="font-weight: 700; font-size: 1.75rem;">Daftar Akun</h2>
                             <p class="text-white" style="opacity: 0.85; margin: 0; font-size: 0.95rem;">Portal Pendaftaran PPDB 2025/2026</p>
@@ -28,33 +26,47 @@
                     <!-- Card Body -->
                     <div class="card-body p-5">
                         <!-- Alert Messages -->
-                        @if ($errors->any())
+                        <?php if($errors->any()): ?>
                             <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert" style="border-radius: 12px; border: 1px solid #fee; background: rgba(239, 68, 68, 0.05);">
                                 <i class="fas fa-exclamation-circle me-2" style="color: #ef4444;"></i>
                                 <strong>Kesalahan Pendaftaran:</strong>
-                                @foreach ($errors->all() as $error)
-                                    <div style="margin-top: 8px;">{{ $error }}</div>
-                                @endforeach
+                                <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <div style="margin-top: 8px;"><?php echo e($error); ?></div>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                             </div>
-                        @endif
+                        <?php endif; ?>
 
                         <!-- Register Form -->
-                        <form action="{{ route('register') }}" method="POST">
-                            @csrf
+                        <form action="<?php echo e(route('register')); ?>" method="POST">
+                            <?php echo csrf_field(); ?>
 
                             <!-- Nama Lengkap -->
                             <div class="mb-4">
                                 <label for="name" class="form-label fw-600 mb-2">
                                     <i class="fas fa-user me-2" style="color: #FF6B35;"></i>Nama Lengkap
                                 </label>
-                                <input type="text" class="form-control @error('name') is-invalid @enderror" 
+                                <input type="text" class="form-control <?php $__errorArgs = ['name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
                                        id="name" name="name" placeholder="Masukkan nama lengkap" 
-                                       value="{{ old('name') }}" required autocomplete="name"
+                                       value="<?php echo e(old('name')); ?>" required autocomplete="name"
                                        style="padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 0.95rem; transition: all 0.3s;">
-                                @error('name')
-                                    <small class="text-danger d-block mt-2">{{ $message }}</small>
-                                @enderror
+                                <?php $__errorArgs = ['name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <small class="text-danger d-block mt-2"><?php echo e($message); ?></small>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
 
                             <!-- Email Address -->
@@ -62,13 +74,27 @@
                                 <label for="email" class="form-label fw-600 mb-2">
                                     <i class="fas fa-envelope me-2" style="color: #FF6B35;"></i>Email Address
                                 </label>
-                                <input type="email" class="form-control @error('email') is-invalid @enderror" 
+                                <input type="email" class="form-control <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
                                        id="email" name="email" placeholder="Masukkan email Anda" 
-                                       value="{{ old('email') }}" required autocomplete="email"
+                                       value="<?php echo e(old('email')); ?>" required autocomplete="email"
                                        style="padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 0.95rem; transition: all 0.3s;">
-                                @error('email')
-                                    <small class="text-danger d-block mt-2">{{ $message }}</small>
-                                @enderror
+                                <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <small class="text-danger d-block mt-2"><?php echo e($message); ?></small>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
 
                             <!-- Password -->
@@ -76,16 +102,30 @@
                                 <label for="password" class="form-label fw-600 mb-2">
                                     <i class="fas fa-lock me-2" style="color: #FF6B35;"></i>Password
                                 </label>
-                                <input type="password" class="form-control @error('password') is-invalid @enderror" 
+                                <input type="password" class="form-control <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
                                        id="password" name="password" placeholder="Buat password yang kuat" 
                                        required autocomplete="new-password"
                                        style="padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 0.95rem; transition: all 0.3s;">
                                 <small style="color: #9ca3af; display: block; margin-top: 8px;">
                                     <i class="fas fa-info-circle me-1"></i>Minimal 8 karakter, gunakan kombinasi huruf dan angka
                                 </small>
-                                @error('password')
-                                    <small class="text-danger d-block mt-2">{{ $message }}</small>
-                                @enderror
+                                <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <small class="text-danger d-block mt-2"><?php echo e($message); ?></small>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
 
                             <!-- Password Confirmation -->
@@ -93,13 +133,27 @@
                                 <label for="password_confirmation" class="form-label fw-600 mb-2">
                                     <i class="fas fa-check-circle me-2" style="color: #FF6B35;"></i>Konfirmasi Password
                                 </label>
-                                <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" 
+                                <input type="password" class="form-control <?php $__errorArgs = ['password_confirmation'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
                                        id="password_confirmation" name="password_confirmation" placeholder="Ketik ulang password" 
                                        required autocomplete="new-password"
                                        style="padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 0.95rem; transition: all 0.3s;">
-                                @error('password_confirmation')
-                                    <small class="text-danger d-block mt-2">{{ $message }}</small>
-                                @enderror
+                                <?php $__errorArgs = ['password_confirmation'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <small class="text-danger d-block mt-2"><?php echo e($message); ?></small>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
 
                             <!-- Terms & Conditions -->
@@ -171,4 +225,6 @@
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     }
 </style>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.auth', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\aplikasi_ppdb_2\resources\views/auth/register.blade.php ENDPATH**/ ?>

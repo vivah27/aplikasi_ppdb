@@ -1,31 +1,29 @@
-@extends('layouts.master')
+<?php $__env->startSection('page_title', 'Admin Dashboard'); ?>
 
-@section('page_title', 'Admin Dashboard')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <!-- Dashboard Header -->
 <div class="dashboard-header">
     <h1 class="dashboard-title">🎯 Dashboard Admin</h1>
-    <p class="dashboard-subtitle">Selamat datang kembali, <strong>{{ Auth::user()->name }}!</strong> Pantau status registrasi siswa secara real-time.</p>
+    <p class="dashboard-subtitle">Selamat datang kembali, <strong><?php echo e(Auth::user()->name); ?>!</strong> Pantau status registrasi siswa secara real-time.</p>
 </div>
 
 <!-- Key Statistics -->
 <div class="stat-cards-grid">
     <div class="stat-card primary">
-        <div class="stat-value">{{ $totalPendaftaran }}</div>
+        <div class="stat-value"><?php echo e($totalPendaftaran); ?></div>
         <div class="stat-label">📝 Total Pendaftar</div>
     </div>
     <div class="stat-card success">
-        <div class="stat-value">{{ $diterima }}</div>
+        <div class="stat-value"><?php echo e($diterima); ?></div>
         <div class="stat-label">✅ Diterima</div>
     </div>
     <div class="stat-card warning">
-        <div class="stat-value">{{ $menunggu }}</div>
+        <div class="stat-value"><?php echo e($menunggu); ?></div>
         <div class="stat-label">⏳ Menunggu</div>
     </div>
     <div class="stat-card danger">
-        <div class="stat-value">{{ $ditolak }}</div>
+        <div class="stat-value"><?php echo e($ditolak); ?></div>
         <div class="stat-label">❌ Ditolak</div>
     </div>
 </div>
@@ -40,23 +38,23 @@
                 <i class="ti ti-file-check" style="color: var(--primary);"></i>
                 Verifikasi Dokumen
             </div>
-            <a href="{{ route('admin.verifikasi') }}" class="btn btn-primary">Lihat</a>
+            <a href="<?php echo e(route('admin.verifikasi')); ?>" class="btn btn-primary">Lihat</a>
         </div>
         <div class="card-body">
-            @if($dokumenTertunda > 0)
+            <?php if($dokumenTertunda > 0): ?>
                 <div class="alert alert-warning">
-                    <strong>⚠️ {{ $dokumenTertunda }} dokumen</strong> menunggu verifikasi
+                    <strong>⚠️ <?php echo e($dokumenTertunda); ?> dokumen</strong> menunggu verifikasi
                 </div>
-            @else
+            <?php else: ?>
                 <div class="alert alert-success">
                     <strong>✨ Semua dokumen</strong> sudah terverifikasi ✓
                 </div>
-            @endif
+            <?php endif; ?>
             <div class="action-links">
-                <a href="{{ route('admin.verifikasi') }}" class="action-link">
+                <a href="<?php echo e(route('admin.verifikasi')); ?>" class="action-link">
                     <i class="ti ti-check-circle" style="color: var(--primary);"></i> Verifikasi
                 </a>
-                <a href="{{ route('admin.jenis-dokumen.index') }}" class="action-link">
+                <a href="<?php echo e(route('admin.jenis-dokumen.index')); ?>" class="action-link">
                     <i class="ti ti-file-text" style="color: var(--secondary);"></i> Jenis Dokumen
                 </a>
             </div>
@@ -77,25 +75,25 @@
                     <div class="list-item-main">
                         <h6>📄 Total Dokumen</h6>
                     </div>
-                    <span class="badge badge-info">{{ $totalDokumen }}</span>
+                    <span class="badge badge-info"><?php echo e($totalDokumen); ?></span>
                 </li>
                 <li class="list-item">
                     <div class="list-item-main">
                         <h6>✅ Terverifikasi</h6>
                     </div>
-                    <span class="badge badge-success">{{ $dokumenTerverifikasi }}</span>
+                    <span class="badge badge-success"><?php echo e($dokumenTerverifikasi); ?></span>
                 </li>
                 <li class="list-item">
                     <div class="list-item-main">
                         <h6>⏳ Menunggu Verifikasi</h6>
                     </div>
-                    <span class="badge badge-warning">{{ $dokumenTertunda }}</span>
+                    <span class="badge badge-warning"><?php echo e($dokumenTertunda); ?></span>
                 </li>
                 <li class="list-item">
                     <div class="list-item-main">
                         <h6>📈 Tingkat Verifikasi</h6>
                     </div>
-                    <span class="badge badge-info">{{ round($verificationRate) }}%</span>
+                    <span class="badge badge-info"><?php echo e(round($verificationRate)); ?>%</span>
                 </li>
             </ul>
         </div>
@@ -108,24 +106,24 @@
                 <i class="ti ti-users-group" style="color: var(--primary);"></i>
                 Distribusi Jurusan
             </div>
-            <a href="{{ route('admin.siswa.index') }}" class="btn btn-primary">Lihat Semua</a>
+            <a href="<?php echo e(route('admin.siswa.index')); ?>" class="btn btn-primary">Lihat Semua</a>
         </div>
         <div class="card-body">
-            @if($popularMajors->count() > 0)
+            <?php if($popularMajors->count() > 0): ?>
                 <ul class="list-group">
-                    @foreach($popularMajors->take(5) as $major)
+                    <?php $__currentLoopData = $popularMajors->take(5); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $major): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <li class="list-item">
                             <div class="list-item-main">
-                                <h6>{{ $major->nama ?? 'N/A' }}</h6>
+                                <h6><?php echo e($major->nama ?? 'N/A'); ?></h6>
                                 <p style="color: var(--text-light);">Pendaftar aktif</p>
                             </div>
-                            <span class="badge badge-info">{{ $major->total }} siswa</span>
+                            <span class="badge badge-info"><?php echo e($major->total); ?> siswa</span>
                         </li>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </ul>
-            @else
+            <?php else: ?>
                 <p class="text-muted" style="text-align: center; padding: 20px;">📭 Belum ada data</p>
-            @endif
+            <?php endif; ?>
         </div>
     </div>
 </div>
@@ -139,11 +137,11 @@
             🔍 Filter & Cari
         </div>
         <div class="card-body" style="padding: 16px;">
-            <form method="GET" action="{{ route('admin.dashboard') }}" style="display: flex; flex-direction: column; gap: 16px;">
+            <form method="GET" action="<?php echo e(route('admin.dashboard')); ?>" style="display: flex; flex-direction: column; gap: 16px;">
                 <!-- Search by Name -->
                 <div>
                     <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-dark); margin-bottom: 6px; text-transform: uppercase;">🔎 Cari Nama</label>
-                    <input type="text" name="search" placeholder="Nama atau NISN" value="{{ request('search') }}" style="width: 100%; padding: 10px 12px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 13px; font-family: 'Inter', sans-serif; transition: all 0.3s;">
+                    <input type="text" name="search" placeholder="Nama atau NISN" value="<?php echo e(request('search')); ?>" style="width: 100%; padding: 10px 12px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 13px; font-family: 'Inter', sans-serif; transition: all 0.3s;">
                 </div>
 
                 <!-- Filter by Status -->
@@ -151,21 +149,21 @@
                     <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-dark); margin-bottom: 6px; text-transform: uppercase;">📋 Status</label>
                     <select name="status" style="width: 100%; padding: 10px 12px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 13px; font-family: 'Inter', sans-serif; transition: all 0.3s;">
                         <option value="">Semua Status</option>
-                        <option value="waiting" {{ request('status') === 'waiting' ? 'selected' : '' }}>Menunggu</option>
-                        <option value="accepted" {{ request('status') === 'accepted' ? 'selected' : '' }}>Diterima</option>
-                        <option value="rejected" {{ request('status') === 'rejected' ? 'selected' : '' }}>Ditolak</option>
+                        <option value="waiting" <?php echo e(request('status') === 'waiting' ? 'selected' : ''); ?>>Menunggu</option>
+                        <option value="accepted" <?php echo e(request('status') === 'accepted' ? 'selected' : ''); ?>>Diterima</option>
+                        <option value="rejected" <?php echo e(request('status') === 'rejected' ? 'selected' : ''); ?>>Ditolak</option>
                     </select>
                 </div>
 
                 <!-- Filter by Date Range -->
                 <div>
                     <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-dark); margin-bottom: 6px; text-transform: uppercase;">📅 Dari Tanggal</label>
-                    <input type="date" name="date_from" value="{{ request('date_from') }}" style="width: 100%; padding: 10px 12px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 13px; font-family: 'Inter', sans-serif; transition: all 0.3s;">
+                    <input type="date" name="date_from" value="<?php echo e(request('date_from')); ?>" style="width: 100%; padding: 10px 12px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 13px; font-family: 'Inter', sans-serif; transition: all 0.3s;">
                 </div>
 
                 <div>
                     <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-dark); margin-bottom: 6px; text-transform: uppercase;">📅 Sampai Tanggal</label>
-                    <input type="date" name="date_to" value="{{ request('date_to') }}" style="width: 100%; padding: 10px 12px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 13px; font-family: 'Inter', sans-serif; transition: all 0.3s;">
+                    <input type="date" name="date_to" value="<?php echo e(request('date_to')); ?>" style="width: 100%; padding: 10px 12px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 13px; font-family: 'Inter', sans-serif; transition: all 0.3s;">
                 </div>
 
                 <!-- Action Buttons -->
@@ -173,7 +171,7 @@
                     <button type="submit" style="flex: 1; padding: 10px; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; border: none; border-radius: 8px; font-weight: 600; font-size: 12px; cursor: pointer; transition: all 0.3s; text-transform: uppercase; letter-spacing: 0.5px;">
                         🔍 Cari
                     </button>
-                    <a href="{{ route('admin.dashboard') }}" style="flex: 1; padding: 10px; background: var(--border-color); color: var(--text-dark); border: none; border-radius: 8px; font-weight: 600; font-size: 12px; cursor: pointer; text-align: center; text-decoration: none; transition: all 0.3s; text-transform: uppercase; letter-spacing: 0.5px;">
+                    <a href="<?php echo e(route('admin.dashboard')); ?>" style="flex: 1; padding: 10px; background: var(--border-color); color: var(--text-dark); border: none; border-radius: 8px; font-weight: 600; font-size: 12px; cursor: pointer; text-align: center; text-decoration: none; transition: all 0.3s; text-transform: uppercase; letter-spacing: 0.5px;">
                         Reset
                     </a>
                 </div>
@@ -185,15 +183,15 @@
                     </div>
                     <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px;">
                         <li style="padding: 12px; background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(255, 107, 53, 0.05) 100%); border-left: 4px solid var(--primary); border-radius: 6px; font-size: 12px;">
-                            <div style="color: var(--primary); font-weight: 700;">{{ $totalPendaftaran }}</div>
+                            <div style="color: var(--primary); font-weight: 700;"><?php echo e($totalPendaftaran); ?></div>
                             <div style="color: var(--text-light); font-size: 11px;">Total Pendaftar</div>
                         </li>
                         <li style="padding: 12px; background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%); border-left: 4px solid #f59e0b; border-radius: 6px; font-size: 12px;">
-                            <div style="color: #f59e0b; font-weight: 700;">{{ $menunggu }}</div>
+                            <div style="color: #f59e0b; font-weight: 700;"><?php echo e($menunggu); ?></div>
                             <div style="color: var(--text-light); font-size: 11px;">Menunggu Verifikasi</div>
                         </li>
                         <li style="padding: 12px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%); border-left: 4px solid #10b981; border-radius: 6px; font-size: 12px;">
-                            <div style="color: #10b981; font-weight: 700;">{{ $diterima }}</div>
+                            <div style="color: #10b981; font-weight: 700;"><?php echo e($diterima); ?></div>
                             <div style="color: var(--text-light); font-size: 11px;">Diterima</div>
                         </li>
                     </ul>
@@ -209,10 +207,10 @@
                 <i class="ti ti-clock" style="color: var(--primary);"></i>
                 10 Pendaftar Terbaru
             </div>
-            <a href="{{ route('admin.siswa.index') }}" class="btn btn-primary">Lihat Semua</a>
+            <a href="<?php echo e(route('admin.siswa.index')); ?>" class="btn btn-primary">Lihat Semua</a>
         </div>
         <div class="card-body">
-            @if($recentRegistrations->count() > 0)
+            <?php if($recentRegistrations->count() > 0): ?>
                 <div class="table-responsive">
                     <table>
                         <thead>
@@ -226,14 +224,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($recentRegistrations as $reg)
+                            <?php $__currentLoopData = $recentRegistrations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $reg): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <tr>
-                                    <td><strong>{{ $reg->siswa?->nama_lengkap ?? 'N/A' }}</strong></td>
-                                    <td class="text-muted">{{ $reg->siswa?->nisn ?? '-' }}</td>
-                                    <td>{{ $reg->jurusanPilihan1?->nama ?? '-' }}</td>
-                                    <td>{{ $reg->created_at->format('d M Y') }}</td>
+                                    <td><strong><?php echo e($reg->siswa?->nama_lengkap ?? 'N/A'); ?></strong></td>
+                                    <td class="text-muted"><?php echo e($reg->siswa?->nisn ?? '-'); ?></td>
+                                    <td><?php echo e($reg->jurusanPilihan1?->nama ?? '-'); ?></td>
+                                    <td><?php echo e($reg->created_at->format('d M Y')); ?></td>
                                     <td>
-                                        @php
+                                        <?php
                                             $status = $reg->statusPendaftaran?->label ?? 'Menunggu';
                                             $badgeClass = match($status) {
                                                 'Diterima' => 'badge-success',
@@ -241,27 +239,28 @@
                                                 'Ditolak' => 'badge-danger',
                                                 default => 'badge-info'
                                             };
-                                        @endphp
-                                        <span class="badge {{ $badgeClass }}">{{ $status }}</span>
+                                        ?>
+                                        <span class="badge <?php echo e($badgeClass); ?>"><?php echo e($status); ?></span>
                                     </td>
                                     <td>
-                                        <a href="{{ route('admin.verifikasi') }}" class="btn btn-primary" style="font-size: 11px; padding: 6px 10px;">
+                                        <a href="<?php echo e(route('admin.verifikasi')); ?>" class="btn btn-primary" style="font-size: 11px; padding: 6px 10px;">
                                             Verifikasi
                                         </a>
                                     </td>
                                 </tr>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </tbody>
                     </table>
                 </div>
-            @else
+            <?php else: ?>
                 <div style="text-align: center; padding: 40px; color: var(--text-light);">
                     <div style="font-size: 48px; margin-bottom: 12px;">📭</div>
                     <p>Belum ada pendaftar terdaftar</p>
                 </div>
-            @endif
+            <?php endif; ?>
         </div>
     </div>
 </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.master', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\aplikasi_ppdb_2\resources\views/admin/dashboard.blade.php ENDPATH**/ ?>

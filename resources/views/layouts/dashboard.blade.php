@@ -21,6 +21,260 @@
     <!-- CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style-preset.css') }}">
+    
+    <!-- Modern Sidebar Styling -->
+    <style>
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        @keyframes float-icon {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-3px); }
+        }
+
+        @keyframes slide-in-left {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .modern-sidebar {
+            background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 50%, #0f1419 100%);
+            background-size: 200% 200%;
+            animation: gradient-shift 15s ease infinite;
+            width: 280px !important;
+            border-right: 2px solid rgba(255, 107, 53, 0.2);
+            box-shadow: 8px 0 32px rgba(255, 107, 53, 0.15);
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 1026;
+            overflow: hidden;
+        }
+
+        .modern-sidebar .navbar-wrapper {
+            display: none;
+        }
+
+        .sidebar-header {
+            padding: 28px 20px;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(255, 20, 147, 0.08) 100%);
+            border-bottom: 2px solid rgba(255, 107, 53, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            animation: slide-in-left 3s ease-in-out infinite;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #FF6B35 0%, #FF1493 100%);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(255, 107, 53, 0.6), 0 0 20px rgba(255, 20, 147, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            flex-shrink: 0;
+        }
+
+        .logo-icon i {
+            color: white;
+            font-size: 1.8rem;
+            animation: float-icon 3s ease-in-out infinite;
+        }
+
+        .logo-text h3 {
+            color: white;
+            font-weight: 900;
+            font-size: 1.1rem;
+            margin: 0;
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+        }
+
+        .logo-text p {
+            color: #FF6B35;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin: 0;
+        }
+
+        .sidebar-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 0;
+        }
+
+        .navbar-content-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu-item {
+            margin-bottom: 6px;
+            animation: slide-in-left 0.5s ease-out forwards;
+        }
+
+        .menu-link {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 20px;
+            margin: 0 12px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            border-radius: 12px;
+            border-left: 3px solid transparent;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 107, 53, 0.15), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+
+        .menu-link:hover::before {
+            transform: translateX(100%);
+        }
+
+        .menu-link:hover {
+            background: rgba(255, 107, 53, 0.15);
+            color: #FF6B35;
+            transform: translateX(4px);
+            box-shadow: -3px 0 12px rgba(255, 107, 53, 0.2);
+        }
+
+        .menu-item.active .menu-link {
+            background: linear-gradient(90deg, rgba(255, 107, 53, 0.25) 0%, rgba(255, 107, 53, 0.1) 100%);
+            color: #FF6B35;
+            border-left-color: #FF6B35;
+            box-shadow: -3px 0 16px rgba(255, 107, 53, 0.3), inset 2px 0 8px rgba(255, 107, 53, 0.15);
+        }
+
+        .menu-icon {
+            width: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .menu-icon i {
+            font-size: 1.2rem;
+            color: #FF6B35;
+            transition: all 0.4s ease;
+        }
+
+        .menu-link:hover .menu-icon i {
+            transform: scale(1.2) rotate(5deg);
+            color: #FF1493;
+            filter: drop-shadow(0 0 8px rgba(255, 107, 53, 0.6));
+        }
+
+        .menu-text {
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .sidebar-footer {
+            padding: 20px;
+            border-top: 2px solid rgba(255, 107, 53, 0.15);
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slide-in-left 0.6s ease-out;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #FF6B35;
+            object-fit: cover;
+        }
+
+        .user-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-name {
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-role {
+            color: rgba(255, 107, 53, 0.8);
+            font-size: 0.75rem;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .sidebar-body::-webkit-scrollbar-track {
+            background: rgba(255, 107, 53, 0.05);
+            border-radius: 10px;
+        }
+
+        .sidebar-body::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #FF6B35, #FF1493);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 107, 53, 0.4);
+        }
+
+        .sidebar-body::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #FF1493, #FF69B4);
+            box-shadow: 0 0 16px rgba(255, 107, 53, 0.6);
+        }
+    </style>
 </head>
 <body data-pc-preset="preset-1" data-pc-direction="ltr" data-pc-theme="light">
     <!-- Pre-loader -->
@@ -31,50 +285,70 @@
     </div>
 
     <!-- Sidebar Menu -->
-    <nav class="pc-sidebar">
-        <div class="navbar-wrapper">
-            <div class="m-header justify-content-center">
-                <a href="/" class="b-brand text-dark text-capitalize fw-bold">
-                    <span class="fs-4">{{ auth()->user()->role }} Dashboard</span>
-                </a>
+    <nav class="pc-sidebar modern-sidebar">
+        <div class="sidebar-header">
+            <div class="logo-container">
+                <div class="logo-icon">
+                    <i class="ti ti-school"></i>
+                </div>
+                <div class="logo-text">
+                    <h3>PPDB</h3>
+                    <p>SMK ANTARTIKA</p>
+                </div>
             </div>
-            <div class="navbar-content">
-                <ul class="pc-navbar">
-                    <li class="pc-item {{ request()->is('dashboard') ? 'active' : '' }}">
-                        <a href="/dashboard" class="pc-link">
-                            <span class="pc-micon"><i class="ti ti-dashboard"></i></span>
-                            <span class="pc-mtext">Dashboard</span>
-                        </a>
-                    </li>
+        </div>
 
-                    <li class="pc-item {{ request()->is('formulir*') ? 'active' : '' }}">
-                        <a href="{{ route('formulir.index') }}" class="pc-link">
-                            <span class="pc-micon"><i class="ti ti-file-text"></i></span>
-                            <span class="pc-mtext">Isi Formulir</span>
-                        </a>
-                    </li>
+        <div class="sidebar-body">
+            <ul class="navbar-content-menu">
+                <!-- Dashboard -->
+                <li class="menu-item {{ request()->is('dashboard') ? 'active' : '' }}">
+                    <a href="/dashboard" class="menu-link">
+                        <span class="menu-icon"><i class="ti ti-dashboard"></i></span>
+                        <span class="menu-text">Dashboard</span>
+                    </a>
+                </li>
 
-                    <li class="pc-item {{ request()->is('status*') ? 'active' : '' }}">
-                        <a href="{{ route('status.index') }}" class="pc-link">
-                            <span class="pc-micon"><i class="ti ti-check-square"></i></span>
-                            <span class="pc-mtext">Status Pendaftaran</span>
-                        </a>
-                    </li>
+                <!-- Formulir -->
+                <li class="menu-item {{ request()->is('formulir*') ? 'active' : '' }}">
+                    <a href="{{ route('formulir.index') }}" class="menu-link">
+                        <span class="menu-icon"><i class="ti ti-file-text"></i></span>
+                        <span class="menu-text">Isi Formulir</span>
+                    </a>
+                </li>
 
-                    <li class="pc-item {{ request()->is('cetak*') ? 'active' : '' }}">
-                        <a href="{{ route('cetak.index') }}" class="pc-link">
-                            <span class="pc-micon"><i class="ti ti-printer"></i></span>
-                            <span class="pc-mtext">Cetak Kartu Ujian</span>
-                        </a>
-                    </li>
+                <!-- Status -->
+                <li class="menu-item {{ request()->is('status*') ? 'active' : '' }}">
+                    <a href="{{ route('status.index') }}" class="menu-link">
+                        <span class="menu-icon"><i class="ti ti-check-circle"></i></span>
+                        <span class="menu-text">Status Pendaftaran</span>
+                    </a>
+                </li>
 
-                    <li class="pc-item {{ request()->is('pembayaran*') ? 'active' : '' }}">
-                        <a href="{{ route('user.pembayaran.index') }}" class="pc-link">
-                            <span class="pc-micon"><i class="ti ti-credit-card"></i></span>
-                            <span class="pc-mtext">Pembayaran</span>
-                        </a>
-                    </li>
-                </ul>
+                <!-- Cetak -->
+                <li class="menu-item {{ request()->is('cetak*') ? 'active' : '' }}">
+                    <a href="{{ route('cetak.index') }}" class="menu-link">
+                        <span class="menu-icon"><i class="ti ti-printer"></i></span>
+                        <span class="menu-text">Cetak Kartu Ujian</span>
+                    </a>
+                </li>
+
+                <!-- Pembayaran -->
+                <li class="menu-item {{ request()->is('pembayaran*') ? 'active' : '' }}">
+                    <a href="{{ route('user.pembayaran.index') }}" class="menu-link">
+                        <span class="menu-icon"><i class="ti ti-credit-card"></i></span>
+                        <span class="menu-text">Pembayaran</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <img src="{{ $avatar }}" alt="User" class="user-avatar">
+                <div class="user-info">
+                    <p class="user-name">{{ $name }}</p>
+                    <p class="user-role">{{ $role }}</p>
+                </div>
             </div>
         </div>
     </nav>

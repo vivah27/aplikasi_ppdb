@@ -1,7 +1,4 @@
-
-@extends('layouts.landing')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <!-- Hero Section -->
     <section class="hero-section">
         <div class="container-fluid h-100">
@@ -10,7 +7,7 @@
                     <h1 class="hero-title mb-4">Selamat Datang di <span class="text-primary">PPDB SMK Antartika 1</span></h1>
                     <p class="hero-subtitle mb-4">Platform pendaftaran online yang modern, aman, dan transparan untuk calon siswa baru SMK Antartika 1 Sidoarjo.</p>
                     <div class="d-flex gap-3 flex-wrap">
-                        <a href="{{ url('/login') }}" class="btn btn-primary btn-lg fw-bold px-5">
+                        <a href="<?php echo e(url('/login')); ?>" class="btn btn-primary btn-lg fw-bold px-5">
                             <i class="fas fa-sign-in-alt me-2"></i>Login / Daftar
                         </a>
                         <a href="#fitur" class="btn btn-outline-primary btn-lg fw-bold px-5">
@@ -239,7 +236,7 @@
                     <p class="cta-text">Jangan tunda lagi, daftarkan diri Anda sekarang dan raih masa depan cemerlang bersama SMK Antartika 1.</p>
                 </div>
                 <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
-                    <a href="{{ url('/login') }}" class="btn btn-primary btn-lg fw-bold px-5">
+                    <a href="<?php echo e(url('/login')); ?>" class="btn btn-primary btn-lg fw-bold px-5">
                         Daftar Sekarang <i class="fas fa-arrow-right ms-2"></i>
                     </a>
                 </div>
@@ -247,5 +244,7 @@
         </div>
     </section>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
+
+<?php echo $__env->make('layouts.landing', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\aplikasi_ppdb_2\resources\views/welcome.blade.php ENDPATH**/ ?>

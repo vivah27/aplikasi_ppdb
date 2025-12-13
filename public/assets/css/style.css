@@ -13,12 +13,12 @@ File: style.css
   --bs-body-bg-rgb: 255, 255, 255;
   --pc-heading-color: #343a40;
   --pc-active-background: #e9ecef;
-  --pc-sidebar-background: #fff;
-  --pc-sidebar-color: #141414;
-  --pc-sidebar-color-rgb: 20, 20, 20;
-  --pc-sidebar-active-color: var(--bs-primary);
-  --pc-sidebar-shadow: 1px 0 0 0px rgb(240 240 240);
-  --pc-sidebar-caption-color: #495057;
+  --pc-sidebar-background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 50%, #0f1419 100%);
+  --pc-sidebar-color: #ffffff;
+  --pc-sidebar-color-rgb: 255, 255, 255;
+  --pc-sidebar-active-color: #FF6B35;
+  --pc-sidebar-shadow: 8px 0 32px rgba(255, 107, 53, 0.15);
+  --pc-sidebar-caption-color: #FF6B35;
   --pc-header-background: #fff;
   --pc-header-color: #141414;
   --pc-header-shadow: 0 1px 0 0px rgb(240 240 240);
@@ -16033,48 +16033,89 @@ pre[class*=language-] > code {
   vertical-align: middle;
   text-align: center;
 }
+
 .pc-sidebar .pc-micon i {
   font-size: 18px;
   vertical-align: middle;
+  color: #FF6B35 !important;
+  transition: all 0.4s ease;
 }
+
+.pc-sidebar .pc-link:hover .pc-micon i {
+  transform: scale(1.2) rotate(5deg);
+  color: #FF1493 !important;
+  filter: drop-shadow(0 0 8px rgba(255, 107, 53, 0.6));
+}
+
 .pc-sidebar .pc-micon i.material-icons-two-tone {
   font-size: 22px;
   display: inline-block;
 }
+
 .pc-sidebar .pc-micon > svg {
   width: 18px;
   height: 18px;
-  fill: rgba(114, 103, 239, 0.2);
+  fill: #FF6B35;
   display: inline-block;
 }
+
 .pc-sidebar .pc-link {
   display: block;
-  padding: 10px 24px;
-  color: var(--pc-sidebar-color);
+  padding: 12px 20px;
+  margin: 0 12px;
+  color: rgba(255, 255, 255, 0.75);
   position: relative;
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 500;
+  border-radius: 10px;
+  border-left: 3px solid transparent;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+  overflow: hidden;
 }
-.pc-sidebar .pc-link:focus, .pc-sidebar .pc-link.active, .pc-sidebar .pc-link:hover {
-  text-decoration: none;
-}
-.pc-sidebar .pc-navbar > .pc-item > .pc-link::before {
+
+.pc-sidebar .pc-link::before {
   content: "";
   position: absolute;
-  top: 0px;
-  right: 0px;
-  left: 0px;
-  bottom: 0px;
-  opacity: 0.05;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 107, 53, 0.15), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+  z-index: 0;
 }
+
+.pc-sidebar .pc-link:hover::before {
+  transform: translateX(100%);
+}
+
+.pc-sidebar .pc-link:focus, .pc-sidebar .pc-link.active, .pc-sidebar .pc-link:hover {
+  text-decoration: none;
+  background: rgba(255, 107, 53, 0.15);
+  color: #FF6B35;
+  transform: translateX(4px);
+  box-shadow: -3px 0 12px rgba(255, 107, 53, 0.2);
+}
+
+.pc-sidebar .pc-navbar > .pc-item > .pc-link {
+  position: relative;
+  z-index: 1;
+}
+
 .pc-sidebar .pc-navbar > .pc-item.active > .pc-link {
-  font-weight: 500;
-  color: var(--pc-sidebar-active-color);
+  font-weight: 600;
+  color: #FF6B35;
+  background: linear-gradient(90deg, rgba(255, 107, 53, 0.25) 0%, rgba(255, 107, 53, 0.1) 100%);
+  border-left-color: #FF6B35;
+  box-shadow: -3px 0 16px rgba(255, 107, 53, 0.3), inset 2px 0 8px rgba(255, 107, 53, 0.15);
 }
+
 .pc-sidebar .pc-navbar > .pc-item.active > .pc-link:before {
   opacity: 0;
-  background: var(--pc-sidebar-active-color);
+  background: transparent;
 }
+
 .pc-sidebar .pc-navbar > .pc-item.active:not(.pc-hasmenu) > .pc-link::after {
   content: "";
   position: absolute;
@@ -16082,15 +16123,18 @@ pre[class*=language-] > code {
   right: 0px;
   width: 2px;
   height: 100%;
-  background: var(--pc-sidebar-active-color);
+  background: #FF6B35;
 }
+
 .pc-sidebar .pc-navbar > .pc-item.active:not(.pc-hasmenu) > .pc-link:before {
   opacity: 0.1;
-  background: var(--pc-sidebar-active-color);
+  background: #FF6B35;
 }
+
 .pc-sidebar .pc-navbar > .pc-item:hover:not(.active) > .pc-link:before {
-  background: var(--pc-sidebar-color);
+  background: rgba(255, 107, 53, 0.1);
 }
+
 .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-item > .pc-link::before {
   content: "";
   position: absolute;
@@ -16100,6 +16144,7 @@ pre[class*=language-] > code {
   bottom: 0px;
   opacity: 0.05;
 }
+
 .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-item > .pc-link:after {
   content: "";
   position: absolute;
@@ -16109,41 +16154,55 @@ pre[class*=language-] > code {
   height: 100%;
   transition: all 0.08s cubic-bezier(0.37, 0.24, 0.53, 0.99);
 }
+
 .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-item.pc-trigger > .pc-link, .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-item.active > .pc-link {
-  font-weight: 500;
+  font-weight: 600;
+  color: #FF6B35;
 }
+
 .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-item:hover > .pc-link {
-  color: var(--pc-sidebar-color);
+  color: #FF6B35;
+  background: rgba(255, 107, 53, 0.15);
+  transform: translateX(4px);
 }
+
 .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-item:hover > .pc-link:before {
   opacity: 0.05;
-  background: var(--pc-sidebar-color);
+  background: rgba(255, 107, 53, 0.1);
 }
+
 .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-item.pc-trigger > .pc-link, .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-item.active > .pc-link, .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-item:focus > .pc-link {
-  color: var(--pc-sidebar-active-color);
+  color: #FF6B35;
 }
+
 .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-item.pc-trigger > .pc-link:before, .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-item.active > .pc-link:before, .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-item:focus > .pc-link:before {
   opacity: 0.1;
-  background: var(--pc-sidebar-active-color);
+  background: #FF6B35;
 }
+
 .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-item.pc-trigger > .pc-link:after, .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-item.active > .pc-link:after, .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-item:focus > .pc-link:after {
-  background: var(--pc-sidebar-active-color);
+  background: #FF6B35;
 }
+
 .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-link {
   padding: 10px 30px 10px 58px;
 }
+
 .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-submenu .pc-link {
   padding: 10px 30px 10px 80px;
 }
+
 .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-submenu .pc-submenu .pc-link {
   padding: 10px 30px 10px 95px;
 }
+
 .pc-sidebar .pc-item.disabled a {
   cursor: not-allowed;
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
 }
+
 .pc-sidebar .pc-arrow {
   float: right;
   display: inline-block;
