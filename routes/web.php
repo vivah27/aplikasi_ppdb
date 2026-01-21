@@ -17,7 +17,7 @@ use App\Http\Controllers\PeranController;
 use App\Http\Controllers\UserPeranController;
 use App\Http\Controllers\AdminPembayaranController;
 use App\Http\Controllers\ReportController;
-use App\Http\Controllers\CetakDokumenController;
+use App\Http\Controllers\PengumumanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +39,9 @@ Route::get('/contact-us', function () {
 Route::get('/profil-sekolah', function () {
     return view('profil-sekolah');
 });
+
+Route::get('/pengumuman', [PengumumanController::class, 'index'])->name('pengumuman.index');
+Route::post('/pengumuman/cari', [PengumumanController::class, 'cari'])->name('pengumuman.cari');
 
 // Login & Register - Accessible to all (redirect if already authenticated)
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login')->middleware('guest');
@@ -122,16 +125,6 @@ Route::middleware(['auth', 'web'])->group(function () {
         Route::get('/dokumen/{dokumen}/download', [DokumenController::class, 'download'])->name('user.dokumen.download')->middleware('throttle:30,1');
         Route::delete('/dokumen/{dokumen}', [DokumenController::class, 'destroy'])->name('user.dokumen.destroy');
 
-        // === CETAK DOKUMEN ===
-        Route::prefix('cetak')->as('cetak.')->group(function () {
-            Route::get('/', [CetakDokumenController::class, 'index'])->name('index');
-            Route::get('/formulir/{pendaftaranId}', [CetakDokumenController::class, 'generateFormulir'])->name('formulir');
-            Route::get('/kartu/{pendaftaranId}', [CetakDokumenController::class, 'generateKartuPeserta'])->name('kartu');
-            Route::get('/surat/{pendaftaranId}', [CetakDokumenController::class, 'generateSuratPenerimaan'])->name('surat');
-            Route::get('/kuitansi/{pembayaranId}', [CetakDokumenController::class, 'generateKuitansi'])->name('kuitansi');
-            Route::get('/download/{id}', [CetakDokumenController::class, 'download'])->name('download');
-        });
-
         // === DAFTAR ULANG ===
         Route::get('/daftar-ulang', fn() => view('user.daftar_ulang'))->name('user.daftar_ulang');
         
@@ -154,6 +147,19 @@ Route::middleware(['auth', 'web'])->group(function () {
         
 
     });
+
+    // === CETAK DOKUMEN === (Moved outside middleware for testing)
+    Route::prefix('cetak')->as('cetak.')->middleware(['auth'])->group(function () {
+        Route::get('/', 'App\Http\Controllers\CetakDokumenController@index')->name('index');
+        Route::get('/kuitansi', 'App\Http\Controllers\CetakDokumenController@kuitansiIndex')->name('kuitansi.index');
+        Route::get('/formulir/{pendaftaranId}', 'App\Http\Controllers\CetakDokumenController@generateFormulir')->name('formulir');
+        Route::get('/kartu/{pendaftaranId}', 'App\Http\Controllers\CetakDokumenController@generateKartuPeserta')->name('kartu');
+        Route::get('/surat/{pendaftaranId}', 'App\Http\Controllers\CetakDokumenController@generateSuratPenerimaan')->name('surat');
+        Route::get('/kuitansi/{pembayaranId}', 'App\Http\Controllers\CetakDokumenController@generateKuitansi')->name('kuitansi');
+        Route::get('/download/{id}', 'App\Http\Controllers\CetakDokumenController@download')->name('download');
+    });
+
+    /*
 
     /*
     |--------------------------------------------------------------------------

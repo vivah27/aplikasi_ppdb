@@ -13,6 +13,9 @@
                         <a href="{{ url('/login') }}" class="btn btn-primary btn-lg fw-bold px-5">
                             <i class="fas fa-sign-in-alt me-2"></i>Login / Daftar
                         </a>
+                        <a href="{{ route('pengumuman.index') }}" class="btn btn-success btn-lg fw-bold px-5">
+                            <i class="fas fa-bullhorn me-2"></i>Cek Hasil Seleksi
+                        </a>
                         <a href="#fitur" class="btn btn-outline-primary btn-lg fw-bold px-5">
                             <i class="fas fa-arrow-down me-2"></i>Pelajari Lebih Lanjut
                         </a>

@@ -134,6 +134,7 @@ class AuthController extends Controller
         session([
             'verify_email' => $user->email,
             'last_otp_sent' => now(),
+            'otp_code' => config('app.debug') ? $otp : null,  // DEVELOPMENT: Show OTP in session
         ]);
 
         // Jika dari register, tampilkan alert success dan countdown

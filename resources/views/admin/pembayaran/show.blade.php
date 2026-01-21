@@ -130,12 +130,21 @@
                         <h5 class="mb-0"><i class="ti ti-file me-2"></i>Bukti Pembayaran</h5>
                     </div>
                     <div class="card-body text-center">
-                        <img src="{{ asset('storage/' . $pembayaran->bukti) }}" 
-                             alt="Bukti Pembayaran" class="img-fluid rounded" style="max-height: 400px;">
-                        <div class="mt-3">
+                        <div class="mb-3">
+                            <img src="{{ asset('storage/' . $pembayaran->bukti) }}" 
+                                 alt="Bukti Pembayaran" 
+                                 class="img-fluid rounded shadow-sm" 
+                                 style="max-height: 300px; cursor: pointer;" 
+                                 onclick="showImageModal('{{ asset('storage/' . $pembayaran->bukti) }}', 'Bukti Pembayaran')">
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-outline-primary btn-sm" 
+                                    onclick="showImageModal('{{ asset('storage/' . $pembayaran->bukti) }}', 'Bukti Pembayaran')">
+                                <i class="ti ti-eye me-1"></i>Lihat Besar
+                            </button>
                             <a href="{{ asset('storage/' . $pembayaran->bukti) }}" 
-                               target="_blank" class="btn btn-outline-primary btn-sm">
-                                <i class="ti ti-external-link me-1"></i>Buka Gambar
+                               target="_blank" class="btn btn-outline-info btn-sm">
+                                <i class="ti ti-external-link me-1"></i>Buka Tab Baru
                             </a>
                             <a href="{{ asset('storage/' . $pembayaran->bukti) }}" 
                                download class="btn btn-outline-secondary btn-sm">
@@ -227,4 +236,36 @@
         </div>
     </div>
 </div>
+
+<!-- Modal untuk melihat gambar bukti pembayaran -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Bukti Pembayaran</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="modalImage" src="" alt="" class="img-fluid rounded">
+            </div>
+            <div class="modal-footer">
+                <a id="downloadBtn" href="" download class="btn btn-outline-secondary">
+                    <i class="ti ti-download me-1"></i>Download
+                </a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function showImageModal(imageSrc, title) {
+    document.getElementById('modalImage').src = imageSrc;
+    document.getElementById('imageModalLabel').textContent = title;
+    document.getElementById('downloadBtn').href = imageSrc;
+    
+    const modal = new bootstrap.Modal(document.getElementById('imageModal'));
+    modal.show();
+}
+</script>
 @endsection

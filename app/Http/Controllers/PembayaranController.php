@@ -40,7 +40,7 @@ class PembayaranController extends Controller
             $pembayaran = Pembayaran::latest()->first();
         }
 
-        $metode = MetodePembayaran::all();
+        $metode = MetodePembayaran::where('kode', 'transfer')->get();
         $status = StatusPembayaran::all();
 
         return view('user.pembayaran', compact('pendaftaran', 'pembayaran', 'metode', 'status'));
@@ -107,9 +107,8 @@ class PembayaranController extends Controller
         ];
         
         // Rules tambahan berdasarkan metode
-        if ($kodeMetode === 'transfer_bank') {
+        if ($kodeMetode === 'transfer_bank' || $kodeMetode === 'transfer') {
             $baseRules['nama_bank'] = 'required|string|max:100';
-            $baseRules['nomor_rekening'] = 'required|numeric|regex:/^[0-9]{8,20}$/';
             $baseRules['atas_nama_rekening'] = 'required|string|max:100';
         } elseif ($kodeMetode === 'e_wallet') {
             $baseRules['jenis_ewallet'] = 'required|string|max:50';
@@ -118,9 +117,6 @@ class PembayaranController extends Controller
         
         $validatedData = $request->validate($baseRules, [
             'nama_bank.required' => 'Nama bank harus diisi',
-            'nomor_rekening.required' => 'Nomor rekening harus diisi',
-            'nomor_rekening.numeric' => 'Nomor rekening hanya boleh berisi angka',
-            'nomor_rekening.regex' => 'Nomor rekening harus berisi 8-20 digit angka',
             'atas_nama_rekening.required' => 'Nama pemilik rekening harus diisi',
             'jenis_ewallet.required' => 'Jenis e-wallet harus diisi',
             'nomor_ewallet.required' => 'Nomor e-wallet harus diisi',
@@ -156,9 +152,8 @@ class PembayaranController extends Controller
         ];
         
         // Tambahkan detail transfer/ewallet sesuai metode
-        if ($kodeMetode === 'transfer_bank') {
+        if ($kodeMetode === 'transfer_bank' || $kodeMetode === 'transfer') {
             $data['nama_bank'] = $request->nama_bank;
-            $data['nomor_rekening'] = $request->nomor_rekening;
             $data['atas_nama_rekening'] = $request->atas_nama_rekening;
         } elseif ($kodeMetode === 'e_wallet') {
             $data['jenis_ewallet'] = $request->jenis_ewallet;

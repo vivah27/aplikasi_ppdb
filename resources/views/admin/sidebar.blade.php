@@ -17,8 +17,4 @@
         <span class="pc-micon"><i class="ti ti-bell"></i></span>
         <span class="pc-mtext">Pengumuman</span></a>
 </li>
-<li class="pc-item">
-    <a href="{{ route('admin.laporan') }}" class="pc-link">
-        <span class="pc-micon"><i class="ti ti-report"></i></span>
-        <span class="pc-mtext">Laporan</span></a>
-</li>
+<!-- Laporan menu removed -->

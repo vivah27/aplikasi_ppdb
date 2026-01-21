@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'PPDB SMK ANTARTIKA 1') - SMK ANTARTIKA 1 SIDOARJO</title>
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
+    <title><?php echo $__env->yieldContent('title', 'PPDB SMK ANTARTIKA 1'); ?> - SMK ANTARTIKA 1 SIDOARJO</title>
     
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -14,13 +14,13 @@
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <!-- Modern Theme CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/css/modern-theme.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/modern-theme.css')); ?>">
     <!-- Admin Components CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/css/admin-components.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/admin-components.css')); ?>">
     <!-- Custom theme additions -->
-    <link rel="stylesheet" href="{{ asset('assets/css/custom-theme.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/custom-theme.css')); ?>">
     <!-- Admin Modern Theme -->
-    <link rel="stylesheet" href="{{ asset('assets/css/admin-modern-theme.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/admin-modern-theme.css')); ?>">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -777,27 +777,27 @@
         }
     </style>
     
-    @yield('extra_css')
+    <?php echo $__env->yieldContent('extra_css'); ?>
 </head>
 <body>
     <!-- SIDEBAR -->
     <div class="sidebar" id="sidebar">
-        <a href="@if(Auth::user()?->hasRole('admin')){{ route('admin.dashboard') }}@else{{ route('dashboard') }}@endif" class="sidebar-brand">
+        <a href="<?php if(Auth::user()?->hasRole('admin')): ?><?php echo e(route('admin.dashboard')); ?><?php else: ?><?php echo e(route('dashboard')); ?><?php endif; ?>" class="sidebar-brand">
             <i class="fas fa-graduation-cap"></i>
             <span>PPDB</span>
         </a>
         
         <ul class="sidebar-menu">
-            @if(Auth::check())
+            <?php if(Auth::check()): ?>
                 <!-- Dashboard -->
                 <li class="sidebar-menu-item">
-                    <a href="@if(Auth::user()->hasRole('admin')){{ route('admin.dashboard') }}@else{{ route('dashboard') }}@endif" class="sidebar-menu-link @if(Auth::user()->hasRole('admin') && request()->routeIs('admin.dashboard'))active @elseif(!Auth::user()->hasRole('admin') && request()->routeIs('dashboard'))active @endif">
+                    <a href="<?php if(Auth::user()->hasRole('admin')): ?><?php echo e(route('admin.dashboard')); ?><?php else: ?><?php echo e(route('dashboard')); ?><?php endif; ?>" class="sidebar-menu-link <?php if(Auth::user()->hasRole('admin') && request()->routeIs('admin.dashboard')): ?>active <?php elseif(!Auth::user()->hasRole('admin') && request()->routeIs('dashboard')): ?>active <?php endif; ?>">
                         <i class="fas fa-home"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
 
-                @if(Auth::user()->hasRole('admin'))
+                <?php if(Auth::user()->hasRole('admin')): ?>
                     <!-- ADMIN SECTION -->
                     <div class="sidebar-divider"></div>
                     <div class="sidebar-section-title">
@@ -805,31 +805,31 @@
                     </div>
 
                     <li class="sidebar-menu-item">
-                        <a href="{{ route('admin.siswa.index') }}" class="sidebar-menu-link {{ request()->routeIs('admin.siswa*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('admin.siswa.index')); ?>" class="sidebar-menu-link <?php echo e(request()->routeIs('admin.siswa*') ? 'active' : ''); ?>">
                             <i class="fas fa-users"></i>
                             <span>Daftar Siswa</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item">
-                        <a href="{{ route('admin.verifikasi') }}" class="sidebar-menu-link {{ request()->routeIs('admin.verifikasi*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('admin.verifikasi')); ?>" class="sidebar-menu-link <?php echo e(request()->routeIs('admin.verifikasi*') ? 'active' : ''); ?>">
                             <i class="fas fa-check-circle"></i>
                             <span>Verifikasi Dokumen</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item">
-                        <a href="{{ route('admin.gelombang.index') }}" class="sidebar-menu-link {{ request()->routeIs('admin.gelombang*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('admin.gelombang.index')); ?>" class="sidebar-menu-link <?php echo e(request()->routeIs('admin.gelombang*') ? 'active' : ''); ?>">
                             <i class="fas fa-wave-square"></i>
                             <span>Atur Gelombang</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item">
-                        <a href="{{ route('admin.jurusan.index') }}" class="sidebar-menu-link {{ request()->routeIs('admin.jurusan*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('admin.jurusan.index')); ?>" class="sidebar-menu-link <?php echo e(request()->routeIs('admin.jurusan*') ? 'active' : ''); ?>">
                             <i class="fas fa-graduation-cap"></i>
                             <span>Atur Jurusan</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item">
-                        <a href="{{ route('admin.pembayaran.index') }}" class="sidebar-menu-link {{ request()->routeIs('admin.pembayaran*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('admin.pembayaran.index')); ?>" class="sidebar-menu-link <?php echo e(request()->routeIs('admin.pembayaran*') ? 'active' : ''); ?>">
                             <i class="fas fa-money-bill-wave"></i>
                             <span>Kelola Pembayaran</span>
                         </a>
@@ -838,13 +838,13 @@
                     <div class="sidebar-divider"></div>
 
                     <li class="sidebar-menu-item">
-                        <a href="{{ route('admin.jenis-dokumen.index') }}" class="sidebar-menu-link {{ request()->routeIs('admin.jenis-dokumen*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('admin.jenis-dokumen.index')); ?>" class="sidebar-menu-link <?php echo e(request()->routeIs('admin.jenis-dokumen*') ? 'active' : ''); ?>">
                             <i class="fas fa-file-alt"></i>
                             <span>Jenis Dokumen</span>
                         </a>
                     </li>
                     <!-- Reports and Role management removed -->
-                @elseif(Auth::user()->hasRole('user'))
+                <?php elseif(Auth::user()->hasRole('user')): ?>
                     <!-- USER SECTION -->
                     <div class="sidebar-divider"></div>
                     <div class="sidebar-section-title">
@@ -852,48 +852,48 @@
                     </div>
 
                     <li class="sidebar-menu-item">
-                        <a href="{{ route('formulir.index') }}" class="sidebar-menu-link {{ request()->routeIs('formulir*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('formulir.index')); ?>" class="sidebar-menu-link <?php echo e(request()->routeIs('formulir*') ? 'active' : ''); ?>">
                             <i class="fas fa-edit"></i>
                             <span>Isi Formulir</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item">
-                        <a href="{{ route('biodata.index') }}" class="sidebar-menu-link {{ request()->routeIs('biodata.*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('biodata.index')); ?>" class="sidebar-menu-link <?php echo e(request()->routeIs('biodata.*') ? 'active' : ''); ?>">
                             <i class="fas fa-user-circle"></i>
                             <span>Biodata</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item">
-                        <a href="{{ route('user.dokumen') }}" class="sidebar-menu-link {{ request()->routeIs('user.dokumen*') || request()->routeIs('dokumen.*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('user.dokumen')); ?>" class="sidebar-menu-link <?php echo e(request()->routeIs('user.dokumen*') || request()->routeIs('dokumen.*') ? 'active' : ''); ?>">
                             <i class="fas fa-folder"></i>
                             <span>Dokumen</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item">
-                        <a href="{{ route('cetak.index') }}" class="sidebar-menu-link {{ request()->routeIs('cetak.*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('cetak.index')); ?>" class="sidebar-menu-link <?php echo e(request()->routeIs('cetak.*') ? 'active' : ''); ?>">
                             <i class="fas fa-id-card"></i>
                             <span>Cetak Kartu</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item">
-                        <a href="{{ route('cetak.kuitansi.index') }}" class="sidebar-menu-link {{ request()->routeIs('cetak.kuitansi.index') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('cetak.kuitansi.index')); ?>" class="sidebar-menu-link <?php echo e(request()->routeIs('cetak.kuitansi.index') ? 'active' : ''); ?>">
                             <i class="fas fa-receipt"></i>
                             <span>Cetak Kuitansi</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item">
-                        <a href="{{ route('user.pembayaran.index') }}" class="sidebar-menu-link {{ request()->routeIs('user.pembayaran*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('user.pembayaran.index')); ?>" class="sidebar-menu-link <?php echo e(request()->routeIs('user.pembayaran*') ? 'active' : ''); ?>">
                             <i class="fas fa-credit-card"></i>
                             <span>Pembayaran</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item">
-                        <a href="{{ route('user.status') }}" class="sidebar-menu-link {{ request()->routeIs('user.status') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('user.status')); ?>" class="sidebar-menu-link <?php echo e(request()->routeIs('user.status') ? 'active' : ''); ?>">
                             <i class="fas fa-info-circle"></i>
                             <span>Status</span>
                         </a>
                     </li>
-                @endif
+                <?php endif; ?>
 
                 <!-- ACCOUNT SECTION -->
                 <div class="sidebar-divider"></div>
@@ -902,21 +902,21 @@
                 </div>
 
                 <li class="sidebar-menu-item">
-                    <a href="{{ route('profil.index') }}" class="sidebar-menu-link {{ request()->routeIs('profil.index') ? 'active' : '' }}">
+                    <a href="<?php echo e(route('profil.index')); ?>" class="sidebar-menu-link <?php echo e(request()->routeIs('profil.index') ? 'active' : ''); ?>">
                         <i class="fas fa-user-circle"></i>
                         <span>Profil</span>
                     </a>
                 </li>
                 <li class="sidebar-menu-item">
-                    <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
-                        @csrf
+                    <form action="<?php echo e(route('logout')); ?>" method="POST" style="margin: 0;">
+                        <?php echo csrf_field(); ?>
                         <button type="submit" class="sidebar-menu-link w-100 border-0 bg-transparent text-start">
                             <i class="fas fa-sign-out-alt"></i>
                             <span>Logout</span>
                         </button>
                     </form>
                 </li>
-            @endif
+            <?php endif; ?>
         </ul>
     </div>
     
@@ -926,52 +926,55 @@
             <i class="fas fa-bars fa-lg"></i>
         </button>
         
-        <h6 class="navbar-title">@yield('page_title', 'Dashboard')</h6>
+        <h6 class="navbar-title"><?php echo $__env->yieldContent('page_title', 'Dashboard'); ?></h6>
         
         <div class="navbar-user">
-            @if(Auth::check())
+            <?php if(Auth::check()): ?>
                 <div class="user-avatar">
-                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                    <?php echo e(strtoupper(substr(Auth::user()->name, 0, 1))); ?>
+
                 </div>
                 <div>
-                    <div class="navbar-user-name">{{ Auth::user()->name }}</div>
-                    <small class="text-muted">{{ Auth::user()->email }}</small>
+                    <div class="navbar-user-name"><?php echo e(Auth::user()->name); ?></div>
+                    <small class="text-muted"><?php echo e(Auth::user()->email); ?></small>
                 </div>
-            @endif
+            <?php endif; ?>
         </div>
     </div>
     
     <!-- MAIN CONTENT -->
     <div class="main-content">
-        @if ($errors->any())
+        <?php if($errors->any()): ?>
             <div class="alert alert-danger">
                 <i class="fas fa-exclamation-circle"></i>
                 <div>
                     <strong>Terjadi kesalahan!</strong>
                     <ul class="mb-0 mt-2" style="font-size: 12px;">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
+                        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <li><?php echo e($error); ?></li>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </ul>
                 </div>
             </div>
-        @endif
+        <?php endif; ?>
         
-        @if (session('success'))
+        <?php if(session('success')): ?>
             <div class="alert alert-success">
                 <i class="fas fa-check-circle"></i>
-                <strong>Berhasil!</strong> {{ session('success') }}
+                <strong>Berhasil!</strong> <?php echo e(session('success')); ?>
+
             </div>
-        @endif
+        <?php endif; ?>
         
-        @if (session('error'))
+        <?php if(session('error')): ?>
             <div class="alert alert-danger">
                 <i class="fas fa-times-circle"></i>
-                <strong>Error!</strong> {{ session('error') }}
+                <strong>Error!</strong> <?php echo e(session('error')); ?>
+
             </div>
-        @endif
+        <?php endif; ?>
         
-        @yield('content')
+        <?php echo $__env->yieldContent('content'); ?>
     </div>
     
     <!-- Bootstrap JS -->
@@ -979,9 +982,9 @@
     <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <!-- SweetAlert2 Helper Functions -->
-    <script src="{{ asset('assets/js/sweetalert-helpers.js') }}"></script>
+    <script src="<?php echo e(asset('assets/js/sweetalert-helpers.js')); ?>"></script>
     <!-- Modern Theme Helpers -->
-    <script src="{{ asset('assets/js/modern-theme-helpers.js') }}"></script>
+    <script src="<?php echo e(asset('assets/js/modern-theme-helpers.js')); ?>"></script>
     
     <script>
         function toggleSidebar() {
@@ -1022,6 +1025,7 @@
         });
     </script>
     
-    @yield('extra_js')
+    <?php echo $__env->yieldContent('extra_js'); ?>
 </body>
 </html>
+<?php /**PATH C:\Users\PC_\ifa\resources\views/layouts/master.blade.php ENDPATH**/ ?>

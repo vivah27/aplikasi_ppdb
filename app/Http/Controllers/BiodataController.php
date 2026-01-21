@@ -52,7 +52,11 @@ class BiodataController extends Controller
             'alamat' => 'required',
             'no_hp' => 'required|numeric|regex:/^[0-9]{10,13}$/',
             'no_hp_wali' => 'required|numeric|regex:/^[0-9]{10,13}$/',
-            'asal_sekolah' => 'required',
+            'asal_sekolah' => [
+                'required',
+                'regex:/^[\p{L}0-9\s]+$/u',
+                'max:255'
+            ],
             'tahun_lulus' => 'required|numeric|digits:4',
             'npsn' => 'nullable|numeric',
             'foto' => $existingBiodata && $existingBiodata->foto
@@ -69,6 +73,8 @@ class BiodataController extends Controller
             'no_hp_wali.regex' => 'No. HP orang tua/wali harus berisi 10-13 digit angka.',
             'tahun_lulus.digits' => 'Tahun lulus harus berisi 4 digit angka (contoh: 2025).',
             'npsn.numeric' => 'NPSN sekolah hanya boleh berisi angka.',
+            'asal_sekolah.regex' => 'Nama sekolah hanya boleh berisi huruf, angka, dan spasi.',
+            'asal_sekolah.max' => 'Nama sekolah maksimal 255 karakter.',
         ];
 
         // Validasi conditional berdasarkan jenis pendamping

@@ -224,8 +224,8 @@
                 <div class="row g-3 mb-4">
                     <div class="col-md-6">
                         <label class="form-label">Nama Sekolah Asal</label>
-                        <input type="text" class="form-control" name="asal_sekolah" id="asal_sekolah" value="{{ old('asal_sekolah', $biodata->asal_sekolah ?? $siswa->asal_sekolah ?? '') }}" {{ $isSubmitted ? 'readonly' : 'required' }}>
-                        <small class="text-muted">Hanya huruf dan spasi</small>
+                        <input type="text" class="form-control" name="asal_sekolah" id="asal_sekolah" value="{{ old('asal_sekolah', $biodata->asal_sekolah ?? $siswa->asal_sekolah ?? '') }}" {{ $isSubmitted ? 'readonly' : 'required' }} pattern="[A-Za-z0-9\s]+" maxlength="255">
+                        <small class="text-muted">Hanya huruf, angka, dan spasi</small>
                         @error('asal_sekolah')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
@@ -240,7 +240,7 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Tahun Lulus</label>
-                        <input type="text" class="form-control" name="tahun_lulus" id="tahun_lulus" value="{{ old('tahun_lulus', $biodata->tahun_lulus ?? '') }}" placeholder="Contoh: 2025" pattern="[0-9]{4}" inputmode="numeric" maxlength="4" {{ $isSubmitted ? 'readonly' : 'required' }}>
+                        <input type="number" class="form-control" name="tahun_lulus" id="tahun_lulus" value="{{ old('tahun_lulus', $biodata->tahun_lulus ?? '') }}" placeholder="Contoh: 2025" min="1900" max="2030" {{ $isSubmitted ? 'readonly' : 'required' }}>
                         <small class="text-muted">Hanya 4 digit angka</small>
                         @error('tahun_lulus')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -325,6 +325,12 @@ function validateLettersOnly(input) {
     input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
 }
 
+// Validasi input real-time untuk field yang boleh huruf, angka, dan spasi
+function validateLettersNumbersSpaces(input) {
+    // Hanya izinkan huruf (a-z, A-Z), angka (0-9), dan spasi, hapus karakter lain secara real-time
+    input.value = input.value.replace(/[^a-zA-Z0-9\s]/g, '');
+}
+
 // Validasi input real-time untuk field yang hanya boleh angka
 function validateNumbersOnly(input) {
     input.value = input.value.replace(/[^0-9]/g, '');
@@ -336,12 +342,17 @@ document.addEventListener('DOMContentLoaded', function () {
     const lettersOnlyFields = [
         'nama_lengkap', 'tempat_lahir', 
         'nama_ayah', 'pekerjaan_ayah', 'nama_ibu', 'pekerjaan_ibu', 
-        'nama_wali', 'asal_sekolah'
+        'nama_wali'
+    ];
+    
+    // Fields yang boleh huruf, angka, dan spasi
+    const lettersNumbersSpacesFields = [
+        'asal_sekolah'
     ];
     
     // Fields yang hanya boleh angka
     const numbersOnlyFields = [
-        'nisn', 'nik', 'no_hp', 'npsn', 'tahun_lulus'
+        'nisn', 'nik', 'no_hp', 'npsn'
     ];
     
     // Add real-time validation untuk letters only fields
@@ -350,6 +361,16 @@ document.addEventListener('DOMContentLoaded', function () {
         if (field) {
             field.addEventListener('input', function() {
                 validateLettersOnly(this);
+            });
+        }
+    });
+    
+    // Add real-time validation untuk letters, numbers, and spaces fields
+    lettersNumbersSpacesFields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field) {
+            field.addEventListener('input', function() {
+                validateLettersNumbersSpaces(this);
             });
         }
     });
