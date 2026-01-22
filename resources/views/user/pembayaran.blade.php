@@ -68,7 +68,7 @@
                             <option value="">-- Pilih Metode Pembayaran --</option>
                             @foreach($metode as $m)
                                 <option value="{{ $m->id }}" data-kode="{{ $m->kode }}" {{ old('metode_id') == $m->id ? 'selected' : '' }}>
-                                    @if($m->kode === 'transfer_bank')
+                                    @if($m->kode === 'transfer_bank' || $m->kode === 'transfer')
                                         <i class="fas fa-university"></i> {{ $m->label }}
                                     @elseif($m->kode === 'e_wallet')
                                         <i class="fas fa-mobile-alt"></i> {{ $m->label }}
@@ -103,20 +103,6 @@
                                     <option value="Bank Danamon" {{ old('nama_bank') == 'Bank Danamon' ? 'selected' : '' }}>Bank Danamon</option>
                                 </select>
                                 @error('nama_bank')
-                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-6">
-                                <label for="nomor_rekening" class="form-label">
-                                    Nomor Rekening <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" name="nomor_rekening" id="nomor_rekening" 
-                                       class="form-control @error('nomor_rekening') is-invalid @enderror"
-                                       placeholder="Contoh: 1234567890" value="{{ old('nomor_rekening') }}"
-                                       inputmode="numeric" maxlength="20" required>
-                                <small class="text-muted d-block mt-1">Hanya angka</small>
-                                @error('nomor_rekening')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -233,7 +219,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Form fields
     const namaBank = document.getElementById('nama_bank');
-    const nomorRekening = document.getElementById('nomor_rekening');
     const atasNamaRekening = document.getElementById('atas_nama_rekening');
     const jenisEwallet = document.getElementById('jenis_ewallet');
     const nomorEwallet = document.getElementById('nomor_ewallet');
@@ -295,16 +280,14 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Clear required attributes
         namaBank.required = false;
-        nomorRekening.required = false;
         atasNamaRekening.required = false;
         jenisEwallet.required = false;
         nomorEwallet.required = false;
         
         // Show appropriate section and set required
-        if (kode === 'transfer_bank') {
+        if (kode === 'transfer_bank' || kode === 'transfer') {
             transferBankSection.style.display = 'block';
             namaBank.required = true;
-            nomorRekening.required = true;
             atasNamaRekening.required = true;
         } else if (kode === 'e_wallet') {
             ewalletSection.style.display = 'block';

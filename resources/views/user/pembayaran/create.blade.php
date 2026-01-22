@@ -101,10 +101,10 @@
                                 <label for="nomor_rekening" class="form-label">
                                     Nomor Rekening <span class="text-danger">*</span>
                                 </label>
-                                <input type="text" name="nomor_rekening" id="nomor_rekening" 
+                                <input type="number" name="nomor_rekening" id="nomor_rekening" 
                                        class="form-control @error('nomor_rekening') is-invalid @enderror"
                                        placeholder="Contoh: 1234567890" value="{{ old('nomor_rekening') }}"
-                                       inputmode="numeric" maxlength="20" required>
+                                       min="10000000" max="99999999999999999999" required>
                                 <small class="text-muted d-block mt-1">Hanya angka</small>
                                 @error('nomor_rekening')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>

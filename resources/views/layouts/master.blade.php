@@ -843,18 +843,7 @@
                             <span>Jenis Dokumen</span>
                         </a>
                     </li>
-                    <li class="sidebar-menu-item">
-                        <a href="{{ route('admin.reports.index') }}" class="sidebar-menu-link {{ request()->routeIs('admin.reports*') ? 'active' : '' }}">
-                            <i class="fas fa-file-download"></i>
-                            <span>Laporan & Eksport</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-menu-item">
-                        <a href="{{ route('admin.peran.index') }}" class="sidebar-menu-link {{ request()->routeIs('admin.peran*') ? 'active' : '' }}">
-                            <i class="fas fa-users-cog"></i>
-                            <span>Manajemen Peran</span>
-                        </a>
-                    </li>
+                    <!-- Reports and Role management removed -->
                 @elseif(Auth::user()->hasRole('user'))
                     <!-- USER SECTION -->
                     <div class="sidebar-divider"></div>
@@ -884,6 +873,12 @@
                         <a href="{{ route('cetak.index') }}" class="sidebar-menu-link {{ request()->routeIs('cetak.*') ? 'active' : '' }}">
                             <i class="fas fa-id-card"></i>
                             <span>Cetak Kartu</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="{{ route('cetak.kuitansi.index') }}" class="sidebar-menu-link {{ request()->routeIs('cetak.kuitansi.index') ? 'active' : '' }}">
+                            <i class="fas fa-receipt"></i>
+                            <span>Cetak Kuitansi</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item">
@@ -1005,7 +1000,7 @@
         // Filter input number fields - hanya angka
         document.addEventListener('DOMContentLoaded', function() {
             // Fields yang hanya boleh berisi angka
-            const numericFields = ['nomor_rekening', 'no_hp_wali'];
+            const numericFields = ['no_hp_wali'];
             
             numericFields.forEach(fieldId => {
                 const field = document.getElementById(fieldId);

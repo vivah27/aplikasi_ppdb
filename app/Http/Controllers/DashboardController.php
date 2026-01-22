@@ -6,6 +6,7 @@ use App\Models\Dokumen;
 use App\Models\Pendaftaran;
 use App\Models\Siswa;
 use App\Models\StatusPendaftaran;
+use App\Models\Pembayaran;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -60,7 +61,14 @@ class DashboardController extends Controller
                 ->limit(5)
                 ->get() : collect();
 
-            return view('dashboard', compact('jurusans', 'pendaftaran', 'statsData', 'recentDocuments'));
+            // Check if user has verified payment
+            $hasVerifiedPayment = false;
+            if ($pendaftaran) {
+                $pembayaran = Pembayaran::where('pendaftaran_id', $pendaftaran->id)->first();
+                $hasVerifiedPayment = $pembayaran && $pembayaran->isTerverifikasi();
+            }
+
+            return view('dashboard', compact('jurusans', 'pendaftaran', 'statsData', 'recentDocuments', 'hasVerifiedPayment'));
         }
     }
 }

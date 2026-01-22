@@ -13,6 +13,41 @@ use App\Models\Jurusan;
 class CetakDokumenController extends Controller
 {
     /**
+     * Display list of documents to print
+     */
+    public function index()
+    {
+        try {
+            $user = Auth::user();
+            if (!$user) {
+                return redirect()->route('login');
+            }
+
+            // Get pendaftaran - with better relationship loading
+            $pendaftaran = Pendaftaran::whereHas('siswa', function ($query) use ($user) {
+                $query->where('pengguna_id', $user->id);
+            })->with(['siswa', 'pembayaran.statusPembayaran', 'statusPendaftaran'])
+            ->first();
+
+            if (!$pendaftaran) {
+                Log::warning('No pendaftaran found for user: ' . $user->id);
+                return redirect()->route('formulir.index')
+                    ->with('warning', 'Daftarkan diri Anda terlebih dahulu');
+            }
+
+            $berkasCetak = BerkasCetak::where('pendaftaran_id', $pendaftaran->id)
+                ->with('jenisBerkas')
+                ->latest()
+                ->paginate(10);
+
+            return view('cetak.index', compact('pendaftaran', 'berkasCetak'));
+        } catch (\Exception $e) {
+            Log::error('Error in CetakDokumenController@index: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()]);
+        }
+    }
+
+    /**
      * Display list of kuitansi that can be printed
      */
     public function kuitansiIndex()
@@ -36,12 +71,8 @@ class CetakDokumenController extends Controller
 
             // Get pembayaran yang sudah terverifikasi
             $pembayaranTerverifikasi = $pendaftaran->pembayaran()
-                ->where(function($query) {
-                    $query->where('status', 'Terverifikasi')
-                          ->orWhere('status', 'LUNAS')
-                          ->orWhereHas('statusPembayaran', function($q) {
-                              $q->whereIn('nama', ['LUNAS', 'Terverifikasi']);
-                          });
+                ->whereHas('statusPembayaran', function($q) {
+                    $q->where('nama', 'LUNAS');
                 })
                 ->with('metodePembayaran')
                 ->get();
@@ -69,6 +100,8 @@ class CetakDokumenController extends Controller
             }
 
             $data = [
+                'pendaftaran' => $pendaftaran,
+                'siswa' => $pendaftaran->siswa,
                 'jurusan1' => $pendaftaran->jurusanPilihan1,
                 'jurusan2' => $pendaftaran->jurusanPilihan2,
             ];

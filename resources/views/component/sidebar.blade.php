@@ -368,6 +368,7 @@
                                 <i class="fas fa-list" style="color: #a8dadc; width: 20px; text-align: center;"></i>
                                 Jenis Dokumen
                             </a>
+<<<<<<< HEAD
                             <a href="{{ route('admin.peran.index') }}" class="dropdown-item">
                                 <i class="fas fa-users-cog" style="color: #a8dadc; width: 20px; text-align: center;"></i>
                                 Manage Peran
@@ -377,6 +378,9 @@
                                 <i class="fas fa-chart-bar" style="color: #a8dadc; width: 20px; text-align: center;"></i>
                                 Laporan
                             </a>
+=======
+                            <!-- Removed Manage Peran and Laporan menu items -->
+>>>>>>> 72e2c9e0425e4d8887f92164fa4154fe96d31a50
                         </div>
                     </li>
 

@@ -34,6 +34,14 @@
                     <p class="text-muted mt-3" style="font-size: 14px;">
                         <strong>Instruksi:</strong> Masukkan 6 digit kode OTP yang telah kami kirimkan ke email Anda. Kode ini berlaku selama 5 menit.
                     </p>
+
+                    {{-- DEVELOPMENT MODE: Tampilkan OTP --}}
+                    @if (config('app.debug') && session('otp_code'))
+                        <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+                            <strong>🔧 MODE DEVELOPMENT:</strong> Kode OTP Anda: <code style="font-size: 16px; font-weight: bold; color: #d64045;">{{ session('otp_code') }}</code>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    @endif
                 </div>
 
                 {{-- Form Verifikasi OTP --}}

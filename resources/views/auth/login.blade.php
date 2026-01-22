@@ -3,7 +3,11 @@
 @section('title', 'Login - PPDB SMK Antartika 1 Sidoarjo')
 
 @section('content')
+<<<<<<< HEAD
 <div class="auth-wrapper" style="min-height: 100dvh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #a8dadc 0%, #dda0dd 100%); position: relative; overflow: hidden;">
+=======
+<div class="auth-wrapper" style="min-height: 100dvh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #C8B4E8 0%, #DFD1F5 50%, #E8D4F9 100%); position: relative; overflow: hidden;">
+>>>>>>> 72e2c9e0425e4d8887f92164fa4154fe96d31a50
     <!-- Animated Background Elements -->
     <div style="position: absolute; width: 400px; height: 400px; background: rgba(255,255,255,0.05); border-radius: 50%; top: -100px; left: -100px;"></div>
     <div style="position: absolute; width: 300px; height: 300px; background: rgba(255,255,255,0.05); border-radius: 50%; bottom: -80px; right: -80px;"></div>
@@ -13,7 +17,11 @@
             <div class="col-md-8 col-lg-5 col-xl-4">
                 <div class="card border-0 overflow-hidden shadow-xl" style="border-radius: 24px; backdrop-filter: blur(10px);">
                     <!-- Card Header dengan gradient modern -->
+<<<<<<< HEAD
                     <div style="background: linear-gradient(135deg, #a8dadc 0%, #dda0dd 100%); padding: 2.5rem 2rem; text-align: center; position: relative;">
+=======
+                    <div style="background: linear-gradient(135deg, #C8B4E8 0%, #DFD1F5 100%); padding: 2.5rem 2rem; text-align: center; position: relative;">
+>>>>>>> 72e2c9e0425e4d8887f92164fa4154fe96d31a50
                         <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.05);"></div>
                         <div style="position: relative; z-index: 1;">
                             <!-- Logo Sekolah -->
@@ -45,7 +53,11 @@
                                             <li>Klik tombol di bawah untuk verifikasi</li>
                                             <li>Masukkan kode OTP dan selesaikan verifikasi</li>
                                         </ol>
+<<<<<<< HEAD
                                         <a href="/verify-email" class="btn btn-sm text-white fw-bold w-100" style="background: linear-gradient(135deg, #a8dadc 0%, #dda0dd 100%); border-radius: 8px;">
+=======
+                                        <a href="/verify-email" class="btn btn-sm text-white fw-bold w-100" style="background: linear-gradient(135deg, #C8B4E8 0%, #DFD1F5 100%); border-radius: 8px;">
+>>>>>>> 72e2c9e0425e4d8887f92164fa4154fe96d31a50
                                             <i class="fas fa-envelope-open me-2"></i>Verifikasi Email Sekarang
                                         </a>
                                     </div>
@@ -69,7 +81,11 @@
                             <!-- Email Field -->
                             <div class="mb-4">
                                 <label for="email" class="form-label fw-600 mb-2">
+<<<<<<< HEAD
                                     <i class="fas fa-envelope me-2" style="color: #a8dadc;"></i>Email
+=======
+                                    <i class="fas fa-envelope me-2" style="color: #C8B4E8;"></i>Email
+>>>>>>> 72e2c9e0425e4d8887f92164fa4154fe96d31a50
                                 </label>
                                 <input type="email" class="form-control @error('email') is-invalid @enderror" 
                                        id="email" name="email" placeholder="Masukkan email Anda" 
@@ -83,7 +99,11 @@
                             <!-- Password Field -->
                             <div class="mb-4">
                                 <label for="password" class="form-label fw-600 mb-2">
+<<<<<<< HEAD
                                     <i class="fas fa-lock me-2" style="color: #a8dadc;"></i>Password
+=======
+                                    <i class="fas fa-lock me-2" style="color: #C8B4E8;"></i>Password
+>>>>>>> 72e2c9e0425e4d8887f92164fa4154fe96d31a50
                                 </label>
                                 <input type="password" class="form-control @error('password') is-invalid @enderror" 
                                        id="password" name="password" placeholder="Masukkan password Anda" 
@@ -102,7 +122,11 @@
                                         Ingat saya
                                     </label>
                                 </div>
+<<<<<<< HEAD
                                 <a href="{{ route('forgot_password.email_form') }}" class="text-decoration-none fw-600" style="color: #a8dadc; font-size: 0.95rem;">
+=======
+                                <a href="{{ route('forgot_password.email_form') }}" class="text-decoration-none fw-600" style="color: #C8B4E8; font-size: 0.95rem;">
+>>>>>>> 72e2c9e0425e4d8887f92164fa4154fe96d31a50
                                     Lupa password?
                                 </a>
                             </div>
@@ -119,7 +143,11 @@
                             @endif
 
                             <!-- Submit Button -->
+<<<<<<< HEAD
                             <button type="submit" class="btn w-100 fw-600 mb-4" style="padding: 12px; border-radius: 10px; background: linear-gradient(135deg, #a8dadc 0%, #dda0dd 100%); color: white; border: none; font-size: 1rem; transition: all 0.3s; cursor: pointer;">
+=======
+                            <button type="submit" class="btn w-100 fw-600 mb-4" style="padding: 12px; border-radius: 10px; background: linear-gradient(135deg, #C8B4E8 0%, #DFD1F5 100%); color: white; border: none; font-size: 1rem; transition: all 0.3s; cursor: pointer;">
+>>>>>>> 72e2c9e0425e4d8887f92164fa4154fe96d31a50
                                 <i class="fas fa-arrow-right me-2"></i>Masuk
                             </button>
                         </form>
@@ -128,7 +156,11 @@
                         <div class="text-center pt-4" style="border-top: 1px solid #e5e7eb;">
                             <p class="mb-0" style="color: #6b7280;">
                                 Belum punya akun?
+<<<<<<< HEAD
                                 <a href="/register" class="text-decoration-none fw-600" style="color: #a8dadc;">
+=======
+                                <a href="/register" class="text-decoration-none fw-600" style="color: #C8B4E8;">
+>>>>>>> 72e2c9e0425e4d8887f92164fa4154fe96d31a50
                                     Daftar Sekarang
                                 </a>
                             </p>
@@ -156,8 +188,13 @@
     }
     
     .form-control:focus {
+<<<<<<< HEAD
         border-color: #a8dadc !important;
         box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+=======
+        border-color: #C8B4E8 !important;
+        box-shadow: 0 0 0 0.2rem rgba(200, 180, 232, 0.15);
+>>>>>>> 72e2c9e0425e4d8887f92164fa4154fe96d31a50
     }
     
     .form-check-input {
@@ -165,14 +202,23 @@
     }
     
     .form-check-input:checked {
+<<<<<<< HEAD
         background-color: #a8dadc;
         border-color: #a8dadc;
     }
     
     button[type="submit"]:hover {
         background: linear-gradient(135deg, #dda0dd 0%, #a8dadc 100%) !important;
+=======
+        background-color: #C8B4E8;
+        border-color: #C8B4E8;
+    }
+    
+    button[type="submit"]:hover {
+        background: linear-gradient(135deg, #B89FD9 0%, #D0BFED 100%) !important;
+>>>>>>> 72e2c9e0425e4d8887f92164fa4154fe96d31a50
         transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 10px 25px rgba(200, 180, 232, 0.3);
     }
     
     .shadow-xl {

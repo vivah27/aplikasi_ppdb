@@ -34,6 +34,30 @@
         </div>
     @endif
 
+    <!-- Hasil Seleksi Alert -->
+    @if($pendaftaran && $pendaftaran->statusPendaftaran)
+        @php
+            $status = $pendaftaran->statusPendaftaran->label;
+        @endphp
+        @if($status === 'Diterima')
+            <div style="background: rgba(16, 185, 129, 0.1); border-left: 4px solid #10b981; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px;">
+                <i class="fas fa-trophy" style="color: #10b981; font-size: 24px;"></i>
+                <div>
+                    <strong style="color: #10b981;">Selamat! Anda Diterima! 🎉</strong>
+                    <p style="margin: 3px 0 0 0; font-size: 14px; color: #10b981;">Anda telah berhasil lolos seleksi PPDB SMK Antartika 1 Sidoarjo. Silakan lanjutkan ke tahap daftar ulang.</p>
+                </div>
+            </div>
+        @elseif($status === 'Ditolak')
+            <div style="background: rgba(239, 68, 68, 0.1); border-left: 4px solid #ef4444; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px;">
+                <i class="fas fa-heart-broken" style="color: #ef4444; font-size: 24px;"></i>
+                <div>
+                    <strong style="color: #ef4444;">Maaf, Anda Belum Diterima</strong>
+                    <p style="margin: 3px 0 0 0; font-size: 14px; color: #ef4444;">Terima kasih telah mengikuti proses PPDB. Tetap semangat dan sukses di masa depan!</p>
+                </div>
+            </div>
+        @endif
+    @endif
+
     <!-- Quick Actions Cards -->
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 30px;">
         <!-- Card 1: Formulir -->
@@ -56,9 +80,38 @@
                 <span style="display: inline-block; padding: 6px 12px; background: rgba(16, 185, 129, 0.15); color: #10b981; border-radius: 6px; font-size: 12px; font-weight: 600;">Status</span>
             </div>
             <h5 style="margin: 0 0 8px 0; color: #1f2937; font-weight: 700;">Status Pendaftaran</h5>
-            <p style="margin: 0 0 20px 0; color: #6b7280; font-size: 14px;">Pantau status kelulusan dan hasil seleksi PPDB Anda secara real-time</p>
+            @php
+                $statusLabel = $pendaftaran && $pendaftaran->statusPendaftaran ? $pendaftaran->statusPendaftaran->label : 'Belum Ada';
+                $statusColor = match($statusLabel) {
+                    'Diterima' => '#10b981',
+                    'Ditolak' => '#ef4444',
+                    'Menunggu' => '#f59e0b',
+                    default => '#6b7280'
+                };
+                $statusIcon = match($statusLabel) {
+                    'Diterima' => 'fas fa-check-circle',
+                    'Ditolak' => 'fas fa-times-circle',
+                    'Menunggu' => 'fas fa-clock',
+                    default => 'fas fa-question-circle'
+                };
+            @endphp
+            @if($pendaftaran && $pendaftaran->statusPendaftaran)
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                    <i class="{{ $statusIcon }}" style="font-size: 24px; color: {{ $statusColor }};"></i>
+                    <span style="font-size: 18px; font-weight: 600; color: {{ $statusColor }};">{{ $statusLabel }}</span>
+                </div>
+                @if($statusLabel === 'Diterima')
+                    <p style="margin: 0 0 20px 0; color: #6b7280; font-size: 14px;">Selamat! Anda telah diterima. Silakan lanjutkan ke tahap berikutnya.</p>
+                @elseif($statusLabel === 'Ditolak')
+                    <p style="margin: 0 0 20px 0; color: #6b7280; font-size: 14px;">Maaf, Anda belum diterima pada periode ini. Tetap semangat!</p>
+                @else
+                    <p style="margin: 0 0 20px 0; color: #6b7280; font-size: 14px;">Hasil seleksi sedang diproses. Pantau terus perkembangannya.</p>
+                @endif
+            @else
+                <p style="margin: 0 0 20px 0; color: #6b7280; font-size: 14px;">Pantau status kelulusan dan hasil seleksi PPDB Anda secara real-time</p>
+            @endif
             <a href="{{ route('user.status') }}" style="display: inline-block; padding: 10px 16px; background: linear-gradient(135deg, #10b981 0%, #34d399 100%); color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; transition: all 0.3s;">
-                <i class="fas fa-arrow-right" style="margin-right: 6px;"></i>Lihat Status
+                <i class="fas fa-arrow-right" style="margin-right: 6px;"></i>Lihat Detail Status
             </a>
         </div>
 
@@ -96,9 +149,16 @@
             </div>
             <h5 style="margin: 0 0 8px 0; color: #1f2937; font-weight: 700;">Pembayaran</h5>
             <p style="margin: 0 0 20px 0; color: #6b7280; font-size: 14px;">Kelola pembayaran biaya pendaftaran atau daftar ulang</p>
-            <a href="{{ route('user.pembayaran.index') }}" style="display: inline-block; padding: 10px 16px; background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%); color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; transition: all 0.3s;">
-                <i class="fas fa-arrow-right" style="margin-right: 6px;"></i>Lihat Pembayaran
-            </a>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <a href="{{ route('user.pembayaran.index') }}" style="display: inline-block; padding: 10px 16px; background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%); color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; transition: all 0.3s;">
+                    <i class="fas fa-arrow-right" style="margin-right: 6px;"></i>Lihat Pembayaran
+                </a>
+                @if(isset($hasVerifiedPayment) && $hasVerifiedPayment)
+                <a href="{{ route('cetak.kuitansi.index') }}" style="display: inline-block; padding: 10px 16px; background: linear-gradient(135deg, #10b981 0%, #34d399 100%); color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; transition: all 0.3s;">
+                    <i class="fas fa-print" style="margin-right: 6px;"></i>Cetak Kuitansi
+                </a>
+                @endif
+            </div>
         </div>
 
         <!-- Card 6: Profil -->
