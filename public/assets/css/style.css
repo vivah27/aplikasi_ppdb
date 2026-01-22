@@ -16,9 +16,9 @@ File: style.css
   --pc-sidebar-background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 50%, #0f1419 100%);
   --pc-sidebar-color: #ffffff;
   --pc-sidebar-color-rgb: 255, 255, 255;
-  --pc-sidebar-active-color: #FF6B35;
+  --pc-sidebar-active-color: #a8dadc;
   --pc-sidebar-shadow: 8px 0 32px rgba(255, 107, 53, 0.15);
-  --pc-sidebar-caption-color: #FF6B35;
+  --pc-sidebar-caption-color: #a8dadc;
   --pc-header-background: #fff;
   --pc-header-color: #141414;
   --pc-header-shadow: 0 1px 0 0px rgb(240 240 240);
@@ -16037,13 +16037,13 @@ pre[class*=language-] > code {
 .pc-sidebar .pc-micon i {
   font-size: 18px;
   vertical-align: middle;
-  color: #FF6B35 !important;
+  color: #a8dadc !important;
   transition: all 0.4s ease;
 }
 
 .pc-sidebar .pc-link:hover .pc-micon i {
   transform: scale(1.2) rotate(5deg);
-  color: #FF1493 !important;
+  color: #dda0dd !important;
   filter: drop-shadow(0 0 8px rgba(255, 107, 53, 0.6));
 }
 
@@ -16055,7 +16055,7 @@ pre[class*=language-] > code {
 .pc-sidebar .pc-micon > svg {
   width: 18px;
   height: 18px;
-  fill: #FF6B35;
+  fill: #a8dadc;
   display: inline-block;
 }
 
@@ -16093,7 +16093,7 @@ pre[class*=language-] > code {
 .pc-sidebar .pc-link:focus, .pc-sidebar .pc-link.active, .pc-sidebar .pc-link:hover {
   text-decoration: none;
   background: rgba(255, 107, 53, 0.15);
-  color: #FF6B35;
+  color: #a8dadc;
   transform: translateX(4px);
   box-shadow: -3px 0 12px rgba(255, 107, 53, 0.2);
 }
@@ -16105,9 +16105,9 @@ pre[class*=language-] > code {
 
 .pc-sidebar .pc-navbar > .pc-item.active > .pc-link {
   font-weight: 600;
-  color: #FF6B35;
+  color: #a8dadc;
   background: linear-gradient(90deg, rgba(255, 107, 53, 0.25) 0%, rgba(255, 107, 53, 0.1) 100%);
-  border-left-color: #FF6B35;
+  border-left-color: #a8dadc;
   box-shadow: -3px 0 16px rgba(255, 107, 53, 0.3), inset 2px 0 8px rgba(255, 107, 53, 0.15);
 }
 
@@ -16123,12 +16123,12 @@ pre[class*=language-] > code {
   right: 0px;
   width: 2px;
   height: 100%;
-  background: #FF6B35;
+  background: #a8dadc;
 }
 
 .pc-sidebar .pc-navbar > .pc-item.active:not(.pc-hasmenu) > .pc-link:before {
   opacity: 0.1;
-  background: #FF6B35;
+  background: #a8dadc;
 }
 
 .pc-sidebar .pc-navbar > .pc-item:hover:not(.active) > .pc-link:before {
@@ -16157,11 +16157,11 @@ pre[class*=language-] > code {
 
 .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-item.pc-trigger > .pc-link, .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-item.active > .pc-link {
   font-weight: 600;
-  color: #FF6B35;
+  color: #a8dadc;
 }
 
 .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-item:hover > .pc-link {
-  color: #FF6B35;
+  color: #a8dadc;
   background: rgba(255, 107, 53, 0.15);
   transform: translateX(4px);
 }
@@ -16172,16 +16172,16 @@ pre[class*=language-] > code {
 }
 
 .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-item.pc-trigger > .pc-link, .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-item.active > .pc-link, .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-item:focus > .pc-link {
-  color: #FF6B35;
+  color: #a8dadc;
 }
 
 .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-item.pc-trigger > .pc-link:before, .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-item.active > .pc-link:before, .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-item:focus > .pc-link:before {
   opacity: 0.1;
-  background: #FF6B35;
+  background: #a8dadc;
 }
 
 .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-item.pc-trigger > .pc-link:after, .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-item.active > .pc-link:after, .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-item:focus > .pc-link:after {
-  background: #FF6B35;
+  background: #a8dadc;
 }
 
 .pc-sidebar .pc-navbar > .pc-item .pc-submenu .pc-link {

@@ -1,7 +1,7 @@
 <?php $__env->startSection('title', 'Login - PPDB SMK Antartika 1 Sidoarjo'); ?>
 
 <?php $__env->startSection('content'); ?>
-<div class="auth-wrapper" style="min-height: 100dvh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #FF6B35 0%, #FF1493 50%, #FF69B4 100%); position: relative; overflow: hidden;">
+<div class="auth-wrapper" style="min-height: 100dvh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #a8dadc 0%, #dda0dd 100%); position: relative; overflow: hidden;">
     <!-- Animated Background Elements -->
     <div style="position: absolute; width: 400px; height: 400px; background: rgba(255,255,255,0.05); border-radius: 50%; top: -100px; left: -100px;"></div>
     <div style="position: absolute; width: 300px; height: 300px; background: rgba(255,255,255,0.05); border-radius: 50%; bottom: -80px; right: -80px;"></div>
@@ -11,7 +11,7 @@
             <div class="col-md-8 col-lg-5 col-xl-4">
                 <div class="card border-0 overflow-hidden shadow-xl" style="border-radius: 24px; backdrop-filter: blur(10px);">
                     <!-- Card Header dengan gradient modern -->
-                    <div style="background: linear-gradient(135deg, #FF6B35 0%, #FF1493 100%); padding: 2.5rem 2rem; text-align: center; position: relative;">
+                    <div style="background: linear-gradient(135deg, #a8dadc 0%, #dda0dd 100%); padding: 2.5rem 2rem; text-align: center; position: relative;">
                         <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.05);"></div>
                         <div style="position: relative; z-index: 1;">
                             <!-- Logo Sekolah -->
@@ -43,7 +43,7 @@
                                             <li>Klik tombol di bawah untuk verifikasi</li>
                                             <li>Masukkan kode OTP dan selesaikan verifikasi</li>
                                         </ol>
-                                        <a href="/verify-email" class="btn btn-sm text-white fw-bold w-100" style="background: linear-gradient(135deg, #FF6B35 0%, #FF1493 100%); border-radius: 8px;">
+                                        <a href="/verify-email" class="btn btn-sm text-white fw-bold w-100" style="background: linear-gradient(135deg, #a8dadc 0%, #dda0dd 100%); border-radius: 8px;">
                                             <i class="fas fa-envelope-open me-2"></i>Verifikasi Email Sekarang
                                         </a>
                                     </div>
@@ -68,7 +68,7 @@
                             <!-- Email Field -->
                             <div class="mb-4">
                                 <label for="email" class="form-label fw-600 mb-2">
-                                    <i class="fas fa-envelope me-2" style="color: #FF6B35;"></i>Email
+                                    <i class="fas fa-envelope me-2" style="color: #a8dadc;"></i>Email
                                 </label>
                                 <input type="email" class="form-control <?php $__errorArgs = ['email'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -96,7 +96,7 @@ unset($__errorArgs, $__bag); ?>
                             <!-- Password Field -->
                             <div class="mb-4">
                                 <label for="password" class="form-label fw-600 mb-2">
-                                    <i class="fas fa-lock me-2" style="color: #FF6B35;"></i>Password
+                                    <i class="fas fa-lock me-2" style="color: #a8dadc;"></i>Password
                                 </label>
                                 <input type="password" class="form-control <?php $__errorArgs = ['password'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -129,13 +129,33 @@ unset($__errorArgs, $__bag); ?>
                                         Ingat saya
                                     </label>
                                 </div>
-                                <a href="<?php echo e(route('forgot_password.email_form')); ?>" class="text-decoration-none fw-600" style="color: #FF6B35; font-size: 0.95rem;">
+                                <a href="<?php echo e(route('forgot_password.email_form')); ?>" class="text-decoration-none fw-600" style="color: #a8dadc; font-size: 0.95rem;">
                                     Lupa password?
                                 </a>
                             </div>
 
+                            <!-- reCAPTCHA -->
+                            <?php if(config('nocaptcha.sitekey')): ?>
+                            <div class="mb-4">
+                                <?php echo NoCaptcha::renderJs(); ?>
+
+                                <?php echo NoCaptcha::display(); ?>
+
+                                <?php $__errorArgs = ['g-recaptcha-response'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <small class="text-danger d-block mt-2"><?php echo e($message); ?></small>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                            </div>
+                            <?php endif; ?>
+
                             <!-- Submit Button -->
-                            <button type="submit" class="btn w-100 fw-600 mb-4" style="padding: 12px; border-radius: 10px; background: linear-gradient(135deg, #FF6B35 0%, #FF1493 100%); color: white; border: none; font-size: 1rem; transition: all 0.3s; cursor: pointer;">
+                            <button type="submit" class="btn w-100 fw-600 mb-4" style="padding: 12px; border-radius: 10px; background: linear-gradient(135deg, #a8dadc 0%, #dda0dd 100%); color: white; border: none; font-size: 1rem; transition: all 0.3s; cursor: pointer;">
                                 <i class="fas fa-arrow-right me-2"></i>Masuk
                             </button>
                         </form>
@@ -144,7 +164,7 @@ unset($__errorArgs, $__bag); ?>
                         <div class="text-center pt-4" style="border-top: 1px solid #e5e7eb;">
                             <p class="mb-0" style="color: #6b7280;">
                                 Belum punya akun?
-                                <a href="/register" class="text-decoration-none fw-600" style="color: #FF6B35;">
+                                <a href="/register" class="text-decoration-none fw-600" style="color: #a8dadc;">
                                     Daftar Sekarang
                                 </a>
                             </p>
@@ -172,7 +192,7 @@ unset($__errorArgs, $__bag); ?>
     }
     
     .form-control:focus {
-        border-color: #FF6B35 !important;
+        border-color: #a8dadc !important;
         box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
     }
     
@@ -181,12 +201,12 @@ unset($__errorArgs, $__bag); ?>
     }
     
     .form-check-input:checked {
-        background-color: #FF6B35;
-        border-color: #FF6B35;
+        background-color: #a8dadc;
+        border-color: #a8dadc;
     }
     
     button[type="submit"]:hover {
-        background: linear-gradient(135deg, #5568d3 0%, #6a3a95 100%) !important;
+        background: linear-gradient(135deg, #dda0dd 0%, #a8dadc 100%) !important;
         transform: translateY(-2px);
         box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
     }
@@ -197,4 +217,4 @@ unset($__errorArgs, $__bag); ?>
 </style>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.auth', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\aplikasi_ppdb_2\resources\views/auth/login.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.auth', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\PC_\aplikasi_ppdb\resources\views/auth/login.blade.php ENDPATH**/ ?>

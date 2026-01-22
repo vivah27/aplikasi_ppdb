@@ -38,7 +38,7 @@
     <!-- [Head] end -->
     <!-- [Body] Start -->
 
-    <body style="min-height:100dvh; min-height:100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); background-attachment: fixed; margin: 0; padding: 0;">
+    <body style="min-height:100dvh; min-height:100vh; background: linear-gradient(135deg, #a8dadc 0%, #dda0dd 100%); background-attachment: fixed; margin: 0; padding: 0;">
         <!-- [ Pre-loader ] start -->
         <div class="loader-bg">
             <div class="loader-track">
@@ -125,4 +125,4 @@
     <!-- [Body] end -->
 
 </html>
-<?php /**PATH C:\aplikasi_ppdb_2\resources\views/layouts/auth.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\PC_\aplikasi_ppdb\resources\views/layouts/auth.blade.php ENDPATH**/ ?>

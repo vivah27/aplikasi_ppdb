@@ -37,10 +37,10 @@
         }
         
         :root {
-            --primary: #5eead4;
+            --primary: #a8dadc;
             --primary-light: #7ee8d9;
             --primary-dark: #14b8a6;
-            --accent: #f0abfc;
+            --accent: #dda0dd;
             --accent-light: #f5c3ff;
             --success: #6ee7b7;
             --danger: #fca5a5;

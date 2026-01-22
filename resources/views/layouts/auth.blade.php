@@ -38,7 +38,7 @@
     <!-- [Head] end -->
     <!-- [Body] Start -->
 
-    <body style="min-height:100dvh; min-height:100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); background-attachment: fixed; margin: 0; padding: 0;">
+    <body style="min-height:100dvh; min-height:100vh; background: linear-gradient(135deg, #a8dadc 0%, #dda0dd 100%); background-attachment: fixed; margin: 0; padding: 0;">
         <!-- [ Pre-loader ] start -->
         <div class="loader-bg">
             <div class="loader-track">

@@ -35,10 +35,18 @@ class AuthController extends Controller
         // Validate the request data
         $credentials = $request->only('email', 'password');
         $remember = $request->has('remember'); // akan bernilai true jika dicentang
-        $request->validate([
+        
+        $rules = [
             'email' => 'required|email',
             'password' => 'required|min:6',
-        ]);
+        ];
+        
+        // Add captcha validation only if sitekey is set
+        if (config('nocaptcha.sitekey')) {
+            $rules['g-recaptcha-response'] = 'required|captcha';
+        }
+        
+        $request->validate($rules);
 
         // Validasi email sudah diverifikasi (kecuali admin)
         $user = User::where('email', $credentials['email'])->first();
@@ -126,6 +134,8 @@ class AuthController extends Controller
                 $otp,
                 $user->otp_expires_at->format('d M Y H:i:s')
             ));
+            // Log OTP untuk testing
+            Log::info('OTP dikirim ke ' . $user->email . ': ' . $otp);
         } catch (\Exception $e) {
             // Log error jika email gagal dikirim
             Log::error('OTP email failed: ' . $e->getMessage());

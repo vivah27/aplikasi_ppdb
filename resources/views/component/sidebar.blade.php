@@ -65,7 +65,7 @@
     .logo-badge {
         width: 56px;
         height: 56px;
-        background: linear-gradient(135deg, #FF6B35 0%, #FF1493 100%);
+        background: linear-gradient(135deg, #a8dadc 0%, #FF1493 100%);
         border-radius: 16px;
         display: flex;
         align-items: center;
@@ -126,15 +126,15 @@
     
     .nav-link:hover {
         background: rgba(255, 107, 53, 0.15) !important;
-        color: #FF6B35 !important;
+        color: #a8dadc !important;
         transform: translateX(4px);
         box-shadow: -3px 0 12px rgba(255, 107, 53, 0.2);
     }
     
     .nav-link.active {
         background: linear-gradient(90deg, rgba(255, 107, 53, 0.25) 0%, rgba(255, 107, 53, 0.1) 100%) !important;
-        color: #FF6B35 !important;
-        border-left-color: #FF6B35 !important;
+        color: #a8dadc !important;
+        border-left-color: #a8dadc !important;
         box-shadow: -3px 0 16px rgba(255, 107, 53, 0.3), inset 2px 0 8px rgba(255, 107, 53, 0.15);
     }
     
@@ -142,7 +142,7 @@
         font-size: 1.2rem;
         width: 24px;
         text-align: center;
-        color: #FF6B35;
+        color: #a8dadc;
         transition: all 0.4s ease;
         display: flex;
         align-items: center;
@@ -175,7 +175,7 @@
     .section-title {
         font-size: 0.72rem;
         font-weight: 900;
-        color: #FF6B35;
+        color: #a8dadc;
         text-transform: uppercase;
         letter-spacing: 1.3px;
         opacity: 0.9;
@@ -245,15 +245,15 @@
     
     .dropdown-item:hover {
         background: rgba(255, 107, 53, 0.15) !important;
-        color: #FF6B35 !important;
+        color: #a8dadc !important;
         transform: translateX(4px);
-        border-left-color: #FF6B35 !important;
+        border-left-color: #a8dadc !important;
     }
     
     .dropdown-item.active {
         background: linear-gradient(90deg, rgba(255, 107, 53, 0.3) 0%, rgba(255, 107, 53, 0.1) 100%) !important;
-        color: #FF6B35 !important;
-        border-left-color: #FF6B35 !important;
+        color: #a8dadc !important;
+        border-left-color: #a8dadc !important;
         box-shadow: inset 2px 0 8px rgba(255, 107, 53, 0.15);
     }
     
@@ -275,7 +275,7 @@
     }
     
     .sidebar-wrapper::-webkit-scrollbar-thumb {
-        background: linear-gradient(180deg, #FF6B35, #FF1493);
+        background: linear-gradient(180deg, #a8dadc, #FF1493);
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(255, 107, 53, 0.4);
     }
@@ -302,7 +302,7 @@
             </div>
             <div style="flex: 1;">
                 <div style="color: white; font-weight: 900; font-size: 1.1rem; letter-spacing: -0.5px; text-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);">PPDB</div>
-                <div style="font-size: 0.65rem; color: #FF6B35; font-weight: 700; letter-spacing: 0.5px;">SMK ANTARTIKA</div>
+                <div style="font-size: 0.65rem; color: #a8dadc; font-weight: 700; letter-spacing: 0.5px;">SMK ANTARTIKA</div>
             </div>
         </a>
     </div>
@@ -344,37 +344,37 @@
                              style="cursor: pointer; user-select: none;">
                             <i class="fas fa-cogs nav-icon"></i>
                             <span style="flex: 1;">Manajemen</span>
-                            <i class="fas fa-chevron-right chevron" style="font-size: 0.85rem; opacity: 0.7; transition: transform 0.4s ease; color: #FF6B35;"></i>
+                            <i class="fas fa-chevron-right chevron" style="font-size: 0.85rem; opacity: 0.7; transition: transform 0.4s ease; color: #a8dadc;"></i>
                         </div>
                         <div class="dropdown-menu" style="display: none;">
                             <a href="{{ route('admin.dashboard') }}" class="dropdown-item">
-                                <i class="fas fa-chart-line" style="color: #FF6B35; width: 20px; text-align: center;"></i>
+                                <i class="fas fa-chart-line" style="color: #a8dadc; width: 20px; text-align: center;"></i>
                                 Dashboard Admin
                             </a>
                             <a href="{{ route('admin.siswa.index') }}" class="dropdown-item">
-                                <i class="fas fa-users" style="color: #FF6B35; width: 20px; text-align: center;"></i>
+                                <i class="fas fa-users" style="color: #a8dadc; width: 20px; text-align: center;"></i>
                                 Daftar Siswa
                             </a>
                             <a href="{{ route('admin.pendaftaran.index') }}" class="dropdown-item">
-                                <i class="fas fa-file-alt" style="color: #FF6B35; width: 20px; text-align: center;"></i>
+                                <i class="fas fa-file-alt" style="color: #a8dadc; width: 20px; text-align: center;"></i>
                                 Data Pendaftaran
                             </a>
                             <a href="{{ route('admin.verifikasi.index') }}" class="dropdown-item">
-                                <i class="fas fa-check-circle" style="color: #FF6B35; width: 20px; text-align: center;"></i>
+                                <i class="fas fa-check-circle" style="color: #a8dadc; width: 20px; text-align: center;"></i>
                                 Verifikasi Dokumen
                             </a>
                             <div class="dropdown-divider"></div>
                             <a href="{{ route('admin.jenis-dokumen.index') }}" class="dropdown-item">
-                                <i class="fas fa-list" style="color: #FF6B35; width: 20px; text-align: center;"></i>
+                                <i class="fas fa-list" style="color: #a8dadc; width: 20px; text-align: center;"></i>
                                 Jenis Dokumen
                             </a>
                             <a href="{{ route('admin.peran.index') }}" class="dropdown-item">
-                                <i class="fas fa-users-cog" style="color: #FF6B35; width: 20px; text-align: center;"></i>
+                                <i class="fas fa-users-cog" style="color: #a8dadc; width: 20px; text-align: center;"></i>
                                 Manage Peran
                             </a>
                             <div class="dropdown-divider"></div>
                             <a href="{{ route('admin.laporan.index') }}" class="dropdown-item">
-                                <i class="fas fa-chart-bar" style="color: #FF6B35; width: 20px; text-align: center;"></i>
+                                <i class="fas fa-chart-bar" style="color: #a8dadc; width: 20px; text-align: center;"></i>
                                 Laporan
                             </a>
                         </div>
@@ -395,20 +395,20 @@
                              style="cursor: pointer; user-select: none;">
                             <i class="fas fa-file-upload nav-icon"></i>
                             <span style="flex: 1;">Dokumen</span>
-                            <i class="fas fa-chevron-right chevron" style="font-size: 0.85rem; opacity: 0.7; transition: transform 0.4s ease; color: #FF6B35;"></i>
+                            <i class="fas fa-chevron-right chevron" style="font-size: 0.85rem; opacity: 0.7; transition: transform 0.4s ease; color: #a8dadc;"></i>
                         </div>
                         <div class="dropdown-menu" style="display: none;">
                             <a href="{{ route('user.dokumen.index') }}" class="dropdown-item">
-                                <i class="fas fa-list" style="color: #FF6B35; width: 20px; text-align: center;"></i>
+                                <i class="fas fa-list" style="color: #a8dadc; width: 20px; text-align: center;"></i>
                                 Kelola Dokumen
                             </a>
                             <a href="{{ route('user.dokumen.create') }}" class="dropdown-item">
-                                <i class="fas fa-plus-circle" style="color: #FF6B35; width: 20px; text-align: center;"></i>
+                                <i class="fas fa-plus-circle" style="color: #a8dadc; width: 20px; text-align: center;"></i>
                                 Upload Dokumen
                             </a>
                             <div class="dropdown-divider"></div>
                             <a href="{{ route('user.cetak-kartu') }}" class="dropdown-item">
-                                <i class="fas fa-print" style="color: #FF6B35; width: 20px; text-align: center;"></i>
+                                <i class="fas fa-print" style="color: #a8dadc; width: 20px; text-align: center;"></i>
                                 Cetak Kartu Ujian
                             </a>
                         </div>

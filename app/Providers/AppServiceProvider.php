@@ -37,5 +37,8 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(function (\SocialiteProviders\Manager\SocialiteWasCalled $event) {
             $event->extendSocialite('discord', \SocialiteProviders\Discord\Provider::class);
         });
+
+        // Register NoCaptcha facade
+        $this->app->alias('captcha', \Anhskohbo\NoCaptcha\Facades\NoCaptcha::class);
     }
 }

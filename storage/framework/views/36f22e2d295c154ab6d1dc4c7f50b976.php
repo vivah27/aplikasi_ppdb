@@ -44,14 +44,8 @@
                 margin: 30px 0;
             }
 
-            .button-container span {
-                color: black;
-                font-weight: bold;
-                font-size: 20px;
-                background-color: #eee;
-
-                padding: 1rem;
-                letter-spacing: 1rem;
+            .button-container a {
+                color: white
             }
 
             .btn {
@@ -77,20 +71,30 @@
     <body>
         <div class="container">
             <div class="header">
-                <?php echo e($subject); ?>
-
+                Reset Password
             </div>
             <div class="content">
                 <p>Halo <b><?php echo e($name); ?></b>,</p>
-                <p>Kode OTP Anda untuk verifikasi email adalah sebagai berikut:</p>
+                <p>Anda telah meminta untuk mereset password akun Anda. Berikut adalah kode verifikasi Anda:</p>
+            </div>
+            <div style="text-align: center; background-color: #f5f5f5; padding: 20px; border-radius: 5px; margin: 20px 0;">
+                <h3 style="color: #2c3e50; letter-spacing: 5px; font-size: 24px; margin: 0;"><?php echo e($otp); ?></h3>
+                <p style="color: #888888; font-size: 12px; margin-top: 10px;">Kode berlaku selama 10 menit</p>
             </div>
             <div class="button-container">
-                <span><?php echo e($otp); ?></span>
+                <a href="<?php echo e(route('password.verify-form', ['token' => $token])); ?>" class="btn">
+                    Masukkan Kode Verifikasi
+                </a>
             </div>
             <div class="content">
-                <p>Kode ini berlaku sampai <b><?php echo e($expireAt); ?></b>. Jangan bagikan kode ini kepada siapa pun demi
-                    keamanan akun Anda.</p>
-                <p>Jika Anda tidak pernah meminta kode OTP ini, abaikan email ini.</p>
+                <p><strong>Langkah Selanjutnya:</strong></p>
+                <ol>
+                    <li>Klik tombol di atas atau buka link berikut: <a href="<?php echo e(route('password.verify-form', ['token' => $token])); ?>" style="color: #2c3e50;"><?php echo e(route('password.verify-form', ['token' => $token])); ?></a></li>
+                    <li>Masukkan kode verifikasi: <strong><?php echo e($otp); ?></strong></li>
+                    <li>Buat password baru Anda</li>
+                </ol>
+                <p>Kode ini berlaku sampai <b><?php echo e($expireAt); ?></b>. Jika sudah lewat, Anda harus membuat permintaan ulang.</p>
+                <p style="color: #c0392b;"><strong>⚠️ Penting:</strong> Jika Anda tidak pernah meminta proses ini, abaikan email ini dan password Anda tetap aman.</p>
             </div>
             <div class="footer">
                 &copy; <?php echo e(date('Y')); ?> Aplikasi PPDB SMK
@@ -99,4 +103,4 @@
     </body>
 
 </html>
-<?php /**PATH C:\aplikasi_ppdb_2\resources\views/emails/otp.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\PC_\aplikasi_ppdb\resources\views/emails/reset-password.blade.php ENDPATH**/ ?>

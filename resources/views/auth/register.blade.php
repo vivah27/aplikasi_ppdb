@@ -3,7 +3,7 @@
 @section('title', 'Register - PPDB SMK Antartika 1 Sidoarjo')
 
 @section('content')
-<div class="auth-wrapper" style="min-height: 100dvh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #FF6B35 0%, #FF1493 50%, #FF69B4 100%); position: relative; overflow: hidden;">
+<div class="auth-wrapper" style="min-height: 100dvh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #a8dadc 0%, #dda0dd 100%); position: relative; overflow: hidden;">
     <!-- Animated Background Elements -->
     <div style="position: absolute; width: 400px; height: 400px; background: rgba(255,255,255,0.05); border-radius: 50%; top: -100px; right: -100px;"></div>
     <div style="position: absolute; width: 300px; height: 300px; background: rgba(255,255,255,0.05); border-radius: 50%; bottom: -80px; left: -80px;"></div>
@@ -13,7 +13,7 @@
             <div class="col-md-8 col-lg-5 col-xl-4">
                 <div class="card border-0 overflow-hidden shadow-xl" style="border-radius: 24px; backdrop-filter: blur(10px);">
                     <!-- Card Header dengan gradient modern -->
-                    <div style="background: linear-gradient(135deg, #FF6B35 0%, #FF1493 100%); padding: 2.5rem 2rem; text-align: center; position: relative;">
+                    <div style="background: linear-gradient(135deg, #a8dadc 0%, #dda0dd 100%); padding: 2.5rem 2rem; text-align: center; position: relative;">
                         <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.05);"></div>
                         <div style="position: relative; z-index: 1;">
                             <!-- Logo Sekolah -->
@@ -46,7 +46,7 @@
                             <!-- Nama Lengkap -->
                             <div class="mb-4">
                                 <label for="name" class="form-label fw-600 mb-2">
-                                    <i class="fas fa-user me-2" style="color: #FF6B35;"></i>Nama Lengkap
+                                    <i class="fas fa-user me-2" style="color: #a8dadc;"></i>Nama Lengkap
                                 </label>
                                 <input type="text" class="form-control @error('name') is-invalid @enderror" 
                                        id="name" name="name" placeholder="Masukkan nama lengkap" 
@@ -60,7 +60,7 @@
                             <!-- Email Address -->
                             <div class="mb-4">
                                 <label for="email" class="form-label fw-600 mb-2">
-                                    <i class="fas fa-envelope me-2" style="color: #FF6B35;"></i>Email Address
+                                    <i class="fas fa-envelope me-2" style="color: #a8dadc;"></i>Email Address
                                 </label>
                                 <input type="email" class="form-control @error('email') is-invalid @enderror" 
                                        id="email" name="email" placeholder="Masukkan email Anda" 
@@ -74,7 +74,7 @@
                             <!-- Password -->
                             <div class="mb-4">
                                 <label for="password" class="form-label fw-600 mb-2">
-                                    <i class="fas fa-lock me-2" style="color: #FF6B35;"></i>Password
+                                    <i class="fas fa-lock me-2" style="color: #a8dadc;"></i>Password
                                 </label>
                                 <input type="password" class="form-control @error('password') is-invalid @enderror" 
                                        id="password" name="password" placeholder="Buat password yang kuat" 
@@ -91,7 +91,7 @@
                             <!-- Password Confirmation -->
                             <div class="mb-5">
                                 <label for="password_confirmation" class="form-label fw-600 mb-2">
-                                    <i class="fas fa-check-circle me-2" style="color: #FF6B35;"></i>Konfirmasi Password
+                                    <i class="fas fa-check-circle me-2" style="color: #a8dadc;"></i>Konfirmasi Password
                                 </label>
                                 <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" 
                                        id="password_confirmation" name="password_confirmation" placeholder="Ketik ulang password" 
@@ -106,12 +106,12 @@
                             <div class="form-check mb-5">
                                 <input class="form-check-input" type="checkbox" id="agree" required style="width: 18px; height: 18px;">
                                 <label class="form-check-label" for="agree" style="color: #6b7280; font-size: 0.9rem;">
-                                    Saya setuju dengan <a href="#" class="text-decoration-none fw-600" style="color: #FF6B35;">Terms of Service</a> dan <a href="#" class="text-decoration-none fw-600" style="color: #FF6B35;">Privacy Policy</a>
+                                    Saya setuju dengan <a href="#" class="text-decoration-none fw-600" style="color: #a8dadc;">Terms of Service</a> dan <a href="#" class="text-decoration-none fw-600" style="color: #a8dadc;">Privacy Policy</a>
                                 </label>
                             </div>
 
                             <!-- Submit Button -->
-                            <button type="submit" class="btn w-100 fw-600 mb-4" style="padding: 12px; border-radius: 10px; background: linear-gradient(135deg, #FF6B35 0%, #FF1493 100%); color: white; border: none; font-size: 1rem; transition: all 0.3s; cursor: pointer;">
+                            <button type="submit" class="btn w-100 fw-600 mb-4" style="padding: 12px; border-radius: 10px; background: linear-gradient(135deg, #a8dadc 0%, #dda0dd 100%); color: white; border: none; font-size: 1rem; transition: all 0.3s; cursor: pointer;">
                                 <i class="fas fa-user-plus me-2"></i>Buat Akun
                             </button>
                         </form>
@@ -120,7 +120,7 @@
                         <div class="text-center pt-4" style="border-top: 1px solid #e5e7eb;">
                             <p class="mb-0" style="color: #6b7280;">
                                 Sudah punya akun?
-                                <a href="/login" class="text-decoration-none fw-600" style="color: #FF6B35;">
+                                <a href="/login" class="text-decoration-none fw-600" style="color: #a8dadc;">
                                     Masuk di Sini
                                 </a>
                             </p>
@@ -148,7 +148,7 @@
     }
     
     .form-control:focus {
-        border-color: #FF6B35 !important;
+        border-color: #a8dadc !important;
         box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
     }
     
@@ -157,12 +157,12 @@
     }
     
     .form-check-input:checked {
-        background-color: #FF6B35;
-        border-color: #FF6B35;
+        background-color: #a8dadc;
+        border-color: #a8dadc;
     }
     
     button[type="submit"]:hover {
-        background: linear-gradient(135deg, #5568d3 0%, #6a3a95 100%) !important;
+        background: linear-gradient(135deg, #dda0dd 0%, #a8dadc 100%) !important;
         transform: translateY(-2px);
         box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
     }
