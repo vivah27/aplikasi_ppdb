@@ -1028,4 +1028,4 @@
     <?php echo $__env->yieldContent('extra_js'); ?>
 </body>
 </html>
-<?php /**PATH C:\Users\PC_\ifa\resources\views/layouts/master.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\PC_21\aplikasi_ppdb\resources\views/layouts/master.blade.php ENDPATH**/ ?>

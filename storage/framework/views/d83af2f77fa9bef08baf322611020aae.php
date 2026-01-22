@@ -1,8 +1,6 @@
-@extends('layouts.auth')
+<?php $__env->startSection('title', 'Login - PPDB SMK Antartika 1 Sidoarjo'); ?>
 
-@section('title', 'Login - PPDB SMK Antartika 1 Sidoarjo')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="auth-wrapper" style="min-height: 100dvh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #C8B4E8 0%, #DFD1F5 50%, #E8D4F9 100%); position: relative; overflow: hidden;">
     <!-- Animated Background Elements -->
     <div style="position: absolute; width: 400px; height: 400px; background: rgba(255,255,255,0.05); border-radius: 50%; top: -100px; left: -100px;"></div>
@@ -18,7 +16,7 @@
                         <div style="position: relative; z-index: 1;">
                             <!-- Logo Sekolah -->
                             <div style="margin-bottom: 1.5rem;">
-                                <img src="{{ asset('assets/images/my/logo-antrek-tp.png') }}" alt="Logo SMK Antartika 1" style="width: 70px; height: 70px; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">
+                                <img src="<?php echo e(asset('assets/images/my/logo-antrek-tp.png')); ?>" alt="Logo SMK Antartika 1" style="width: 70px; height: 70px; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">
                             </div>
                             <h2 class="text-white mb-2" style="font-weight: 700; font-size: 1.75rem;">Masuk</h2>
                             <p class="text-white" style="opacity: 0.85; margin: 0; font-size: 0.95rem;">Portal Pendaftaran PPDB 2025/2026</p>
@@ -28,15 +26,15 @@
                     <!-- Card Body -->
                     <div class="card-body p-5">
                         <!-- Alert Messages -->
-                        @if ($errors->any())
+                        <?php if($errors->any()): ?>
                             <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert" style="border-radius: 12px; border: 1px solid #fee; background: rgba(239, 68, 68, 0.05);">
                                 <i class="fas fa-exclamation-circle me-2" style="color: #ef4444;"></i>
                                 <strong>Kesalahan Login:</strong>
-                                @foreach ($errors->all() as $error)
-                                    <div style="margin-top: 8px;">{{ $error }}</div>
-                                @endforeach
+                                <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <div style="margin-top: 8px;"><?php echo e($error); ?></div>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 
-                                @if ($errors->has('verify_email'))
+                                <?php if($errors->has('verify_email')): ?>
                                     <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(0,0,0,0.1);">
                                         <p class="mb-3"><strong>📧 Bagaimana cara verifikasi?</strong></p>
                                         <ol style="font-size: 13px; margin-bottom: 15px; padding-left: 20px;">
@@ -49,35 +47,50 @@
                                             <i class="fas fa-envelope-open me-2"></i>Verifikasi Email Sekarang
                                         </a>
                                     </div>
-                                @endif
+                                <?php endif; ?>
                                 
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                             </div>
-                        @endif
+                        <?php endif; ?>
 
-                        @if (session('success'))
+                        <?php if(session('success')): ?>
                             <div class="alert alert-success alert-dismissible fade show mb-4" role="alert" style="border-radius: 12px; border: 1px solid #d1fae5; background: rgba(16, 185, 129, 0.05);">
-                                <i class="fas fa-check-circle me-2" style="color: #10b981;"></i>{{ session('success') }}
+                                <i class="fas fa-check-circle me-2" style="color: #10b981;"></i><?php echo e(session('success')); ?>
+
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                             </div>
-                        @endif
+                        <?php endif; ?>
 
                         <!-- Login Form -->
-                        <form method="POST" action="{{ route('login.post') }}">
-                            @csrf
+                        <form method="POST" action="<?php echo e(route('login.post')); ?>">
+                            <?php echo csrf_field(); ?>
 
                             <!-- Email Field -->
                             <div class="mb-4">
                                 <label for="email" class="form-label fw-600 mb-2">
                                     <i class="fas fa-envelope me-2" style="color: #C8B4E8;"></i>Email
                                 </label>
-                                <input type="email" class="form-control @error('email') is-invalid @enderror" 
+                                <input type="email" class="form-control <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
                                        id="email" name="email" placeholder="Masukkan email Anda" 
-                                       value="{{ session('registered_email') }}" autocomplete="email" required
+                                       value="<?php echo e(session('registered_email')); ?>" autocomplete="email" required
                                        style="padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 0.95rem; transition: all 0.3s;">
-                                @error('email')
-                                    <small class="text-danger d-block mt-2">{{ $message }}</small>
-                                @enderror
+                                <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <small class="text-danger d-block mt-2"><?php echo e($message); ?></small>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
 
                             <!-- Password Field -->
@@ -85,13 +98,27 @@
                                 <label for="password" class="form-label fw-600 mb-2">
                                     <i class="fas fa-lock me-2" style="color: #C8B4E8;"></i>Password
                                 </label>
-                                <input type="password" class="form-control @error('password') is-invalid @enderror" 
+                                <input type="password" class="form-control <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
                                        id="password" name="password" placeholder="Masukkan password Anda" 
-                                       {{ session('registered_email') ? 'autofocus' : '' }} required
+                                       <?php echo e(session('registered_email') ? 'autofocus' : ''); ?> required
                                        style="padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 0.95rem; transition: all 0.3s;">
-                                @error('password')
-                                    <small class="text-danger d-block mt-2">{{ $message }}</small>
-                                @enderror
+                                <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <small class="text-danger d-block mt-2"><?php echo e($message); ?></small>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
 
                             <!-- Remember Me & Forgot Password -->
@@ -102,7 +129,7 @@
                                         Ingat saya
                                     </label>
                                 </div>
-                                <a href="{{ route('forgot_password.email_form') }}" class="text-decoration-none fw-600" style="color: #C8B4E8; font-size: 0.95rem;">
+                                <a href="<?php echo e(route('forgot_password.email_form')); ?>" class="text-decoration-none fw-600" style="color: #C8B4E8; font-size: 0.95rem;">
                                     Lupa password?
                                 </a>
                             </div>
@@ -168,4 +195,6 @@
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     }
 </style>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.auth', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\PC_21\aplikasi_ppdb\resources\views/auth/login.blade.php ENDPATH**/ ?>
