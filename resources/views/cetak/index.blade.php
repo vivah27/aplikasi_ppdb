@@ -84,31 +84,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="col-md-6">
-                                <div class="card h-100">
-                                    <div class="card-body text-center">
-                                        <i class="fas fa-id-card fa-3x text-success mb-3"></i>
-                                        <h6>Kartu Peserta</h6>
-                                        <p class="text-muted small">
-                                            @if($pembayaranLunas)
-                                                Cetak kartu peserta ujian
-                                            @else
-                                                (Hanya untuk pembayaran terverifikasi)
-                                            @endif
-                                        </p>
-                                        @if($pembayaranLunas)
-                                            <a href="{{ route('cetak.kartu', ['pendaftaranId' => $pendaftaran->id]) }}" class="btn btn-sm btn-success" target="_blank">
-                                                <i class="fas fa-print"></i> Tampilkan
-                                            </a>
-                                        @else
-                                            <button class="btn btn-sm btn-secondary" disabled title="Pembayaran belum diverifikasi admin">
-                                                <i class="fas fa-lock"></i> Terkunci
-                                            </button>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
                         <div class="row mb-4">

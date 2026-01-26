@@ -54,6 +54,36 @@ class CetakDokumenController extends Controller
     }
 
     /**
+     * Display the main cetak dokumen page
+     */
+    public function index()
+    {
+        try {
+            $user = Auth::user();
+            if (!$user) {
+                return redirect()->route('login');
+            }
+
+            // Get pendaftaran
+            $pendaftaran = Pendaftaran::whereHas('siswa', function ($query) use ($user) {
+                $query->where('pengguna_id', $user->id);
+            })->with(['siswa', 'pembayaran.statusPembayaran'])
+            ->first();
+
+            // Get berkas cetak history
+            $berkasCetak = BerkasCetak::where('user_id', $user->id)
+                ->with('jenisBerkas')
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
+
+            return view('cetak.index', compact('pendaftaran', 'berkasCetak'));
+        } catch (\Exception $e) {
+            Log::error('Error in CetakDokumenController@index: ' . $e->getMessage());
+            return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()]);
+        }
+    }
+
+    /**
      * Generate formulir PDF
      */
     public function generateFormulir($pendaftaranId)
@@ -97,87 +127,8 @@ class CetakDokumenController extends Controller
     }
 
     /**
-     * Generate kartu peserta
-     * 
-     * Syarat: Pembayaran harus LUNAS/TERVERIFIKASI oleh admin
-     */
-    public function generateKartuPeserta($pendaftaranId)
-    {
-        try {
-            $user = Auth::user();
-            $pendaftaran = Pendaftaran::with(['siswa', 'jurusanPilihan1', 'statusPendaftaran', 'pembayaran'])
-                ->findOrFail($pendaftaranId);
-
-            // Check authorization
-            if ($pendaftaran->siswa->pengguna_id != $user->id && $user->role != 'admin') {
-                abort(403, 'Unauthorized');
-            }
-
-            // Check if jurusan sudah dipilih
-            if (!$pendaftaran->jurusanPilihan1 && !$pendaftaran->jurusan_pilihan_1) {
-                return back()->withErrors(['error' => 'Pilihan jurusan belum dipilih']);
-            }
-
-            // Check if pembayaran sudah terverifikasi dan lunas
-            $pembayaran = $pendaftaran->pembayaran;
-            
-            if (!$pembayaran) {
-                return back()->withErrors(['error' => 'Pembayaran belum dibuat']);
-            }
-
-            // Check if pembayaran sudah terverifikasi dan lunas
-            if (!$pembayaran->isTerverifikasi()) {
-                $currentStatus = $pembayaran->status ?? 'MENUNGGU VERIFIKASI';
-                return back()->withErrors(['error' => 'Kuitansi hanya tersedia untuk pembayaran yang terverifikasi. Status: ' . strtoupper(trim($currentStatus))]);
-            }
-
-            // Fetch jurusan dengan fallback
-            $jurusan = $pendaftaran->jurusanPilihan1;
-            if (!$jurusan && $pendaftaran->jurusan_pilihan_1) {
-                $jurusan = Jurusan::findOrFail($pendaftaran->jurusan_pilihan_1);
-            }
-
-            // Log jurusan data untuk debugging
-            Log::info('Kartu Peserta - Jurusan Info', [
-                'pendaftaran_id' => $pendaftaran->id,
-                'jurusan_pilihan_1_id' => $pendaftaran->jurusan_pilihan_1,
-                'jurusan_loaded' => $jurusan ? 'yes' : 'no',
-                'jurusan_nama' => $jurusan?->nama_jurusan ?? 'null'
-            ]);
-
-            $data = [
-                'pendaftaran' => $pendaftaran,
-                'siswa' => $pendaftaran->siswa,
-                'jurusan' => $jurusan,
-                'barcode' => 'PPDB-' . $pendaftaran->id . '-' . $pendaftaran->tahun_ajaran,
-            ];
-
-            // Save to database
-            $jenisBerkas = JenisBerkas::where('nama', 'KARTU_PESERTA')->first();
-            if ($jenisBerkas) {
-                BerkasCetak::create([
-                    'pendaftaran_id' => $pendaftaran->id,
-                    'jenis_berkas_id' => $jenisBerkas->id,
-                    'path' => 'cetak/kartu-' . $pendaftaran->id . '-' . time() . '.html',
-                    'meta' => json_encode(['barcode' => $data['barcode']]),
-                    'dibuat_oleh' => $user->id,
-                ]);
-                
-                Log::info('Kartu Peserta generated for pendaftaran ' . $pendaftaran->id);
-            }
-
-            // Return HTML view (printable)
-            return view('cetak.kartu-peserta-template', $data)
-                ->render();
-        } catch (\Exception $e) {
-            Log::error('Error generating kartu peserta: ' . $e->getMessage(), ['pendaftaran_id' => $pendaftaranId]);
-            return redirect()->back()->withErrors(['error' => 'Gagal membuat kartu peserta: ' . $e->getMessage()]);
-        }
-    }
-
-    /**
      * Generate surat penerimaan
-     * 
+     *
      * Syarat: Status DITERIMA dan Pembayaran LUNAS/TERVERIFIKASI
      */
     public function generateSuratPenerimaan($pendaftaranId)

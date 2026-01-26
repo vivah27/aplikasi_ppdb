@@ -3,21 +3,12 @@
    ============================================ */
 
 :root {
-<<<<<<< HEAD
-    --primary: #a8dadc;
-    --primary-light: #f0f4ff;
-    --success: #10b981;
-    --success-light: #d1fae5;
-    --warning: #f59e0b;
-    --warning-light: #fef3c7;
-=======
     --primary: #c8b4e8;
     --primary-light: #e8d4f9;
     --success: #b8e6c9;
     --success-light: #d1f5e5;
     --warning: #ffe0b2;
     --warning-light: #fffcf7;
->>>>>>> 72e2c9e0425e4d8887f92164fa4154fe96d31a50
     --light: #f9fafb;
     --dark: #1f2937;
     --gray: #6b7280;
@@ -28,11 +19,7 @@
    HERO SECTION
    ============================================ */
 .hero-section {
-<<<<<<< HEAD
-    background: linear-gradient(135deg, #a8dadc 0%, #dda0dd 100%);
-=======
-    background: linear-gradient(135deg, #c8b4e8 0%, #dfd1f5 100%);
->>>>>>> 72e2c9e0425e4d8887f92164fa4154fe96d31a50
+    background: linear-gradient(135deg, #c8b4e8 0%, #dfd1f5 50%, #e8d4f9 100%);
     color: white;
     min-height: 100vh;
     display: flex;
@@ -84,13 +71,13 @@
 }
 
 .hero-title .text-primary {
-    color: #ffd1dc !important;
+    color: #ffffff !important;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .hero-subtitle {
     font-size: 1.25rem;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.95);
     line-height: 1.6;
     margin-bottom: 2rem;
 }
@@ -122,7 +109,7 @@
 }
 
 .stat-text {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.9);
     margin: 0;
     font-size: 0.95rem;
     font-weight: 500;
@@ -148,10 +135,10 @@
 }
 
 .hero-section .btn-primary:hover {
-    background: #fbbf24;
+    background: #b89fd9;
     color: white;
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 25px rgba(200, 180, 232, 0.3);
 }
 
 .btn-outline-light {
@@ -202,7 +189,7 @@
 
 .feature-card:hover {
     border-color: var(--primary);
-    box-shadow: 0 20px 40px rgba(102, 126, 234, 0.1);
+    box-shadow: 0 20px 40px rgba(200, 180, 232, 0.1);
     transform: translateY(-10px);
 }
 
@@ -219,11 +206,7 @@
 }
 
 .bg-primary-light {
-<<<<<<< HEAD
-    background: linear-gradient(135deg, #a8dadc, #dda0dd);
-=======
     background: linear-gradient(135deg, #c8b4e8, #dfd1f5);
->>>>>>> 72e2c9e0425e4d8887f92164fa4154fe96d31a50
 }
 
 .bg-success-light {
@@ -265,7 +248,7 @@
 
 .step-card:hover {
     border-color: var(--primary);
-    box-shadow: 0 15px 35px rgba(102, 126, 234, 0.15);
+    box-shadow: 0 15px 35px rgba(200, 180, 232, 0.15);
 }
 
 .step-number {
@@ -275,11 +258,7 @@
     transform: translateX(-50%);
     width: 60px;
     height: 60px;
-<<<<<<< HEAD
-    background: linear-gradient(135deg, #a8dadc, #dda0dd);
-=======
     background: linear-gradient(135deg, #c8b4e8, #dfd1f5);
->>>>>>> 72e2c9e0425e4d8887f92164fa4154fe96d31a50
     color: white;
     border-radius: 50%;
     display: flex;
@@ -330,11 +309,7 @@
 .stat-icon {
     width: 80px;
     height: 80px;
-<<<<<<< HEAD
-    background: linear-gradient(135deg, #a8dadc, #dda0dd);
-=======
     background: linear-gradient(135deg, #c8b4e8, #dfd1f5);
->>>>>>> 72e2c9e0425e4d8887f92164fa4154fe96d31a50
     color: white;
     border-radius: 50%;
     display: flex;
@@ -374,7 +349,7 @@
 
 .testimonial-card:hover {
     border-color: var(--primary);
-    box-shadow: 0 15px 35px rgba(102, 126, 234, 0.1);
+    box-shadow: 0 15px 35px rgba(200, 180, 232, 0.1);
 }
 
 .stars {
@@ -409,11 +384,7 @@
    CTA SECTION
    ============================================ */
 .cta-section {
-<<<<<<< HEAD
-    background: linear-gradient(135deg, #a8dadc 0%, #dda0dd 100%);
-=======
-    background: linear-gradient(135deg, #c8b4e8 0%, #dfd1f5 100%);
->>>>>>> 72e2c9e0425e4d8887f92164fa4154fe96d31a50
+    background: linear-gradient(135deg, #c8b4e8 0%, #dfd1f5 50%, #e8d4f9 100%);
     color: white;
     padding: 60px 0;
     border-radius: 20px;
@@ -428,7 +399,7 @@
 
 .cta-text {
     font-size: 1.1rem;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.95);
     margin: 0;
 }
 

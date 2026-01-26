@@ -151,7 +151,7 @@
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                             <i class="fas fa-check-circle me-2"></i>
                             <strong>Pembayaran Terverifikasi!</strong> Pembayaran Anda telah dikonfirmasi oleh admin.
-                            Anda sekarang dapat mencetak kartu peserta dan dokumen lainnya.
+                            Anda sekarang dapat mencetak dokumen lainnya.
                             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>
                     @elseif($pembayaran->status === 'Ditolak')

@@ -117,31 +117,7 @@
 
         <!-- Card 3: (removed) Dokumen - per request removed from user dashboard -->
 
-        <!-- Card 4: Kartu Ujian -->
-        <div style="background: white; border-radius: 12px; padding: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: all 0.3s; border-left: 4px solid #0ea5e9;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 12px 24px rgba(0,0,0,0.15)'" onmouseout="this.style.transform=''; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.08)'">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
-                <i class="fas fa-id-card" style="font-size: 32px; color: #0ea5e9; opacity: 0.2;"></i>
-                <span style="display: inline-block; padding: 6px 12px; background: rgba(14, 165, 233, 0.15); color: #0ea5e9; border-radius: 6px; font-size: 12px; font-weight: 600;">Cetak</span>
-            </div>
-            <h5 style="margin: 0 0 8px 0; color: #1f2937; font-weight: 700;">Cetak Kartu Ujian</h5>
-            <p style="margin: 0 0 20px 0; color: #6b7280; font-size: 14px;">Unduh atau cetak kartu ujian untuk mengikuti tahap seleksi berikutnya</p>
-            @php
-                $pendaftaranUser = \App\Models\Pendaftaran::whereHas('siswa', function($q) { 
-                    $q->where('pengguna_id', Auth::id()); 
-                })->with('pembayaran.statusPembayaran')->first();
-            @endphp
-            @if($pendaftaranUser && $pendaftaranUser->pembayaran && $pendaftaranUser->pembayaran->statusPembayaran->nama === 'LUNAS')
-                <a href="{{ route('cetak.kartu', ['pendaftaranId' => $pendaftaranUser->id]) }}" style="display: inline-block; padding: 10px 16px; background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 100%); color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; transition: all 0.3s;">
-                    <i class="fas fa-arrow-right" style="margin-right: 6px;"></i>Cetak Sekarang
-                </a>
-            @else
-                <button style="display: inline-block; padding: 10px 16px; background: #ccc; color: #666; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; border: none; cursor: not-allowed;" disabled>
-                    <i class="fas fa-lock" style="margin-right: 6px;"></i>Tunggu Pembayaran
-                </button>
-            @endif
-        </div>
-
-        <!-- Card 5: Pembayaran -->
+        <!-- Card 4: Pembayaran -->
         <div style="background: white; border-radius: 12px; padding: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: all 0.3s; border-left: 4px solid #8b5cf6;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 12px 24px rgba(0,0,0,0.15)'" onmouseout="this.style.transform=''; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.08)'">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
                 <i class="fas fa-credit-card" style="font-size: 32px; color: #8b5cf6; opacity: 0.2;"></i>

@@ -1,8 +1,6 @@
-@extends('layouts.master')
+<?php $__env->startSection('page_title', 'Status Seleksi'); ?>
 
-@section('page_title', 'Status Seleksi')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <style>
     .status-header {
         padding: 24px 0 32px 0;
@@ -191,16 +189,16 @@
     <p class="status-subtitle">Pantau perkembangan proses pendaftaran Anda</p>
 </div>
 
-@if(Auth::user()->siswa)
-    @php
+<?php if(Auth::user()->siswa): ?>
+    <?php
         $siswa = Auth::user()->siswa;
         $pendaftaran = $siswa->pendaftaran()->first();
-    @endphp
+    ?>
 
-    @if($pendaftaran)
+    <?php if($pendaftaran): ?>
         <div class="status-card">
             <div class="status-main">
-                @php
+                <?php
                     $status = $pendaftaran->statusPendaftaran;
                     $statusLabel = $status ? $status->label : 'Menunggu';
                     $statusClass = match($statusLabel) {
@@ -209,25 +207,25 @@
                         'Ditolak' => 'danger',
                         default => 'info'
                     };
-                @endphp
-                <div class="status-icon-large {{ $statusClass }}">
-                    @if($statusClass === 'success')
+                ?>
+                <div class="status-icon-large <?php echo e($statusClass); ?>">
+                    <?php if($statusClass === 'success'): ?>
                         ✓
-                    @elseif($statusClass === 'warning')
+                    <?php elseif($statusClass === 'warning'): ?>
                         ⏳
-                    @elseif($statusClass === 'danger')
+                    <?php elseif($statusClass === 'danger'): ?>
                         ✕
-                    @else
+                    <?php else: ?>
                         ?
-                    @endif
+                    <?php endif; ?>
                 </div>
                 <div class="status-label">Status Saat Ini</div>
-                <div class="status-value">{{ $statusLabel }}</div>
+                <div class="status-value"><?php echo e($statusLabel); ?></div>
             </div>
 
             <!-- PROGRESS TIMELINE -->
             <div class="progress-timeline">
-                @php
+                <?php
                     // Check if formulir is actually completed (not just exists)
                     $isFormulirComplete = $pendaftaran && 
                         !empty($pendaftaran->tahun_ajaran) && 
@@ -251,50 +249,50 @@
                         ['title' => 'Upload Dokumen', 'description' => 'Dokumen diverifikasi', 'status' => $allRequiredDocsUploaded ? 'completed' : 'pending'],
                         ['title' => 'Hasil Seleksi', 'description' => 'Pengumuman hasil akhir', 'status' => ($statusLabel === 'Diterima' || $statusLabel === 'Ditolak') ? 'completed' : ($statusLabel === 'Menunggu' ? 'active' : 'pending')],
                     ];
-                @endphp
+                ?>
 
-                @foreach($steps as $step)
-                    <div class="timeline-step {{ $step['status'] }}">
+                <?php $__currentLoopData = $steps; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $step): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div class="timeline-step <?php echo e($step['status']); ?>">
                         <div class="timeline-circle">
-                            @if($step['status'] === 'completed')
+                            <?php if($step['status'] === 'completed'): ?>
                                 ✓
-                            @elseif($step['status'] === 'active')
+                            <?php elseif($step['status'] === 'active'): ?>
                                 →
-                            @else
+                            <?php else: ?>
                                 ●
-                            @endif
+                            <?php endif; ?>
                         </div>
                         <div class="timeline-content">
-                            <div class="timeline-title">{{ $step['title'] }}</div>
-                            <div class="timeline-description">{{ $step['description'] }}</div>
+                            <div class="timeline-title"><?php echo e($step['title']); ?></div>
+                            <div class="timeline-description"><?php echo e($step['description']); ?></div>
                         </div>
                     </div>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
 
             <!-- INFO BOXES -->
             <div class="info-grid">
                 <div class="info-box">
                     <div class="info-label">Nomor Pendaftaran</div>
-                    <div class="info-value">{{ $pendaftaran->nomor_pendaftaran ?? '-' }}</div>
+                    <div class="info-value"><?php echo e($pendaftaran->nomor_pendaftaran ?? '-'); ?></div>
                 </div>
                 <div class="info-box">
                     <div class="info-label">Tanggal Daftar</div>
-                    <div class="info-value">{{ $pendaftaran->created_at->format('d M Y') }}</div>
+                    <div class="info-value"><?php echo e($pendaftaran->created_at->format('d M Y')); ?></div>
                 </div>
                 <div class="info-box">
                     <div class="info-label">Jurusan Pilihan</div>
-                    <div class="info-value">{{ $pendaftaran->jurusanPilihan1->nama ?? '-' }}</div>
+                    <div class="info-value"><?php echo e($pendaftaran->jurusanPilihan1->nama ?? '-'); ?></div>
                 </div>
                 <div class="info-box">
                     <div class="info-label">Dokumen Diunggah</div>
-                    <div class="info-value">{{ $siswa->dokumen()->count() ?? 0 }} file</div>
+                    <div class="info-value"><?php echo e($siswa->dokumen()->count() ?? 0); ?> file</div>
                 </div>
             </div>
         </div>
 
         <!-- NEXT STEPS -->
-        @if($statusLabel === 'Menunggu')
+        <?php if($statusLabel === 'Menunggu'): ?>
             <div class="status-card">
                 <h3 style="margin-top: 0;">Langkah Selanjutnya</h3>
                 <p style="color: #6b7280; margin: 8px 0 20px 0;">Untuk memastikan aplikasi Anda diproses dengan baik, silakan:</p>
@@ -305,28 +303,28 @@
                     <li>Hubungi admin jika ada pertanyaan</li>
                 </ol>
             </div>
-        @elseif($statusLabel === 'Diterima')
+        <?php elseif($statusLabel === 'Diterima'): ?>
             <div class="status-card" style="border-left: 4px solid #10b981;">
                 <h3 style="margin-top: 0; color: #10b981;">🎉 Selamat!</h3>
                 <p style="color: #6b7280;">Anda telah diterima sebagai siswa di sekolah kami. Silakan lanjutkan proses pendaftaran ulang (daftar ulang) dengan menghubungi sekolah.</p>
             </div>
-        @elseif($statusLabel === 'Ditolak')
+        <?php elseif($statusLabel === 'Ditolak'): ?>
             <div class="status-card" style="border-left: 4px solid #ef4444;">
                 <h3 style="margin-top: 0; color: #ef4444;">Mohon Maaf</h3>
                 <p style="color: #6b7280;">Sayangnya, Anda belum diterima dalam kesempatan ini. Namun jangan menyerah! Silakan hubungi sekolah untuk mendapatkan feedback dan kesempatan di periode berikutnya.</p>
             </div>
-        @endif
-    @else
+        <?php endif; ?>
+    <?php else: ?>
         <div class="status-card">
             <div class="empty-state">
                 <div class="empty-icon">📋</div>
                 <div class="empty-title">Belum Ada Data Pendaftaran</div>
                 <p class="empty-description">Anda belum mengisi formulir pendaftaran. Silakan isi formulir terlebih dahulu untuk melanjutkan proses seleksi.</p>
-                <a href="{{ route('formulir.index') }}" class="btn btn-primary">Isi Formulir Sekarang</a>
+                <a href="<?php echo e(route('formulir.index')); ?>" class="btn btn-primary">Isi Formulir Sekarang</a>
             </div>
         </div>
-    @endif
-@else
+    <?php endif; ?>
+<?php else: ?>
     <div class="status-card">
         <div class="empty-state">
             <div class="empty-icon">⚠️</div>
@@ -334,5 +332,7 @@
             <p class="empty-description">Sistem tidak dapat menemukan data siswa Anda. Silakan hubungi admin untuk bantuan.</p>
         </div>
     </div>
-@endif
-@endsection
+<?php endif; ?>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.master', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\PC_\aplikasi_ppdb\resources\views/user/status.blade.php ENDPATH**/ ?>

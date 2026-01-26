@@ -153,7 +153,6 @@ Route::middleware(['auth', 'web'])->group(function () {
         Route::get('/', 'App\Http\Controllers\CetakDokumenController@index')->name('index');
         Route::get('/kuitansi', 'App\Http\Controllers\CetakDokumenController@kuitansiIndex')->name('kuitansi.index');
         Route::get('/formulir/{pendaftaranId}', 'App\Http\Controllers\CetakDokumenController@generateFormulir')->name('formulir');
-        Route::get('/kartu/{pendaftaranId}', 'App\Http\Controllers\CetakDokumenController@generateKartuPeserta')->name('kartu');
         Route::get('/surat/{pendaftaranId}', 'App\Http\Controllers\CetakDokumenController@generateSuratPenerimaan')->name('surat');
         Route::get('/kuitansi/{pembayaranId}', 'App\Http\Controllers\CetakDokumenController@generateKuitansi')->name('kuitansi');
         Route::get('/download/{id}', 'App\Http\Controllers\CetakDokumenController@download')->name('download');
